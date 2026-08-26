@@ -1,0 +1,12 @@
+{
+  "name": "Hadiya",
+  "short_name": "Hadiya",
+  "description": "More than a gift.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAF6EF",
+  "theme_color": "#1B3A2B",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

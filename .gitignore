@@ -1,0 +1,29 @@
+# dependencies
+node_modules/
+backend/venv/
+
+# env
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# python
+__pycache__/
+*.pyc
+
+# database
+*.db
+*.sqlite3
+
+# build output
+dist/
+frontend/dist/
+
+# uploads (backend local file storage)
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# OS / editor
+.DS_Store
+Thumbs.db
