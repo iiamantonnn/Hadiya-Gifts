@@ -108,50 +108,176 @@ def run():
         else:
             print("Flowers already seeded, skipping catalog.")
 
-        demo = db.query(models.User).filter(models.User.email == "demo@hadiya.app").first()
-        if not demo:
-            demo = models.User(
-                first_name="Demo", last_name="User", email="demo@hadiya.app",
-                preferred_name="Demo", password_hash=hash_secret("Demo12345!"),
-                email_verified=True,
-            )
-            db.add(demo)
-            db.flush()
-
-            mom = models.Person(
-                owner_id=demo.id, name="Mom", relationship_type="mother",
-                birthday=date.today() + timedelta(days=9), favorite_flowers=["peonies", "roses"],
-                favorite_colors=["pink", "white"], is_favorite=True, notes="Loves anything with peonies.",
-            )
-            best_friend = models.Person(
-                owner_id=demo.id, name="Alex", relationship_type="friend",
-                birthday=date.today() + timedelta(days=40), favorite_colors=["yellow"], is_favorite=True,
-            )
-            db.add_all([mom, best_friend])
-            db.flush()
-
-            db.add(models.ImportantDate(
-                person_id=mom.id, date_type="mothers_day", occurs_on=date(date.today().year, 5, 11),
-                recurring=True, reminder_offsets_days=[7, 3, 1, 0],
-            ))
-
-            db.add(models.WishlistItem(
-                owner_id=demo.id, person_id=mom.id, product_name="Ceramic Vase - Speckled White",
-                marketplace="Amazon", url="https://example.com/vase", color="White", material="Ceramic",
-                notes="Would go perfectly with the peonies.",
-            ))
-
-            demo_address = models.Address(
-                user_id=demo.id, label="Home", line1="123 Example St", city="Springfield",
-                region="IL", postal_code="62704", country="USA", is_default=True,
-            )
-            db.add(demo_address)
-            db.commit()
-            print("Seeded demo account: demo@hadiya.app / Demo12345!")
-        else:
-            print("Demo account already exists, skipping.")
+        seed_demo_persona(db)
     finally:
         db.close()
+
+
+def seed_demo_persona(db):
+    """The rich demo persona used for live walkthroughs: Alex Israelyan, with
+    favorite people, upcoming dates, a wishlist, and both sent and received
+    gift history so every tab of the app has something real to show. Guarded
+    by an existence check so re-running seed.py is always safe."""
+    today = date.today()
+
+    alex = db.query(models.User).filter(models.User.email == "alex.israelyan@hadiya.demo").first()
+    if alex:
+        print("Demo persona already exists, skipping.")
+        return
+
+    flowers_by_name = {f.name: f for f in db.query(models.Flower).all()}
+
+    alex = models.User(
+        first_name="Alex", last_name="Israelyan", email="alex.israelyan@hadiya.demo",
+        preferred_name="Alex", password_hash=hash_secret("HadiyaDemo123!"),
+        email_verified=True,
+    )
+    db.add(alex)
+    db.flush()
+
+    anahit = models.Person(
+        owner_id=alex.id, name="Anahit", relationship_type="sister",
+        birthday=today + timedelta(days=18), favorite_flowers=["tulips", "peonies"],
+        favorite_colors=["yellow", "pink"], is_favorite=True,
+        notes="Just moved into a new apartment - loves bright, cheerful colors.",
+    )
+    anna = models.Person(
+        owner_id=alex.id, name="Anna", relationship_type="mother",
+        birthday=today + timedelta(days=6), favorite_flowers=["roses", "peonies"],
+        favorite_colors=["white", "pink"], is_favorite=True,
+        notes="Her favorite flowers are peonies and white roses. Loves quiet mornings with "
+              "a good book, tending her garden, and anything lavender-scented.",
+    )
+    maria = models.Person(
+        owner_id=alex.id, name="Maria", relationship_type="friend",
+        birthday=today + timedelta(days=45), favorite_flowers=["lilies", "mixed"],
+        favorite_colors=["white", "purple"], is_favorite=True,
+    )
+    db.add_all([anahit, anna, maria])
+    db.flush()
+
+    db.add(models.ImportantDate(
+        person_id=anna.id, date_type="anniversary", occurs_on=today + timedelta(days=27),
+        recurring=True, reminder_offsets_days=[7, 3, 1, 0],
+    ))
+    db.add(models.ImportantDate(
+        person_id=maria.id, date_type="custom", custom_label="Important personal date",
+        occurs_on=today + timedelta(days=12), recurring=False, reminder_offsets_days=[7, 3, 1, 0],
+    ))
+
+    alex_address = models.Address(
+        user_id=alex.id, label="Home", line1="14 Northern Avenue, Apt 5B", city="Yerevan",
+        region="Yerevan", postal_code="0001", country="Armenia", is_default=True,
+    )
+    db.add(alex_address)
+    db.flush()
+
+    db.add_all([
+        models.WishlistItem(
+            owner_id=alex.id, person_id=anna.id, product_name="Ceramic Vase - Speckled White",
+            marketplace="Etsy", url="https://www.etsy.com/listing/1023456789/ceramic-speckled-vase",
+            color="White", material="Ceramic", notes="Would look perfect with the peonies she loves.",
+        ),
+        models.WishlistItem(
+            owner_id=alex.id, person_id=anahit.id, product_name="Scented Soy Candle - Vanilla Bergamot",
+            marketplace="Etsy", url="https://www.etsy.com/listing/987654321/vanilla-bergamot-soy-candle",
+            notes="For the new apartment - she mentioned wanting something cozy.",
+        ),
+        models.WishlistItem(
+            owner_id=alex.id, person_id=maria.id, product_name="Cozy Knit Throw Blanket",
+            marketplace="Amazon", url="https://www.amazon.com/dp/B08X4KJQ2L",
+            color="Grey", size="50x60in", material="Wool blend", notes="Perfect for her reading nook.",
+        ),
+        models.WishlistItem(
+            owner_id=alex.id, person_id=None, product_name="Wireless Noise-Cancelling Headphones",
+            marketplace="Amazon", url="https://www.amazon.com/dp/B0863TXGM3",
+            model="WH-1000XM4", color="Black", notes="Been eyeing these for months.",
+        ),
+        models.WishlistItem(
+            owner_id=alex.id, person_id=None, product_name="Leather Travel Journal - Refillable",
+            marketplace="Etsy", url="https://www.etsy.com/listing/1145678901/leather-travel-journal",
+            color="Brown", material="Leather",
+        ),
+    ])
+
+    def _order_with_extras(*, buyer_id, recipient, flower_name, size, color, occasion,
+                            delivery_date, status, window, address_id, message_text):
+        flower = flowers_by_name[flower_name]
+        order = models.Order(
+            buyer_id=buyer_id, recipient_person_id=recipient.id, flower_id=flower.id,
+            size=size, color=color, occasion=occasion, delivery_date=delivery_date,
+            delivery_window_start=window[0], delivery_window_end=window[1],
+            address_id=address_id, is_anonymous=False, price_cents=flower.price_cents,
+            status=status,
+        )
+        db.add(order)
+        db.flush()
+        db.add(models.GiftMessage(order_id=order.id, card_type="digital", text=message_text, ai_generated=False))
+        db.add(models.GiftToken(order_id=order.id))
+        return order
+
+    _order_with_extras(
+        buyer_id=alex.id, recipient=anna, flower_name="Pink Peony Bunch", size="medium", color="pink",
+        occasion="birthday", delivery_date=today - timedelta(days=30), status="delivered",
+        window=("09:00", "12:00"), address_id=alex_address.id,
+        message_text="Happy birthday, Mama! Sending you all my love and these peonies you adore.",
+    )
+    _order_with_extras(
+        buyer_id=alex.id, recipient=maria, flower_name="White Lily Arrangement", size="medium", color="white",
+        occasion="congratulations", delivery_date=today - timedelta(days=10), status="delivered",
+        window=("12:00", "15:00"), address_id=alex_address.id,
+        message_text="Congratulations, Maria! So proud of you - hope these lilies brighten your day.",
+    )
+    _order_with_extras(
+        buyer_id=alex.id, recipient=anna, flower_name="Grand Mixed Celebration Bouquet", size="large", color="mixed",
+        occasion="anniversary", delivery_date=today - timedelta(days=45), status="delivered",
+        window=("15:00", "18:00"), address_id=alex_address.id,
+        message_text="Happy anniversary, Mom! Wishing you and Dad many more happy years together.",
+    )
+    _order_with_extras(
+        buyer_id=alex.id, recipient=anahit, flower_name="Sunshine Tulip Mix", size="small", color="yellow",
+        occasion="birthday", delivery_date=today + timedelta(days=3), status="placed",
+        window=("09:00", "12:00"), address_id=alex_address.id,
+        message_text="Happy early birthday, Anahit! Can't wait to celebrate with you soon.",
+    )
+
+    # A second, minimal user whose sole purpose is to have sent Alex a gift,
+    # so Alex's "received" gift history tab isn't empty.
+    davit = models.User(
+        first_name="Davit", last_name="Petrosyan", email="davit.petrosyan@hadiya.demo",
+        password_hash=hash_secret("HadiyaDemo123!"), email_verified=True,
+    )
+    db.add(davit)
+    db.flush()
+
+    davit_address = models.Address(
+        user_id=davit.id, label="Home", line1="7 Mashtots Avenue", city="Yerevan",
+        region="Yerevan", postal_code="0009", country="Armenia", is_default=True,
+    )
+    db.add(davit_address)
+    db.flush()
+
+    # linked_user_id ties this Person record back to Alex's own account, which
+    # is what makes the order below surface under Alex's "received" tab.
+    alex_as_seen_by_davit = models.Person(
+        owner_id=davit.id, name="Alex", relationship_type="friend", linked_user_id=alex.id,
+    )
+    db.add(alex_as_seen_by_davit)
+    db.flush()
+
+    _order_with_extras(
+        buyer_id=davit.id, recipient=alex_as_seen_by_davit, flower_name="Blue Hydrangea Bunch",
+        size="medium", color="blue", occasion="just_because", delivery_date=today - timedelta(days=15),
+        status="delivered", window=("18:00", "21:00"), address_id=davit_address.id,
+        message_text="Thinking of you, Alex - hope this brightens your day!",
+    )
+
+    db.commit()
+    print(
+        "Seeded demo persona: alex.israelyan@hadiya.demo / HadiyaDemo123! "
+        "(3 people, 4 sent orders, 1 received order, 5 wishlist items) "
+        "plus sender davit.petrosyan@hadiya.demo / HadiyaDemo123!"
+    )
 
 
 if __name__ == "__main__":

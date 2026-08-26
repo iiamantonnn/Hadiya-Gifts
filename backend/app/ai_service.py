@@ -37,10 +37,17 @@ def _call_gemini(question: str, context: dict, catalog: list[dict]) -> dict | No
         return None
 
     system_prompt = (
-        "You are the Hadiya gift assistant. Recommend only from the given catalog - "
-        "never invent a product. Reply with ONLY compact JSON of the shape "
-        '{"message": "<1-3 sentence answer>", "recommended_flower_ids": ["<id>", ...]}. '
-        "Use at most 3 ids, only ids that appear in the catalog below."
+        "You are the Hadiya gift assistant. You can do two things: (1) recommend gift "
+        "flowers/bouquets, but only from the given catalog - never invent a product, or "
+        "(2) when the user explicitly asks you to write or compose a card message, note, "
+        "or wish (rather than asking for a gift/flower recommendation), write one directly "
+        "yourself instead of suggesting a product. Reply with ONLY compact JSON of the shape "
+        '{"message": "<your answer: either a 1-3 sentence recommendation, or, if asked to '
+        'write/compose a message, a ready-to-use written message>", '
+        '"recommended_flower_ids": ["<id>", ...]}. '
+        "When you are writing a message rather than recommending a gift, leave "
+        "recommended_flower_ids as an empty list. Otherwise use at most 3 ids, only ids "
+        "that appear in the catalog below."
     )
     user_prompt = (
         f"Context: {json.dumps(context)}\n"
@@ -78,7 +85,71 @@ def _call_gemini(question: str, context: dict, catalog: list[dict]) -> dict | No
         return None
 
 
+# Strong signal that the question wants a written message rather than a gift
+# recommendation. If any recommendation-style language is also present, treat
+# it as a normal recommendation request instead (e.g. "recommend a flower and
+# write a note" still gets a bouquet suggestion).
+_MESSAGE_WRITING_SIGNALS = ["write", "compose", "message", "note", "wish", "card"]
+_RECOMMENDATION_SIGNALS = ["flower", "bouquet", "send", "recommend", "suggest a gift"]
+
+# Ready-to-use written messages for when the user asks the assistant to write
+# something (e.g. "help me write a birthday message") instead of asking for a
+# gift recommendation. Same per-occasion style as _CARD_TEMPLATES, but these
+# are complete, standalone messages (no {name} placeholder) since this is a
+# direct chat answer, not a card insert tied to one specific order/recipient.
+_MESSAGE_TEMPLATES = {
+    "birthday": "Wishing you the happiest of birthdays! May your day be filled with laughter, love, and everything that makes you smile.",
+    "anniversary": "Happy anniversary! Here's to the love you share and to many more wonderful years together.",
+    "thank_you": "Thank you so much - your thoughtfulness means more to me than words can say.",
+    "congratulations": "Congratulations! I'm so proud of you and everything you've worked so hard for.",
+    "romantic": "Every day with you feels like a gift. Thank you for being exactly who you are.",
+    "sympathy": "Thinking of you and holding you close in my thoughts during this difficult time.",
+    "friendship": "Just a note to say how grateful I am to have you in my life - thank you for always being there.",
+    "just_because": "No special occasion needed - I just wanted you to know I'm thinking of you today.",
+}
+_DEFAULT_MESSAGE = "Wishing you all the best - sending warm thoughts your way today."
+
+
+def _is_message_writing_request(question: str) -> bool:
+    q = question.lower()
+    has_write_signal = any(s in q for s in _MESSAGE_WRITING_SIGNALS)
+    has_recommend_signal = any(s in q for s in _RECOMMENDATION_SIGNALS)
+    return has_write_signal and not has_recommend_signal
+
+
+def _detect_message_occasion(question: str, context: dict) -> str | None:
+    q = question.lower()
+    keyword_map = [
+        ("anniversary", "anniversary"),
+        ("birthday", "birthday"),
+        ("thank you", "thank_you"),
+        ("thanks", "thank_you"),
+        ("congrat", "congratulations"),
+        ("sympathy", "sympathy"),
+        ("condolence", "sympathy"),
+        ("romantic", "romantic"),
+        ("friendship", "friendship"),
+        ("just because", "just_because"),
+    ]
+    for keyword, occasion in keyword_map:
+        if keyword in q:
+            return occasion
+    return context.get("occasion")
+
+
+def _fallback_write_message(question: str, context: dict) -> dict:
+    """A birthday-message-style request ("help me write a ...") is asking the
+    assistant to compose text, not to recommend a product. Never invent
+    flowers here - recommended_flower_ids stays empty."""
+    occasion = _detect_message_occasion(question, context)
+    text = _MESSAGE_TEMPLATES.get(occasion, _DEFAULT_MESSAGE)
+    return {"message": text, "recommended_flower_ids": []}
+
+
 def _fallback_recommend(question: str, context: dict, catalog: list[dict]) -> dict:
+    if _is_message_writing_request(question):
+        return _fallback_write_message(question, context)
+
     q = question.lower()
     occasion = context.get("occasion")
     relationship = context.get("relationship")

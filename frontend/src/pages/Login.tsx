@@ -1,12 +1,16 @@
 import { useState, type FormEvent } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import AuthLayout from "../components/layout/AuthLayout";
+import Card from "../components/ui/Card";
 import { Input } from "../components/ui/Input";
 import Button from "../components/ui/Button";
 import { useAuth } from "../lib/auth-context";
 import { ApiError } from "../lib/api";
 import { loginWithPasskey } from "../lib/webauthn";
 import { browserSupportsWebAuthn } from "@simplewebauthn/browser";
+
+const DEMO_EMAIL = "alex.israelyan@hadiya.demo";
+const DEMO_PASSWORD = "HadiyaDemo123!";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -16,18 +20,36 @@ export default function Login() {
   const [rememberMe, setRememberMe] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [demoSubmitting, setDemoSubmitting] = useState(false);
 
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault();
+  async function performLogin(loginEmail: string, loginPassword: string, remember: boolean) {
     setError(null);
-    setSubmitting(true);
     try {
-      await login(email, password, rememberMe);
+      await login(loginEmail, loginPassword, remember);
       navigate("/dashboard");
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "Something went wrong. Please try again.");
+    }
+  }
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    setSubmitting(true);
+    try {
+      await performLogin(email, password, rememberMe);
     } finally {
       setSubmitting(false);
+    }
+  }
+
+  async function handleDemoLogin() {
+    setEmail(DEMO_EMAIL);
+    setPassword(DEMO_PASSWORD);
+    setDemoSubmitting(true);
+    try {
+      await performLogin(DEMO_EMAIL, DEMO_PASSWORD, true);
+    } finally {
+      setDemoSubmitting(false);
     }
   }
 
@@ -71,6 +93,30 @@ export default function Login() {
       <p className="mt-6 text-center text-sm text-ink-muted">
         New to Hadiya? <Link to="/register" className="font-medium text-forest">Create an account</Link>
       </p>
+
+      <Card className="mt-8">
+        <h2 className="font-display text-base font-semibold text-ink">Demo Account</h2>
+        <p className="mt-1 text-sm text-ink-muted">For presenters - sign in instantly with a preloaded demo account.</p>
+        <dl className="mt-3 flex flex-col gap-1 text-sm">
+          <div className="flex gap-2">
+            <dt className="text-ink-faint">Email</dt>
+            <dd className="font-medium text-ink">{DEMO_EMAIL}</dd>
+          </div>
+          <div className="flex gap-2">
+            <dt className="text-ink-faint">Password</dt>
+            <dd className="font-medium text-ink">{DEMO_PASSWORD}</dd>
+          </div>
+        </dl>
+        <Button
+          type="button"
+          variant="ghost"
+          onClick={handleDemoLogin}
+          disabled={demoSubmitting}
+          className="mt-4 w-full"
+        >
+          {demoSubmitting ? "Signing in..." : "Use Demo Account"}
+        </Button>
+      </Card>
     </AuthLayout>
   );
 }

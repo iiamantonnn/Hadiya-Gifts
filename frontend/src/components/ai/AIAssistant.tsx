@@ -12,9 +12,10 @@ interface AskResponse {
 }
 
 const SUGGESTIONS = [
-  "What flowers should I send my mother for her birthday?",
-  "A good bouquet under $50?",
-  "Something appropriate for an anniversary?",
+  "What flowers should I send my mother?",
+  "Find a bouquet under $50.",
+  "What would be a good birthday gift?",
+  "Help me write a birthday message.",
 ];
 
 export default function AIAssistant() {

@@ -5,7 +5,7 @@ import Button from "../components/ui/Button";
 import AIAssistant from "../components/ai/AIAssistant";
 import { useAuth } from "../lib/auth-context";
 import { api } from "../lib/api";
-import { greetingForHour } from "../lib/format";
+import { greetingForHour, armeniaHourNow } from "../lib/format";
 import type { Person, UpcomingEvent } from "../lib/types";
 
 const QUICK_ACTIONS = [
@@ -28,7 +28,7 @@ export default function Dashboard() {
   }, []);
 
   const name = user?.preferred_name || user?.first_name || "";
-  const greeting = `${greetingForHour(new Date().getHours())}, ${name}.`;
+  const greeting = `${greetingForHour(armeniaHourNow())}, ${name}.`;
 
   return (
     <div className="flex flex-col gap-8">
