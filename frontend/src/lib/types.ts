@@ -102,6 +102,32 @@ export interface GiftHistoryEntry {
   message: string | null;
   has_voice_message: boolean;
   created_at: string;
+  wishlist_gift: { id: string; product_name: string; image_url: string | null } | null;
+}
+
+export interface OrderDetail {
+  id: string;
+  direction: "sent" | "received";
+  flower: Flower;
+  sender_name: string | null;
+  recipient_name: string | null;
+  occasion: string | null;
+  delivery_date: string;
+  delivery_window_start: string;
+  delivery_window_end: string;
+  is_anonymous: boolean;
+  status: string;
+  price_cents: number;
+  card: { card_type: string; text: string | null; ai_generated: boolean } | null;
+  voice_message_url: string | null;
+  wishlist_gift: {
+    id: string;
+    product_name: string;
+    image_url: string | null;
+    marketplace: string | null;
+    notes: string | null;
+  } | null;
+  gift_token: string | null;
 }
 
 export interface Notification {

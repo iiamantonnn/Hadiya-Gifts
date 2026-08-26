@@ -25,6 +25,7 @@ export default function Search() {
   const [params] = useSearchParams();
   const [q, setQ] = useState(params.get("q") || "");
   const [filters, setFilters] = useState(EMPTY_FILTERS);
+  const [draftFilters, setDraftFilters] = useState(EMPTY_FILTERS);
   const [options, setOptions] = useState<FilterOptions | null>(null);
   const [results, setResults] = useState<Flower[]>([]);
   const [sheetOpen, setSheetOpen] = useState(false);
@@ -47,41 +48,52 @@ export default function Search() {
 
   const activeFilterCount = Object.values(filters).filter(Boolean).length;
 
+  const applyFilters = () => {
+    setFilters(draftFilters);
+    setSheetOpen(false);
+  };
+
+  const resetFilters = () => {
+    setDraftFilters(EMPTY_FILTERS);
+    setFilters(EMPTY_FILTERS);
+  };
+
   const filterFields = options && (
     <div className="flex flex-col gap-4">
-      <Select label="Flower type" value={filters.flower_type} onChange={(e) => setFilters({ ...filters, flower_type: e.target.value })}>
+      <Select label="Flower type" value={draftFilters.flower_type} onChange={(e) => setDraftFilters({ ...draftFilters, flower_type: e.target.value })}>
         <option value="">Any</option>
         {options.flower_types.map((v) => <option key={v} value={v}>{label(v)}</option>)}
       </Select>
-      <Select label="Color" value={filters.color} onChange={(e) => setFilters({ ...filters, color: e.target.value })}>
+      <Select label="Color" value={draftFilters.color} onChange={(e) => setDraftFilters({ ...draftFilters, color: e.target.value })}>
         <option value="">Any</option>
         {options.colors.map((v) => <option key={v} value={v}>{label(v)}</option>)}
       </Select>
-      <Select label="Size" value={filters.size} onChange={(e) => setFilters({ ...filters, size: e.target.value })}>
+      <Select label="Size" value={draftFilters.size} onChange={(e) => setDraftFilters({ ...draftFilters, size: e.target.value })}>
         <option value="">Any</option>
         {options.sizes.map((v) => <option key={v} value={v}>{label(v)}</option>)}
       </Select>
-      <Select label="Occasion" value={filters.occasion} onChange={(e) => setFilters({ ...filters, occasion: e.target.value })}>
+      <Select label="Occasion" value={draftFilters.occasion} onChange={(e) => setDraftFilters({ ...draftFilters, occasion: e.target.value })}>
         <option value="">Any</option>
         {options.occasions.map((v) => <option key={v} value={v}>{label(v)}</option>)}
       </Select>
-      <Select label="Relationship" value={filters.relationship} onChange={(e) => setFilters({ ...filters, relationship: e.target.value })}>
+      <Select label="Relationship" value={draftFilters.relationship} onChange={(e) => setDraftFilters({ ...draftFilters, relationship: e.target.value })}>
         <option value="">Any</option>
         {options.relationships.map((v) => <option key={v} value={v}>{label(v)}</option>)}
       </Select>
       <div className="grid grid-cols-2 gap-3">
         <label className="flex flex-col gap-1.5 text-sm font-medium text-ink-muted">
           Min price ($)
-          <input type="number" min="0" className="rounded-[var(--radius-control)] border border-border px-3 py-2" value={filters.min_price}
-            onChange={(e) => setFilters({ ...filters, min_price: e.target.value })} />
+          <input type="number" min="0" className="rounded-[var(--radius-control)] border border-border px-3 py-2" value={draftFilters.min_price}
+            onChange={(e) => setDraftFilters({ ...draftFilters, min_price: e.target.value })} />
         </label>
         <label className="flex flex-col gap-1.5 text-sm font-medium text-ink-muted">
           Max price ($)
-          <input type="number" min="0" className="rounded-[var(--radius-control)] border border-border px-3 py-2" value={filters.max_price}
-            onChange={(e) => setFilters({ ...filters, max_price: e.target.value })} />
+          <input type="number" min="0" className="rounded-[var(--radius-control)] border border-border px-3 py-2" value={draftFilters.max_price}
+            onChange={(e) => setDraftFilters({ ...draftFilters, max_price: e.target.value })} />
         </label>
       </div>
-      <Button variant="ghost" onClick={() => setFilters(EMPTY_FILTERS)}>Reset filters</Button>
+      <Button size="lg" className="w-full" onClick={applyFilters}>Apply filters</Button>
+      <Button variant="ghost" size="sm" onClick={resetFilters}>Reset filters</Button>
     </div>
   );
 

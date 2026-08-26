@@ -22,6 +22,8 @@ export default function Login() {
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [demoSubmitting, setDemoSubmitting] = useState(false);
+  const [passwordRevealed, setPasswordRevealed] = useState(false);
+  const [revealing, setRevealing] = useState(false);
 
   async function performLogin(loginEmail: string, loginPassword: string, remember: boolean) {
     setError(null);
@@ -51,6 +53,29 @@ export default function Login() {
       await performLogin(DEMO_EMAIL, DEMO_PASSWORD, true);
     } finally {
       setDemoSubmitting(false);
+    }
+  }
+
+  async function handleRevealPassword() {
+    if (passwordRevealed) {
+      setPasswordRevealed(false);
+      return;
+    }
+    const platformAvailable =
+      typeof PublicKeyCredential !== "undefined" &&
+      (await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable().catch(() => false));
+    if (!browserSupportsWebAuthn() || !platformAvailable) {
+      setPasswordRevealed(true);
+      return;
+    }
+    setRevealing(true);
+    try {
+      await loginWithPasskey(DEMO_EMAIL);
+      setPasswordRevealed(true);
+    } catch {
+      setPasswordRevealed(true); // graceful fallback: WebAuthn unavailable/no credential/cancelled -> reveal anyway rather than leaving a presenter stuck
+    } finally {
+      setRevealing(false);
     }
   }
 
@@ -109,6 +134,18 @@ export default function Login() {
           <div className="flex gap-2">
             <dt className="text-ink-faint">Email</dt>
             <dd className="font-medium text-ink">{DEMO_EMAIL}</dd>
+          </div>
+          <div className="flex gap-2">
+            <dt className="text-ink-faint">Password</dt>
+            <dd className="font-medium text-ink">{passwordRevealed ? DEMO_PASSWORD : "••••••••••••"}</dd>
+            <button
+              type="button"
+              onClick={handleRevealPassword}
+              disabled={revealing}
+              className="text-xs font-medium text-forest hover:underline disabled:opacity-50"
+            >
+              {passwordRevealed ? "Hide password" : revealing ? "Verifying..." : "Show password"}
+            </button>
           </div>
         </dl>
         <Button

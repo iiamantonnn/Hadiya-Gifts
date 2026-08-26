@@ -223,6 +223,7 @@ class Order(Base):
     is_anonymous: Mapped[bool] = mapped_column(Boolean, default=False)
     price_cents: Mapped[int] = mapped_column(Integer)
     status: Mapped[str] = mapped_column(String(30), default="placed")
+    wishlist_item_id: Mapped[str | None] = mapped_column(String, ForeignKey("wishlist_items.id"), nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
     message: Mapped["GiftMessage"] = relationship(back_populates="order", uselist=False, cascade="all, delete-orphan")
@@ -231,6 +232,7 @@ class Order(Base):
     flower: Mapped["Flower"] = relationship()
     recipient: Mapped["Person"] = relationship(foreign_keys=[recipient_person_id])
     buyer: Mapped["User"] = relationship(foreign_keys=[buyer_id])
+    wishlist_gift: Mapped["WishlistItem | None"] = relationship()
 
 
 class GiftMessage(Base):

@@ -38,6 +38,7 @@ class CreateOrderIn(BaseModel):
     address_id: str
     is_anonymous: bool = False
     card: CardIn = CardIn()
+    wishlist_item_id: str | None = None
 
 
 def _bookable_windows(for_date: date) -> list[dict]:
@@ -93,6 +94,13 @@ def create_order(payload: CreateOrderIn, user: models.User = Depends(get_current
     if payload.card.card_type not in CARD_TYPES:
         raise HTTPException(status_code=400, detail="Invalid card type")
 
+    wishlist_item_id = None
+    if payload.wishlist_item_id:
+        item = db.get(models.WishlistItem, payload.wishlist_item_id)
+        if not item or item.owner_id != user.id:
+            raise HTTPException(status_code=404, detail="Wishlist item not found")
+        wishlist_item_id = item.id
+
     order = models.Order(
         buyer_id=user.id,
         recipient_person_id=recipient.id,
@@ -107,6 +115,7 @@ def create_order(payload: CreateOrderIn, user: models.User = Depends(get_current
         is_anonymous=payload.is_anonymous,
         price_cents=flower.price_cents,  # always looked up server-side, never trusted from the client
         status="placed",
+        wishlist_item_id=wishlist_item_id,
     )
     db.add(order)
     db.flush()
@@ -180,6 +189,11 @@ def gift_history(user: models.User = Depends(get_current_user), db: Session = De
             "recipient_name": order.recipient.name if order.recipient else None,
             "message": order.message.text if order.message else None,
             "has_voice_message": order.voice_message is not None,
+            "wishlist_gift": {
+                "id": order.wishlist_gift.id,
+                "product_name": order.wishlist_gift.product_name,
+                "image_url": order.wishlist_gift.image_url,
+            } if order.wishlist_gift else None,
             "created_at": order.created_at,
         }
 
@@ -192,12 +206,17 @@ def gift_history(user: models.User = Depends(get_current_user), db: Session = De
 @router.get("/{order_id}")
 def get_order(order_id: str, user: models.User = Depends(get_current_user), db: Session = Depends(get_db)):
     order = db.get(models.Order, order_id)
-    if not order or order.buyer_id != user.id:
+    is_buyer = order is not None and order.buyer_id == user.id
+    is_recipient = order is not None and order.recipient is not None and order.recipient.linked_user_id == user.id
+    if not order or not (is_buyer or is_recipient):
         raise HTTPException(status_code=404, detail="Order not found")
+
     return {
         "id": order.id,
+        "direction": "sent" if is_buyer else "received",
         "flower": FlowerOut.model_validate(order.flower),
-        "recipient_name": order.recipient.name,
+        "sender_name": None if (order.is_anonymous and not is_buyer) else (None if is_buyer else order.buyer.display_name()),
+        "recipient_name": order.recipient.name if order.recipient else None,
         "occasion": order.occasion,
         "delivery_date": order.delivery_date,
         "delivery_window_start": order.delivery_window_start,
@@ -208,6 +227,13 @@ def get_order(order_id: str, user: models.User = Depends(get_current_user), db: 
         "card": {
             "card_type": order.message.card_type, "text": order.message.text, "ai_generated": order.message.ai_generated,
         } if order.message else None,
-        "has_voice_message": order.voice_message is not None,
-        "gift_token": order.gift_token.token if order.gift_token else None,
+        "voice_message_url": order.voice_message.audio_path if order.voice_message else None,
+        "wishlist_gift": {
+            "id": order.wishlist_gift.id,
+            "product_name": order.wishlist_gift.product_name,
+            "image_url": order.wishlist_gift.image_url,
+            "marketplace": order.wishlist_gift.marketplace,
+            "notes": order.wishlist_gift.notes,
+        } if order.wishlist_gift else None,
+        "gift_token": order.gift_token.token if (order.gift_token and is_buyer) else None,
     }
