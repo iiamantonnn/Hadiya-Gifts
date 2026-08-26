@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import AuthLayout from "../components/layout/AuthLayout";
 import { Input } from "../components/ui/Input";
+import { PasswordInput } from "../components/ui/PasswordInput";
 import Button from "../components/ui/Button";
 import { api, ApiError } from "../lib/api";
 
@@ -57,8 +58,8 @@ export default function Register() {
         <Input label="Phone (optional)" type="tel" value={fields.phone} onChange={(e) => set("phone", e.target.value)} />
         <Input label="Date of birth (optional)" type="date" value={fields.date_of_birth} onChange={(e) => set("date_of_birth", e.target.value)} />
         <Input label="Username (optional)" value={fields.username} onChange={(e) => set("username", e.target.value)} />
-        <Input label="Password" type="password" required minLength={8} value={fields.password} onChange={(e) => set("password", e.target.value)} hint="At least 8 characters" />
-        <Input label="Confirm password" type="password" required value={fields.confirm_password} onChange={(e) => set("confirm_password", e.target.value)} />
+        <PasswordInput label="Password" required minLength={8} value={fields.password} onChange={(e) => set("password", e.target.value)} hint="At least 8 characters" />
+        <PasswordInput label="Confirm password" required value={fields.confirm_password} onChange={(e) => set("confirm_password", e.target.value)} />
 
         {error && <p className="rounded-[var(--radius-control)] bg-error-soft px-4 py-3 text-sm text-error">{error}</p>}
 

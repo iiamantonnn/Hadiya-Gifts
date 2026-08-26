@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import AuthLayout from "../components/layout/AuthLayout";
-import { Input } from "../components/ui/Input";
+import { PasswordInput } from "../components/ui/PasswordInput";
 import Button from "../components/ui/Button";
 import { api, ApiError } from "../lib/api";
 
@@ -44,8 +44,8 @@ export default function ResetPassword() {
   return (
     <AuthLayout title="Choose a new password">
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <Input label="New password" type="password" required minLength={8} value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
-        <Input label="Confirm password" type="password" required value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+        <PasswordInput label="New password" required minLength={8} value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
+        <PasswordInput label="Confirm password" required value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
         {error && <p className="rounded-[var(--radius-control)] bg-error-soft px-4 py-3 text-sm text-error">{error}</p>}
         <Button type="submit" disabled={submitting} className="w-full">
           {submitting ? "Updating..." : "Update password"}

@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import AuthLayout from "../components/layout/AuthLayout";
 import Card from "../components/ui/Card";
 import { Input } from "../components/ui/Input";
+import { PasswordInput } from "../components/ui/PasswordInput";
 import Button from "../components/ui/Button";
 import { useAuth } from "../lib/auth-context";
 import { ApiError } from "../lib/api";
@@ -68,7 +69,7 @@ export default function Login() {
     <AuthLayout title="Welcome back">
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <Input label="Email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
-        <Input label="Password" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
+        <PasswordInput label="Password" required value={password} onChange={(e) => setPassword(e.target.value)} />
 
         <div className="flex items-center justify-between text-sm">
           <label className="flex items-center gap-2 text-ink-muted">
@@ -85,9 +86,12 @@ export default function Login() {
         </Button>
 
         {browserSupportsWebAuthn() && (
-          <Button type="button" variant="ghost" onClick={handlePasskey} className="w-full">
-            Use Face ID, Touch ID, or Windows Hello
-          </Button>
+          <div className="flex flex-col items-center gap-1.5">
+            <Button type="button" variant="ghost" onClick={handlePasskey} className="w-full">
+              Login with Windows Hello
+            </Button>
+            <p className="text-xs text-ink-faint">Use Windows Hello, PIN, fingerprint, or another supported passkey.</p>
+          </div>
         )}
       </form>
       <p className="mt-6 text-center text-sm text-ink-muted">
@@ -99,12 +103,12 @@ export default function Login() {
         <p className="mt-1 text-sm text-ink-muted">For presenters - sign in instantly with a preloaded demo account.</p>
         <dl className="mt-3 flex flex-col gap-1 text-sm">
           <div className="flex gap-2">
-            <dt className="text-ink-faint">Email</dt>
-            <dd className="font-medium text-ink">{DEMO_EMAIL}</dd>
+            <dt className="text-ink-faint">Name</dt>
+            <dd className="font-medium text-ink">Alex Israelyan</dd>
           </div>
           <div className="flex gap-2">
-            <dt className="text-ink-faint">Password</dt>
-            <dd className="font-medium text-ink">{DEMO_PASSWORD}</dd>
+            <dt className="text-ink-faint">Email</dt>
+            <dd className="font-medium text-ink">{DEMO_EMAIL}</dd>
           </div>
         </dl>
         <Button

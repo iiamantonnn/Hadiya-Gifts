@@ -1,6 +1,7 @@
 import { type ReactNode } from "react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../lib/auth-context";
+import Logo from "../ui/Logo";
 
 const NAV_ITEMS = [
   { to: "/dashboard", label: "Home", icon: "⌂" },
@@ -17,8 +18,8 @@ export default function AppShell({ children }: { children: ReactNode }) {
     <div className="min-h-screen bg-ivory pb-20 sm:pb-0">
       <header className="sticky top-0 z-30 border-b border-border bg-ivory/95 backdrop-blur-sm">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-          <NavLink to="/dashboard" className="font-display text-xl font-semibold text-forest">
-            Hadiya
+          <NavLink to="/dashboard">
+            <Logo />
           </NavLink>
           <nav className="hidden items-center gap-1 sm:flex">
             {NAV_ITEMS.map((item) => (

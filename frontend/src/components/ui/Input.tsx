@@ -1,6 +1,6 @@
 import type { InputHTMLAttributes, TextareaHTMLAttributes, SelectHTMLAttributes, ReactNode } from "react";
 
-const fieldBase =
+export const fieldBase =
   "w-full rounded-[var(--radius-control)] border border-border bg-surface px-4 py-3 text-ink placeholder:text-ink-faint focus:border-forest focus:outline-none transition-colors";
 
 interface FieldWrapProps {
@@ -10,7 +10,7 @@ interface FieldWrapProps {
   children: ReactNode;
 }
 
-function FieldWrap({ label, error, hint, children }: FieldWrapProps) {
+export function FieldWrap({ label, error, hint, children }: FieldWrapProps) {
   return (
     <label className="flex flex-col gap-1.5">
       {label && <span className="text-sm font-medium text-ink-muted">{label}</span>}

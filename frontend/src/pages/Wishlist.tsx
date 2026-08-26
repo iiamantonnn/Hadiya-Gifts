@@ -82,7 +82,11 @@ export default function Wishlist() {
                 {item.size && <span>- {item.size}</span>}
               </div>
               <div className="mt-3 flex items-center justify-between">
-                {item.url && <a href={item.url} target="_blank" rel="noreferrer" className="text-sm text-forest">View item</a>}
+                {item.url && (
+                  <a href={item.url} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-forest hover:underline">
+                    View product ↗
+                  </a>
+                )}
                 <button onClick={() => remove(item.id)} className="text-sm text-ink-faint hover:text-error">Remove</button>
               </div>
             </Card>
