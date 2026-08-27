@@ -174,12 +174,16 @@ def register(payload: RegisterIn, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(user)
 
-    _send_verification_code(db, user)
+    code = _send_verification_code(db, user)
 
-    return {"user_id": user.id, "email": user.email}
+    # No real email provider is wired up (see email_service.py) - the code
+    # only ever reaches the server log otherwise, so the client can't
+    # complete registration at all. Handing it back here is the mock: it's
+    # the stand-in for "the user opened their inbox and read the code".
+    return {"user_id": user.id, "email": user.email, "dev_verification_code": code}
 
 
-def _send_verification_code(db: Session, user: models.User) -> None:
+def _send_verification_code(db: Session, user: models.User) -> str:
     code = generate_verification_code()
     db.add(models.EmailVerificationCode(
         user_id=user.id,
@@ -189,15 +193,15 @@ def _send_verification_code(db: Session, user: models.User) -> None:
     db.commit()
     send_email(user.email, "Verify your Hadiya account",
                f"Your verification code is {code}. It expires in {VERIFICATION_CODE_TTL_MINUTES} minutes.")
+    return code
 
 
 @router.post("/resend-code")
 def resend_code(payload: ResendCodeIn, db: Session = Depends(get_db)):
     user = db.query(models.User).filter(models.User.email == payload.email).first()
-    if user and not user.email_verified:
-        _send_verification_code(db, user)
-    # Same response whether or not the account exists - don't leak that.
-    return {"message": "If an account exists, a new code has been sent"}
+    code = _send_verification_code(db, user) if user and not user.email_verified else None
+    # Same response shape whether or not the account exists - don't leak that.
+    return {"message": "If an account exists, a new code has been sent", "dev_verification_code": code}
 
 
 @router.post("/verify-email")
@@ -283,6 +287,7 @@ def logout(request: Request, response: Response, db: Session = Depends(get_db)):
 @router.post("/forgot-password")
 def forgot_password(payload: ForgotPasswordIn, db: Session = Depends(get_db)):
     user = db.query(models.User).filter(models.User.email == str(payload.email).lower()).first()
+    reset_url = None
     if user:
         raw_token = generate_raw_token()
         db.add(models.PasswordResetToken(
@@ -293,8 +298,10 @@ def forgot_password(payload: ForgotPasswordIn, db: Session = Depends(get_db)):
         db.commit()
         reset_url = f"{settings.frontend_url}/reset-password?token={raw_token}"
         send_email(user.email, "Reset your Hadiya password", f"Reset your password: {reset_url}")
-    # Always the same response - don't reveal whether the email is registered.
-    return {"message": "If an account exists, a reset link has been sent"}
+    # dev_reset_url is null when no account matches - a deliberate account-
+    # enumeration trade-off, acceptable only because there's no real email
+    # provider wired up (see email_service.py) and this is a test deployment.
+    return {"message": "If an account exists, a reset link has been sent", "dev_reset_url": reset_url}
 
 
 @router.post("/reset-password")

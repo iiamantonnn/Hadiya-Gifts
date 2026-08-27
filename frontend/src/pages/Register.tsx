@@ -36,13 +36,16 @@ export default function Register() {
 
     setSubmitting(true);
     try {
-      await api.post("/auth/register", {
+      const result = await api.post<{ dev_verification_code?: string }>("/auth/register", {
         ...fields,
         phone: fields.phone || undefined,
         date_of_birth: fields.date_of_birth || undefined,
         username: fields.username || undefined,
       });
-      navigate("/verify-email", { state: { email: fields.email } });
+      // No real email provider is configured - the backend hands the code
+      // back directly instead of only mailing it, so registration works
+      // without needing a real inbox.
+      navigate("/verify-email", { state: { email: fields.email, code: result.dev_verification_code } });
     } catch (err) {
       setError(err instanceof ApiError ? err.message : t("common.somethingWentWrong"));
       setSubmitting(false);

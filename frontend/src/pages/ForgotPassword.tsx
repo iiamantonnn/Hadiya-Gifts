@@ -10,13 +10,17 @@ export default function ForgotPassword() {
   const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
+  const [devResetUrl, setDevResetUrl] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setSubmitting(true);
     try {
-      await api.post("/auth/forgot-password", { email });
+      // No real email provider is configured - the backend hands the reset
+      // link back directly instead of only mailing it.
+      const result = await api.post<{ dev_reset_url?: string | null }>("/auth/forgot-password", { email });
+      setDevResetUrl(result.dev_reset_url || null);
     } finally {
       setSent(true);
       setSubmitting(false);
@@ -26,9 +30,16 @@ export default function ForgotPassword() {
   return (
     <AuthLayout title={t("auth.forgotPasswordTitle")} subtitle={t("auth.forgotPasswordSubtitle")}>
       {sent ? (
-        <p className="rounded-[var(--radius-control)] bg-forest-soft px-4 py-3 text-sm text-forest">
-          {t("auth.resetLinkSentMessage")}
-        </p>
+        <div className="flex flex-col gap-3">
+          <p className="rounded-[var(--radius-control)] bg-forest-soft px-4 py-3 text-sm text-forest">
+            {t("auth.resetLinkSentMessage")}
+          </p>
+          {devResetUrl && (
+            <Link to={devResetUrl.replace(/^https?:\/\/[^/]+/, "")} className="break-all text-sm font-medium text-forest underline">
+              {devResetUrl}
+            </Link>
+          )}
+        </div>
       ) : (
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <Input label={t("common.email")} type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
