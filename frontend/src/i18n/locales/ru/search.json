@@ -1,0 +1,61 @@
+{
+  "filters": "Фильтры",
+  "flowerType": "Тип цветов",
+  "color": "Цвет",
+  "size": "Размер",
+  "occasion": "Повод",
+  "relationship": "Отношения",
+  "any": "Любой",
+  "minPrice": "Мин. цена ($)",
+  "maxPrice": "Макс. цена ($)",
+  "searchPlaceholder": "Поиск цветов, поводов, оттенков...",
+  "searching": "Идёт поиск...",
+  "noResults": "Ничего не найдено. Попробуйте изменить фильтры.",
+  "values": {
+    "flowerTypes": {
+      "roses": "Розы",
+      "tulips": "Тюльпаны",
+      "peonies": "Пионы",
+      "lilies": "Лилии",
+      "mixed": "Смешанный",
+      "seasonal": "Сезонные",
+      "other": "Другое"
+    },
+    "colors": {
+      "red": "Красный",
+      "white": "Белый",
+      "pink": "Розовый",
+      "yellow": "Жёлтый",
+      "purple": "Фиолетовый",
+      "blue": "Синий",
+      "mixed": "Смешанный",
+      "other": "Другой"
+    },
+    "sizes": {
+      "small": "Маленький",
+      "medium": "Средний",
+      "large": "Большой"
+    },
+    "occasions": {
+      "birthday": "День рождения",
+      "anniversary": "Годовщина",
+      "friendship": "Дружба",
+      "thankYou": "Благодарность",
+      "congratulations": "Поздравление",
+      "romantic": "Романтика",
+      "sympathy": "Соболезнование",
+      "justBecause": "Просто так",
+      "other": "Другое"
+    },
+    "relationships": {
+      "mother": "Мама",
+      "father": "Папа",
+      "partner": "Партнёр",
+      "friend": "Друг",
+      "colleague": "Коллега",
+      "grandparent": "Бабушка/дедушка",
+      "sibling": "Брат/сестра",
+      "other": "Другое"
+    }
+  }
+}

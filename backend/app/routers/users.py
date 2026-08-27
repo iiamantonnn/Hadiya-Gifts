@@ -19,6 +19,7 @@ class UpdateProfileIn(BaseModel):
     phone: str | None = None
     username: str | None = None
     profile_photo_url: str | None = None
+    locale: str | None = None
 
 
 class UpdatePrivacyIn(BaseModel):

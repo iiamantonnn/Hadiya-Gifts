@@ -1,0 +1,22 @@
+{
+  "goodMorning": "Доброе утро, {{name}}.",
+  "goodAfternoon": "Добрый день, {{name}}.",
+  "goodEvening": "Добрый вечер, {{name}}.",
+  "subtitle": "Чем займёмся сегодня?",
+  "searchPlaceholder": "Ищите цветы, поводы, цвета...",
+  "quickActions": {
+    "sendFlowers": "Отправить цветы",
+    "addPerson": "Добавить человека",
+    "createWishlist": "Создать список желаний",
+    "viewGifts": "Мои подарки"
+  },
+  "upcoming": "Ближайшие события",
+  "noUpcomingEvents": "В ближайшие два месяца важных дат нет.",
+  "personEvent": "{{label}} — {{name}}",
+  "today": "сегодня",
+  "daysUntil": "{{days}} дн.",
+  "favoritePeople": "Избранные",
+  "seeAll": "Смотреть всех",
+  "noFavorites": "Отметьте кого-нибудь избранным, чтобы увидеть его здесь.",
+  "browseFullCatalog": "Смотреть весь каталог"
+}

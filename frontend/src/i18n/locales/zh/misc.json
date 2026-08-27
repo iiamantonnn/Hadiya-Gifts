@@ -1,0 +1,14 @@
+{
+  "landing": {
+    "headline": "不仅仅是一份礼物。",
+    "description": "Hadiya 帮你记住那些重要的人、值得庆祝的时刻，以及真正有意义的礼物——鲜花、心愿单、手写的话语，还有在你不知从何开始时，来自 AI 的一点帮助。",
+    "createAccountCta": "创建你的账户",
+    "alreadyHaveAccount": "我已经有账户了",
+    "footerTagline": "Hadiya —— 优先保护隐私的送礼方式。"
+  },
+  "notFound": {
+    "title": "页面未找到",
+    "message": "你要找的页面不存在。",
+    "goHome": "返回首页"
+  }
+}

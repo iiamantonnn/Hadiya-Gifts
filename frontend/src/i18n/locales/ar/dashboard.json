@@ -1,0 +1,22 @@
+{
+  "goodMorning": "صباح الخير، {{name}}.",
+  "goodAfternoon": "نهارك سعيد، {{name}}.",
+  "goodEvening": "مساء الخير، {{name}}.",
+  "subtitle": "ما الذي تودّ فعله اليوم؟",
+  "searchPlaceholder": "ابحث عن الزهور والمناسبات والألوان...",
+  "quickActions": {
+    "sendFlowers": "إرسال زهور",
+    "addPerson": "إضافة شخص",
+    "createWishlist": "إنشاء قائمة أمنيات",
+    "viewGifts": "عرض الهدايا"
+  },
+  "upcoming": "المناسبات القادمة",
+  "noUpcomingEvents": "لا توجد مناسبات مهمة خلال الشهرين القادمين.",
+  "personEvent": "{{label}} – {{name}}",
+  "today": "اليوم",
+  "daysUntil": "{{days}} يوم",
+  "favoritePeople": "الأشخاص المفضّلون",
+  "seeAll": "عرض الكل",
+  "noFavorites": "اجعل شخصًا مفضّلاً لرؤيته هنا.",
+  "browseFullCatalog": "تصفح الكتالوج الكامل"
+}

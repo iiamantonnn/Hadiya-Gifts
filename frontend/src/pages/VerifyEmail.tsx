@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import AuthLayout from "../components/layout/AuthLayout";
 import { Input } from "../components/ui/Input";
 import Button from "../components/ui/Button";
@@ -8,6 +9,7 @@ import { useAuth } from "../lib/auth-context";
 import type { User } from "../lib/types";
 
 export default function VerifyEmail() {
+  const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
   const { setUser } = useAuth();
@@ -28,7 +30,7 @@ export default function VerifyEmail() {
       setUser(user);
       navigate("/dashboard");
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : "Something went wrong. Please try again.");
+      setError(err instanceof ApiError ? err.message : t("common.somethingWentWrong"));
     } finally {
       setSubmitting(false);
     }
@@ -39,18 +41,18 @@ export default function VerifyEmail() {
     setResendMessage(null);
     try {
       await api.post("/auth/resend-code", { email });
-      setResendMessage("A new code has been sent.");
+      setResendMessage(t("auth.codeSentMessage"));
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : "Could not resend the code.");
+      setError(err instanceof ApiError ? err.message : t("auth.resendError"));
     }
   }
 
   return (
-    <AuthLayout title="Verify your email" subtitle="Enter the 6-digit code we sent you.">
+    <AuthLayout title={t("auth.verifyEmailTitle")} subtitle={t("auth.verifyEmailSubtitle")}>
       <form onSubmit={handleVerify} className="flex flex-col gap-4">
-        <Input label="Email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
+        <Input label={t("common.email")} type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
         <Input
-          label="Verification code" required inputMode="numeric" maxLength={6}
+          label={t("auth.verificationCode")} required inputMode="numeric" maxLength={6}
           value={code} onChange={(e) => setCode(e.target.value.replace(/\D/g, ""))}
         />
 
@@ -58,14 +60,14 @@ export default function VerifyEmail() {
         {resendMessage && <p className="text-sm text-success">{resendMessage}</p>}
 
         <Button type="submit" disabled={submitting} className="mt-2 w-full">
-          {submitting ? "Verifying..." : "Verify"}
+          {submitting ? t("auth.verifying") : t("auth.verify")}
         </Button>
         <button type="button" onClick={handleResend} className="text-sm font-medium text-forest">
-          Resend code
+          {t("auth.resendCode")}
         </button>
       </form>
       <p className="mt-6 text-center text-sm text-ink-muted">
-        Wrong email? <Link to="/register" className="font-medium text-forest">Start over</Link>
+        {t("auth.wrongEmail")} <Link to="/register" className="font-medium text-forest">{t("auth.startOver")}</Link>
       </p>
     </AuthLayout>
   );

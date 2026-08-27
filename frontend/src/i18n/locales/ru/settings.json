@@ -1,0 +1,45 @@
+{
+  "title": "Настройки",
+  "saved": "Сохранено.",
+  "profile": {
+    "title": "Профиль",
+    "preferredName": "Как к вам обращаться",
+    "preferredNameHint": "Так Hadiya будет называть вас на панели управления.",
+    "phone": "Телефон"
+  },
+  "privacy": {
+    "title": "Конфиденциальность",
+    "dobVisibility": "Кто может видеть мою дату рождения",
+    "onlyMe": "Только я",
+    "paired": "Моя связанная пара",
+    "selected": "Выбранные люди",
+    "everyone": "Все"
+  },
+  "addresses": {
+    "title": "Адреса доставки",
+    "hint": "Никому не показывается - используется только для доставки.",
+    "entry": "{{label}} - {{line1}}, {{city}}",
+    "default": "(по умолчанию)",
+    "remove": "Удалить",
+    "label": "Название",
+    "labelPlaceholder": "Дом",
+    "city": "Город",
+    "addressLine": "Адрес",
+    "region": "Регион",
+    "postalCode": "Индекс",
+    "country": "Страна",
+    "setDefault": "Сделать адресом по умолчанию",
+    "add": "Добавить адрес",
+    "saveError": "Не удалось сохранить этот адрес."
+  },
+  "passkeys": {
+    "title": "Passkey и биометрический вход",
+    "hint": "Используйте Face ID, Touch ID, Windows Hello или другую защищённую аутентификацию вашего устройства.",
+    "defaultName": "Passkey",
+    "entry": "{{name}} - добавлен {{date}}",
+    "remove": "Удалить",
+    "added": "Passkey добавлен.",
+    "addFailed": "Не удалось добавить passkey на этом устройстве.",
+    "add": "Добавить passkey"
+  }
+}

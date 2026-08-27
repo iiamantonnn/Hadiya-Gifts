@@ -1,0 +1,11 @@
+{
+  "notFound": "This gift page could not be found.",
+  "fromSender": "{{name}} sent you something",
+  "fromUnknown": "Someone sent you something",
+  "voiceMessage": "A voice message for you",
+  "flowerCare": "Flower care",
+  "water": "Water",
+  "stems": "Stems",
+  "placement": "Placement",
+  "avoid": "Avoid"
+}

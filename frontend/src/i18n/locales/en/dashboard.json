@@ -1,0 +1,22 @@
+{
+  "goodMorning": "Good morning, {{name}}.",
+  "goodAfternoon": "Good afternoon, {{name}}.",
+  "goodEvening": "Good evening, {{name}}.",
+  "subtitle": "What would you like to do today?",
+  "searchPlaceholder": "Search flowers, occasions, colors...",
+  "quickActions": {
+    "sendFlowers": "Send Flowers",
+    "addPerson": "Add Person",
+    "createWishlist": "Create Wishlist",
+    "viewGifts": "View Gifts"
+  },
+  "upcoming": "Upcoming",
+  "noUpcomingEvents": "No important dates coming up in the next two months.",
+  "personEvent": "{{name}}'s {{label}}",
+  "today": "today",
+  "daysUntil": "{{days}}d",
+  "favoritePeople": "Favorite people",
+  "seeAll": "See all",
+  "noFavorites": "Mark someone as a favorite to see them here.",
+  "browseFullCatalog": "Browse the full catalog"
+}

@@ -99,6 +99,7 @@ class UserOut(BaseModel):
     username: str | None
     profile_photo_url: str | None
     email_verified: bool
+    locale: str
 
     model_config = {"from_attributes": True}
 

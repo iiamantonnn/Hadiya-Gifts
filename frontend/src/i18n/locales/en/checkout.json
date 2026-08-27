@@ -1,0 +1,93 @@
+{
+  "steps": {
+    "recipient": "Recipient",
+    "bouquet": "Bouquet",
+    "occasion": "Occasion",
+    "delivery": "Delivery",
+    "address": "Address",
+    "privacy": "Privacy",
+    "cardVoice": "Card & Voice",
+    "review": "Review"
+  },
+  "back": "Back",
+  "next": "Next",
+  "any": "Any",
+  "notSet": "-",
+  "step0": {
+    "heading": "Who is this for?",
+    "addPeopleFirst": "Add someone to My People first.",
+    "choosePerson": "Choose a person"
+  },
+  "step1": {
+    "heading": "Choose a bouquet",
+    "sizeLabel": "Size",
+    "colorLabel": "Color"
+  },
+  "step2": {
+    "heading": "What's the occasion?",
+    "choosePlaceholder": "Choose an occasion"
+  },
+  "step3": {
+    "heading": "When should it arrive?",
+    "deliveryDateLabel": "Delivery date",
+    "hoursNotice": "Deliveries are only scheduled between 6am and 11pm, for our couriers' safety."
+  },
+  "step4": {
+    "heading": "Delivery address",
+    "addAddressFirst": "Add a delivery address in Settings first.",
+    "choosePlaceholder": "Choose an address"
+  },
+  "step5": {
+    "heading": "Show my identity?",
+    "consent": "Yes, let {{name}} know it's from me",
+    "them": "them",
+    "anonymousNote": "Your identity will be hidden from the recipient - it's never hidden from you."
+  },
+  "step6": {
+    "heading": "A card, a message, a voice",
+    "cardLabel": "Card",
+    "messageLabel": "Message",
+    "messagePlaceholder": "Write something, or let Hadiya suggest one.",
+    "aiSuggest": "Let AI suggest a message",
+    "aiSuggestReplace": "(will replace your text)"
+  },
+  "cardType": {
+    "none": "No card",
+    "physical": "Physical card",
+    "digital": "Digital message",
+    "both": "Both"
+  },
+  "review": {
+    "heading": "Review",
+    "to": "To:",
+    "bouquet": "Bouquet:",
+    "occasion": "Occasion:",
+    "delivery": "Delivery:",
+    "address": "Address:",
+    "from": "From:",
+    "anonymous": "Anonymous",
+    "visibleToRecipient": "Visible to recipient",
+    "sending": "Sending...",
+    "confirmGift": "Confirm gift"
+  },
+  "occasions": {
+    "birthday": "Birthday",
+    "anniversary": "Anniversary",
+    "friendship": "Friendship",
+    "thank_you": "Thank you",
+    "congratulations": "Congratulations",
+    "romantic": "Romantic",
+    "sympathy": "Sympathy",
+    "just_because": "Just because",
+    "other": "Other"
+  },
+  "errors": {
+    "completeAllSteps": "Please complete every step before confirming."
+  },
+  "confirmed": {
+    "heading": "Your gift is on its way to becoming real",
+    "body": "We'll take care of the rest. Here's the private gift page - share it however you'd like, or let the recipient discover it.",
+    "viewHistory": "View gift history",
+    "backToDashboard": "Back to dashboard"
+  }
+}

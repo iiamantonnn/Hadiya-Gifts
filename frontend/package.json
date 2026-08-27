@@ -12,8 +12,10 @@
   "dependencies": {
     "@simplewebauthn/browser": "^13.3.0",
     "@tailwindcss/vite": "^4.3.3",
+    "i18next": "^26.4.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
+    "react-i18next": "^17.0.12",
     "react-router-dom": "^7.18.2",
     "tailwindcss": "^4.3.3"
   },

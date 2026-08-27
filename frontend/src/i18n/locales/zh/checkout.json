@@ -1,0 +1,93 @@
+{
+  "steps": {
+    "recipient": "收礼人",
+    "bouquet": "花束",
+    "occasion": "场合",
+    "delivery": "配送",
+    "address": "地址",
+    "privacy": "身份设置",
+    "cardVoice": "贺卡与语音",
+    "review": "确认订单"
+  },
+  "back": "上一步",
+  "next": "下一步",
+  "any": "不限",
+  "notSet": "-",
+  "step0": {
+    "heading": "这份礼物是送给谁的？",
+    "addPeopleFirst": "请先在“我的联系人”中添加一个人。",
+    "choosePerson": "选择收礼人"
+  },
+  "step1": {
+    "heading": "选择一束花",
+    "sizeLabel": "尺寸",
+    "colorLabel": "颜色"
+  },
+  "step2": {
+    "heading": "是什么场合？",
+    "choosePlaceholder": "选择场合"
+  },
+  "step3": {
+    "heading": "希望什么时候送达？",
+    "deliveryDateLabel": "配送日期",
+    "hoursNotice": "为保障配送员的安全，配送时间仅限早上6点至晚上11点之间。"
+  },
+  "step4": {
+    "heading": "配送地址",
+    "addAddressFirst": "请先在“设置”中添加配送地址。",
+    "choosePlaceholder": "选择地址"
+  },
+  "step5": {
+    "heading": "要显示您的身份吗？",
+    "consent": "是的，让 {{name}} 知道这是我送的",
+    "them": "对方",
+    "anonymousNote": "收礼人将看不到您的身份，但您本人始终可以查看。"
+  },
+  "step6": {
+    "heading": "贺卡、留言与语音",
+    "cardLabel": "贺卡",
+    "messageLabel": "留言",
+    "messagePlaceholder": "写点什么，或者让 Hadiya 帮你想一句。",
+    "aiSuggest": "让 AI 帮我写一句留言",
+    "aiSuggestReplace": "（将替换你已写的内容）"
+  },
+  "cardType": {
+    "none": "不需要贺卡",
+    "physical": "实体贺卡",
+    "digital": "电子留言",
+    "both": "两者都要"
+  },
+  "review": {
+    "heading": "确认订单",
+    "to": "收件人：",
+    "bouquet": "花束：",
+    "occasion": "场合：",
+    "delivery": "配送时间：",
+    "address": "地址：",
+    "from": "寄件人：",
+    "anonymous": "匿名",
+    "visibleToRecipient": "对收礼人可见",
+    "sending": "正在发送…",
+    "confirmGift": "确认送出礼物"
+  },
+  "occasions": {
+    "birthday": "生日",
+    "anniversary": "纪念日",
+    "friendship": "友谊",
+    "thank_you": "感谢",
+    "congratulations": "祝贺",
+    "romantic": "浪漫",
+    "sympathy": "慰问",
+    "just_because": "无特别理由",
+    "other": "其他"
+  },
+  "errors": {
+    "completeAllSteps": "请先完成所有步骤，再确认订单。"
+  },
+  "confirmed": {
+    "heading": "您的礼物即将成真",
+    "body": "接下来交给我们吧。这是专属的礼物页面——您可以随心分享，也可以留给收礼人自己发现。",
+    "viewHistory": "查看赠礼记录",
+    "backToDashboard": "返回主页"
+  }
+}

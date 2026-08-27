@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { api } from "../lib/api";
 
 interface PublicGift {
@@ -16,19 +17,20 @@ interface PublicGift {
 
 export default function GiftPage() {
   const { token } = useParams();
+  const { t } = useTranslation();
   const [gift, setGift] = useState<PublicGift | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!token) return;
-    api.get<PublicGift>(`/gift/${token}`).then(setGift).catch(() => setError("This gift page could not be found."));
-  }, [token]);
+    api.get<PublicGift>(`/gift/${token}`).then(setGift).catch(() => setError(t("giftpage.notFound")));
+  }, [token, t]);
 
   if (error) {
     return <div className="flex min-h-screen items-center justify-center bg-ivory text-ink-muted">{error}</div>;
   }
   if (!gift) {
-    return <div className="flex min-h-screen items-center justify-center bg-ivory text-ink-faint">Loading...</div>;
+    return <div className="flex min-h-screen items-center justify-center bg-ivory text-ink-faint">{t("common.loading")}</div>;
   }
 
   return (
@@ -36,7 +38,7 @@ export default function GiftPage() {
       <div className="mx-auto max-w-lg">
         <p className="text-center font-display text-lg text-forest">Hadiya</p>
         <h1 className="mt-4 text-center font-display text-3xl font-semibold text-ink">
-          {gift.sender_name ? `${gift.sender_name} sent you something` : "Someone sent you something"}
+          {gift.sender_name ? t("giftpage.fromSender", { name: gift.sender_name }) : t("giftpage.fromUnknown")}
         </h1>
 
         {gift.flower.images[0] && (
@@ -55,19 +57,19 @@ export default function GiftPage() {
 
         {gift.voice_message_url && (
           <div className="mt-6">
-            <p className="mb-2 text-center text-sm text-ink-muted">A voice message for you</p>
+            <p className="mb-2 text-center text-sm text-ink-muted">{t("giftpage.voiceMessage")}</p>
             <audio src={gift.voice_message_url} controls className="w-full" />
           </div>
         )}
 
         <div className="mt-8 rounded-[var(--radius-card)] border border-border bg-surface p-6">
-          <h2 className="font-display text-lg font-semibold text-ink">Flower care</h2>
+          <h2 className="font-display text-lg font-semibold text-ink">{t("giftpage.flowerCare")}</h2>
           <p className="mt-2 text-sm font-medium text-forest">{gift.flower.estimated_lifespan_text}</p>
           <dl className="mt-3 flex flex-col gap-2 text-sm text-ink-muted">
-            <div><dt className="inline font-medium text-ink">Water: </dt><dd className="inline">{gift.flower.water_instructions}</dd></div>
-            <div><dt className="inline font-medium text-ink">Stems: </dt><dd className="inline">{gift.flower.stem_instructions}</dd></div>
-            <div><dt className="inline font-medium text-ink">Placement: </dt><dd className="inline">{gift.flower.placement_instructions}</dd></div>
-            <div><dt className="inline font-medium text-ink">Avoid: </dt><dd className="inline">{gift.flower.avoid_notes}</dd></div>
+            <div><dt className="inline font-medium text-ink">{t("giftpage.water")}: </dt><dd className="inline">{gift.flower.water_instructions}</dd></div>
+            <div><dt className="inline font-medium text-ink">{t("giftpage.stems")}: </dt><dd className="inline">{gift.flower.stem_instructions}</dd></div>
+            <div><dt className="inline font-medium text-ink">{t("giftpage.placement")}: </dt><dd className="inline">{gift.flower.placement_instructions}</dd></div>
+            <div><dt className="inline font-medium text-ink">{t("giftpage.avoid")}: </dt><dd className="inline">{gift.flower.avoid_notes}</dd></div>
           </dl>
         </div>
       </div>

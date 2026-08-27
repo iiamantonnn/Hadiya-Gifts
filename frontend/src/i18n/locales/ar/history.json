@@ -1,0 +1,35 @@
+{
+  "title": "سجل الهدايا",
+  "sent": "المُرسَلة",
+  "received": "المُستلَمة",
+  "emptyState": "لا يوجد شيء هنا بعد.",
+  "giftDetails": "تفاصيل الهدية",
+  "to": "إلى {{name}}",
+  "from": "من {{name}}",
+  "toColon": "إلى: {{name}}",
+  "fromColon": "من: {{name}}",
+  "secretAdmirer": "من معجب سري",
+  "additionalGift": "هدية إضافية: {{name}}",
+  "occasionLabel": "المناسبة: {{occasion}}",
+  "cardMessage": "رسالة البطاقة",
+  "voiceMessage": "رسالة صوتية",
+  "statuses": {
+    "placed": "تم الطلب",
+    "confirmed": "تم التأكيد",
+    "preparing": "قيد التحضير",
+    "out_for_delivery": "في الطريق للتوصيل",
+    "delivered": "تم التوصيل",
+    "cancelled": "ملغى"
+  },
+  "occasions": {
+    "birthday": "عيد ميلاد",
+    "anniversary": "ذكرى سنوية",
+    "friendship": "صداقة",
+    "thank_you": "شكر وتقدير",
+    "congratulations": "تهنئة",
+    "romantic": "رومانسية",
+    "sympathy": "مواساة",
+    "just_because": "بلا مناسبة",
+    "other": "أخرى"
+  }
+}

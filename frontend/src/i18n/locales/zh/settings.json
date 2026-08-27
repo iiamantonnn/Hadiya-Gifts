@@ -1,0 +1,45 @@
+{
+  "title": "设置",
+  "saved": "已保存。",
+  "profile": {
+    "title": "个人资料",
+    "preferredName": "昵称",
+    "preferredNameHint": "Hadiya 会在主页上这样称呼你。",
+    "phone": "电话号码"
+  },
+  "privacy": {
+    "title": "隐私",
+    "dobVisibility": "谁可以看到我的生日",
+    "onlyMe": "仅自己",
+    "paired": "我的配对对象",
+    "selected": "指定的人",
+    "everyone": "所有人"
+  },
+  "addresses": {
+    "title": "收货地址",
+    "hint": "不会公开显示，仅用于配送。",
+    "entry": "{{label}} - {{line1}}，{{city}}",
+    "default": "（默认）",
+    "remove": "删除",
+    "label": "标签",
+    "labelPlaceholder": "家",
+    "city": "城市",
+    "addressLine": "详细地址",
+    "region": "省/州",
+    "postalCode": "邮政编码",
+    "country": "国家/地区",
+    "setDefault": "设为默认地址",
+    "add": "添加地址",
+    "saveError": "无法保存该地址。"
+  },
+  "passkeys": {
+    "title": "通行密钥 / 生物识别登录",
+    "hint": "使用 Face ID、Touch ID、Windows Hello 或设备自带的安全验证方式。",
+    "defaultName": "通行密钥",
+    "entry": "{{name}} - 添加于 {{date}}",
+    "remove": "删除",
+    "added": "通行密钥已添加。",
+    "addFailed": "无法在此设备上添加通行密钥。",
+    "add": "添加通行密钥"
+  }
+}

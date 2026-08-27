@@ -1,0 +1,20 @@
+{
+  "title": "Список желаний",
+  "addItem": "Добавить товар",
+  "emptyState": "Здесь пока пусто - добавьте то, что хотели бы получить.",
+  "viewProduct": "Посмотреть товар ↗",
+  "remove": "Удалить",
+  "addToWishlist": "Добавить в список желаний",
+  "productUrlLabel": "Ссылка на товар (необязательно)",
+  "fetchDetails": "Подтянуть данные",
+  "productNameLabel": "Название товара",
+  "marketplaceLabel": "Магазин",
+  "marketplacePlaceholder": "Amazon, Etsy, сайт бренда...",
+  "colorLabel": "Цвет",
+  "sizeLabel": "Размер",
+  "modelLabel": "Модель",
+  "materialLabel": "Материал",
+  "forLabel": "Для кого (необязательно)",
+  "myself": "Для себя",
+  "addError": "Не удалось добавить этот товар."
+}

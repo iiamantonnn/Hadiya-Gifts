@@ -1,0 +1,20 @@
+{
+  "title": "心愿单",
+  "addItem": "添加心愿",
+  "emptyState": "这里还是空的，添加一件你想要的东西吧。",
+  "viewProduct": "查看商品 ↗",
+  "remove": "移除",
+  "addToWishlist": "添加到心愿单",
+  "productUrlLabel": "商品链接（选填）",
+  "fetchDetails": "获取详情",
+  "productNameLabel": "商品名称",
+  "marketplaceLabel": "购买平台",
+  "marketplacePlaceholder": "Amazon、Etsy、品牌官网...",
+  "colorLabel": "颜色",
+  "sizeLabel": "尺寸",
+  "modelLabel": "型号",
+  "materialLabel": "材质",
+  "forLabel": "送给谁（选填）",
+  "myself": "我自己",
+  "addError": "添加此项失败，请重试。"
+}

@@ -1,0 +1,61 @@
+{
+  "filters": "الفلاتر",
+  "flowerType": "نوع الزهور",
+  "color": "اللون",
+  "size": "الحجم",
+  "occasion": "المناسبة",
+  "relationship": "العلاقة",
+  "any": "أي",
+  "minPrice": "أقل سعر ($)",
+  "maxPrice": "أعلى سعر ($)",
+  "searchPlaceholder": "ابحث عن الزهور، المناسبات، الألوان...",
+  "searching": "جارٍ البحث...",
+  "noResults": "لا توجد نتائج مطابقة. جرّب تعديل الفلاتر.",
+  "values": {
+    "flowerTypes": {
+      "roses": "ورد",
+      "tulips": "توليب",
+      "peonies": "فاوانيا",
+      "lilies": "زنبق",
+      "mixed": "متنوع",
+      "seasonal": "موسمي",
+      "other": "أخرى"
+    },
+    "colors": {
+      "red": "أحمر",
+      "white": "أبيض",
+      "pink": "وردي",
+      "yellow": "أصفر",
+      "purple": "بنفسجي",
+      "blue": "أزرق",
+      "mixed": "متعدد الألوان",
+      "other": "أخرى"
+    },
+    "sizes": {
+      "small": "صغير",
+      "medium": "متوسط",
+      "large": "كبير"
+    },
+    "occasions": {
+      "birthday": "عيد ميلاد",
+      "anniversary": "ذكرى سنوية",
+      "friendship": "صداقة",
+      "thankYou": "شكر",
+      "congratulations": "تهنئة",
+      "romantic": "رومانسي",
+      "sympathy": "مواساة",
+      "justBecause": "بدون مناسبة",
+      "other": "أخرى"
+    },
+    "relationships": {
+      "mother": "أم",
+      "father": "أب",
+      "partner": "شريك",
+      "friend": "صديق",
+      "colleague": "زميل",
+      "grandparent": "جد/جدة",
+      "sibling": "أخ/أخت",
+      "other": "أخرى"
+    }
+  }
+}

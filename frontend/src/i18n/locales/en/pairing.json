@@ -1,0 +1,24 @@
+{
+  "title": "Pairing",
+  "subtitle": "Connect with someone to share select dates. Pairing never grants unlimited access to private information.",
+  "sendRequest": {
+    "title": "Send a pairing request",
+    "placeholder": "their@email.com",
+    "send": "Send",
+    "sent": "Pairing request sent.",
+    "error": "Could not send this request."
+  },
+  "incomingRequest": "Incoming request",
+  "requestSent": "Request sent",
+  "accept": "Accept",
+  "decline": "Decline",
+  "endPairing": "End pairing",
+  "endConfirm": "End this pairing? Shared dates will stop syncing. This doesn't delete your own gift history.",
+  "emptyState": "No pairings yet.",
+  "status": {
+    "pending": "Pending",
+    "accepted": "Accepted",
+    "declined": "Declined",
+    "ended": "Ended"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "title": "Wishlist",
+  "addItem": "Add item",
+  "emptyState": "Nothing here yet - add something you'd love to receive.",
+  "viewProduct": "View product ↗",
+  "remove": "Remove",
+  "addToWishlist": "Add to wishlist",
+  "productUrlLabel": "Product URL (optional)",
+  "fetchDetails": "Fetch details",
+  "productNameLabel": "Product name",
+  "marketplaceLabel": "Marketplace",
+  "marketplacePlaceholder": "Amazon, Etsy, brand site...",
+  "colorLabel": "Color",
+  "sizeLabel": "Size",
+  "modelLabel": "Model",
+  "materialLabel": "Material",
+  "forLabel": "For (optional)",
+  "myself": "Myself",
+  "addError": "Could not add this item."
+}

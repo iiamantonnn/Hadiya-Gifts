@@ -1,0 +1,35 @@
+{
+  "title": "赠礼记录",
+  "sent": "已送出",
+  "received": "已收到",
+  "emptyState": "这里还没有记录。",
+  "giftDetails": "礼物详情",
+  "to": "送给 {{name}}",
+  "from": "来自 {{name}}",
+  "toColon": "收件人：{{name}}",
+  "fromColon": "寄件人：{{name}}",
+  "secretAdmirer": "来自一位神秘的爱慕者",
+  "additionalGift": "附赠礼物：{{name}}",
+  "occasionLabel": "场合：{{occasion}}",
+  "cardMessage": "贺卡留言",
+  "voiceMessage": "语音留言",
+  "statuses": {
+    "placed": "已下单",
+    "confirmed": "已确认",
+    "preparing": "准备中",
+    "out_for_delivery": "配送中",
+    "delivered": "已送达",
+    "cancelled": "已取消"
+  },
+  "occasions": {
+    "birthday": "生日",
+    "anniversary": "纪念日",
+    "friendship": "友谊",
+    "thank_you": "感谢",
+    "congratulations": "祝贺",
+    "romantic": "浪漫",
+    "sympathy": "慰问",
+    "just_because": "无特别理由",
+    "other": "其他"
+  }
+}

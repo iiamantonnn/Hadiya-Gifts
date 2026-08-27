@@ -1,0 +1,22 @@
+{
+  "goodMorning": "早上好，{{name}}。",
+  "goodAfternoon": "下午好，{{name}}。",
+  "goodEvening": "晚上好，{{name}}。",
+  "subtitle": "今天想做点什么？",
+  "searchPlaceholder": "搜索鲜花、场合、颜色...",
+  "quickActions": {
+    "sendFlowers": "送花",
+    "addPerson": "添加联系人",
+    "createWishlist": "创建心愿单",
+    "viewGifts": "查看礼物"
+  },
+  "upcoming": "近期日程",
+  "noUpcomingEvents": "接下来两个月内没有重要日期。",
+  "personEvent": "{{name}}的{{label}}",
+  "today": "今天",
+  "daysUntil": "{{days}}天",
+  "favoritePeople": "常用联系人",
+  "seeAll": "查看全部",
+  "noFavorites": "将某人标记为常用联系人后会显示在这里。",
+  "browseFullCatalog": "浏览完整目录"
+}

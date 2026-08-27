@@ -1,0 +1,93 @@
+{
+  "steps": {
+    "recipient": "المستلِم",
+    "bouquet": "الباقة",
+    "occasion": "المناسبة",
+    "delivery": "التوصيل",
+    "address": "العنوان",
+    "privacy": "الخصوصية",
+    "cardVoice": "البطاقة والصوت",
+    "review": "المراجعة"
+  },
+  "back": "رجوع",
+  "next": "التالي",
+  "any": "أي نوع",
+  "notSet": "-",
+  "step0": {
+    "heading": "لمن هذه الهدية؟",
+    "addPeopleFirst": "أضف شخصًا إلى «أشخاصي» أولًا.",
+    "choosePerson": "اختر شخصًا"
+  },
+  "step1": {
+    "heading": "اختر باقة",
+    "sizeLabel": "الحجم",
+    "colorLabel": "اللون"
+  },
+  "step2": {
+    "heading": "ما هي المناسبة؟",
+    "choosePlaceholder": "اختر مناسبة"
+  },
+  "step3": {
+    "heading": "متى يجب أن تصل؟",
+    "deliveryDateLabel": "تاريخ التوصيل",
+    "hoursNotice": "التوصيل متاح فقط بين الساعة 6 صباحًا و11 مساءً، حفاظًا على سلامة مندوبي التوصيل لدينا."
+  },
+  "step4": {
+    "heading": "عنوان التوصيل",
+    "addAddressFirst": "أضف عنوان توصيل في الإعدادات أولًا.",
+    "choosePlaceholder": "اختر عنوانًا"
+  },
+  "step5": {
+    "heading": "هل تريد إظهار هويتك؟",
+    "consent": "نعم، دع {{name}} يعرف أن الهدية مني",
+    "them": "المستلِم",
+    "anonymousNote": "ستُخفى هويتك عن المستلِم - لكنها لن تكون مخفية عنك أبدًا."
+  },
+  "step6": {
+    "heading": "بطاقة، رسالة، وتسجيل صوتي",
+    "cardLabel": "البطاقة",
+    "messageLabel": "الرسالة",
+    "messagePlaceholder": "اكتب شيئًا، أو دع Hadiya تقترح رسالة.",
+    "aiSuggest": "دع الذكاء الاصطناعي يقترح رسالة",
+    "aiSuggestReplace": "(سيستبدل نصك)"
+  },
+  "cardType": {
+    "none": "بدون بطاقة",
+    "physical": "بطاقة ورقية",
+    "digital": "رسالة رقمية",
+    "both": "كلاهما"
+  },
+  "review": {
+    "heading": "مراجعة الطلب",
+    "to": "إلى:",
+    "bouquet": "الباقة:",
+    "occasion": "المناسبة:",
+    "delivery": "التوصيل:",
+    "address": "العنوان:",
+    "from": "من:",
+    "anonymous": "مجهول الهوية",
+    "visibleToRecipient": "ظاهر للمستلِم",
+    "sending": "جارٍ الإرسال...",
+    "confirmGift": "تأكيد الهدية"
+  },
+  "occasions": {
+    "birthday": "عيد ميلاد",
+    "anniversary": "ذكرى سنوية",
+    "friendship": "صداقة",
+    "thank_you": "شكر وتقدير",
+    "congratulations": "تهنئة",
+    "romantic": "رومانسية",
+    "sympathy": "مواساة",
+    "just_because": "بلا مناسبة",
+    "other": "أخرى"
+  },
+  "errors": {
+    "completeAllSteps": "يرجى إكمال جميع الخطوات قبل التأكيد."
+  },
+  "confirmed": {
+    "heading": "هديتك في طريقها لتصبح حقيقة",
+    "body": "سنتولى الباقي. إليك صفحة الهدية الخاصة - شاركها كما تحب، أو دع المستلِم يكتشفها بنفسه.",
+    "viewHistory": "عرض سجل الهدايا",
+    "backToDashboard": "العودة إلى لوحة التحكم"
+  }
+}

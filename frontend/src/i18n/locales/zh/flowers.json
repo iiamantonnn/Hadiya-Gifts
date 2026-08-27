@@ -1,0 +1,11 @@
+{
+  "itemUnavailable": "该商品已下架。",
+  "addToGift": "加入礼物",
+  "care": {
+    "title": "养护指南",
+    "water": "浇水：",
+    "stems": "茎部：",
+    "placement": "摆放：",
+    "avoid": "避免："
+  }
+}

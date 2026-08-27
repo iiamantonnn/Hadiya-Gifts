@@ -1,0 +1,45 @@
+{
+  "title": "Կարգավորումներ",
+  "saved": "Պահպանվեց։",
+  "profile": {
+    "title": "Անձնական տվյալներ",
+    "preferredName": "Ինչպես դիմել ձեզ",
+    "preferredNameHint": "Այսպես Hadiya-ն ձեզ կդիմի վահանակում։",
+    "phone": "Հեռախոսահամար"
+  },
+  "privacy": {
+    "title": "Գաղտնիություն",
+    "dobVisibility": "Ով կարող է տեսնել իմ ծննդյան օրը",
+    "onlyMe": "Միայն ես",
+    "paired": "Իմ զույգը",
+    "selected": "Ընտրված մարդիկ",
+    "everyone": "Բոլորը"
+  },
+  "addresses": {
+    "title": "Առաքման հասցեներ",
+    "hint": "Երբեք հրապարակայնորեն չի ցուցադրվում - օգտագործվում է միայն առաքման համար։",
+    "entry": "{{label}} - {{line1}}, {{city}}",
+    "default": "(հիմնական)",
+    "remove": "Հեռացնել",
+    "label": "Անվանում",
+    "labelPlaceholder": "Տուն",
+    "city": "Քաղաք",
+    "addressLine": "Հասցե",
+    "region": "Մարզ",
+    "postalCode": "Փոստային ինդեքս",
+    "country": "Երկիր",
+    "setDefault": "Դարձնել հիմնական",
+    "add": "Ավելացնել հասցե",
+    "saveError": "Չհաջողվեց պահպանել այս հասցեն։"
+  },
+  "passkeys": {
+    "title": "Passkey / կենսաչափական մուտք",
+    "hint": "Օգտագործեք Face ID, Touch ID, Windows Hello կամ ձեր սարքի այլ անվտանգ նույնականացում։",
+    "defaultName": "Passkey",
+    "entry": "{{name}} - ավելացվել է {{date}}",
+    "remove": "Հեռացնել",
+    "added": "Passkey-ն ավելացվեց։",
+    "addFailed": "Չհաջողվեց ավելացնել passkey այս սարքում։",
+    "add": "Ավելացնել passkey"
+  }
+}

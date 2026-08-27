@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import FlowerCard from "../components/flowers/FlowerCard";
 import { Select } from "../components/ui/Input";
 import Button from "../components/ui/Button";
 import Sheet from "../components/ui/Sheet";
 import { api } from "../lib/api";
 import type { Flower } from "../lib/types";
+import { translateOptionValue } from "../lib/flowerOptionLabels";
 
 interface FilterOptions {
   flower_types: string[];
@@ -17,11 +19,8 @@ interface FilterOptions {
 
 const EMPTY_FILTERS = { flower_type: "", color: "", occasion: "", relationship: "", size: "", min_price: "", max_price: "" };
 
-function label(value: string) {
-  return value.replace(/_/g, " ").replace(/^\w/, (c) => c.toUpperCase());
-}
-
 export default function Search() {
+  const { t } = useTranslation();
   const [params] = useSearchParams();
   const [q, setQ] = useState(params.get("q") || "");
   const [filters, setFilters] = useState(EMPTY_FILTERS);
@@ -60,47 +59,47 @@ export default function Search() {
 
   const filterFields = options && (
     <div className="flex flex-col gap-4">
-      <Select label="Flower type" value={draftFilters.flower_type} onChange={(e) => setDraftFilters({ ...draftFilters, flower_type: e.target.value })}>
-        <option value="">Any</option>
-        {options.flower_types.map((v) => <option key={v} value={v}>{label(v)}</option>)}
+      <Select label={t("search.flowerType")} value={draftFilters.flower_type} onChange={(e) => setDraftFilters({ ...draftFilters, flower_type: e.target.value })}>
+        <option value="">{t("search.any")}</option>
+        {options.flower_types.map((v) => <option key={v} value={v}>{translateOptionValue(t, "flowerTypes", v)}</option>)}
       </Select>
-      <Select label="Color" value={draftFilters.color} onChange={(e) => setDraftFilters({ ...draftFilters, color: e.target.value })}>
-        <option value="">Any</option>
-        {options.colors.map((v) => <option key={v} value={v}>{label(v)}</option>)}
+      <Select label={t("search.color")} value={draftFilters.color} onChange={(e) => setDraftFilters({ ...draftFilters, color: e.target.value })}>
+        <option value="">{t("search.any")}</option>
+        {options.colors.map((v) => <option key={v} value={v}>{translateOptionValue(t, "colors", v)}</option>)}
       </Select>
-      <Select label="Size" value={draftFilters.size} onChange={(e) => setDraftFilters({ ...draftFilters, size: e.target.value })}>
-        <option value="">Any</option>
-        {options.sizes.map((v) => <option key={v} value={v}>{label(v)}</option>)}
+      <Select label={t("search.size")} value={draftFilters.size} onChange={(e) => setDraftFilters({ ...draftFilters, size: e.target.value })}>
+        <option value="">{t("search.any")}</option>
+        {options.sizes.map((v) => <option key={v} value={v}>{translateOptionValue(t, "sizes", v)}</option>)}
       </Select>
-      <Select label="Occasion" value={draftFilters.occasion} onChange={(e) => setDraftFilters({ ...draftFilters, occasion: e.target.value })}>
-        <option value="">Any</option>
-        {options.occasions.map((v) => <option key={v} value={v}>{label(v)}</option>)}
+      <Select label={t("search.occasion")} value={draftFilters.occasion} onChange={(e) => setDraftFilters({ ...draftFilters, occasion: e.target.value })}>
+        <option value="">{t("search.any")}</option>
+        {options.occasions.map((v) => <option key={v} value={v}>{translateOptionValue(t, "occasions", v)}</option>)}
       </Select>
-      <Select label="Relationship" value={draftFilters.relationship} onChange={(e) => setDraftFilters({ ...draftFilters, relationship: e.target.value })}>
-        <option value="">Any</option>
-        {options.relationships.map((v) => <option key={v} value={v}>{label(v)}</option>)}
+      <Select label={t("search.relationship")} value={draftFilters.relationship} onChange={(e) => setDraftFilters({ ...draftFilters, relationship: e.target.value })}>
+        <option value="">{t("search.any")}</option>
+        {options.relationships.map((v) => <option key={v} value={v}>{translateOptionValue(t, "relationships", v)}</option>)}
       </Select>
       <div className="grid grid-cols-2 gap-3">
         <label className="flex flex-col gap-1.5 text-sm font-medium text-ink-muted">
-          Min price ($)
+          {t("search.minPrice")}
           <input type="number" min="0" className="rounded-[var(--radius-control)] border border-border px-3 py-2" value={draftFilters.min_price}
             onChange={(e) => setDraftFilters({ ...draftFilters, min_price: e.target.value })} />
         </label>
         <label className="flex flex-col gap-1.5 text-sm font-medium text-ink-muted">
-          Max price ($)
+          {t("search.maxPrice")}
           <input type="number" min="0" className="rounded-[var(--radius-control)] border border-border px-3 py-2" value={draftFilters.max_price}
             onChange={(e) => setDraftFilters({ ...draftFilters, max_price: e.target.value })} />
         </label>
       </div>
-      <Button size="lg" className="w-full" onClick={applyFilters}>Apply filters</Button>
-      <Button variant="ghost" size="sm" onClick={resetFilters}>Reset filters</Button>
+      <Button size="lg" className="w-full" onClick={applyFilters}>{t("common.applyFilters")}</Button>
+      <Button variant="ghost" size="sm" onClick={resetFilters}>{t("common.resetFilters")}</Button>
     </div>
   );
 
   return (
     <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:gap-8">
       <aside className="hidden w-64 shrink-0 sm:block">
-        <h2 className="mb-4 font-display text-lg font-semibold text-ink">Filters</h2>
+        <h2 className="mb-4 font-display text-lg font-semibold text-ink">{t("search.filters")}</h2>
         {filterFields}
       </aside>
 
@@ -109,18 +108,18 @@ export default function Search() {
           <input
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Search flowers, occasions, colors..."
+            placeholder={t("search.searchPlaceholder")}
             className="flex-1 rounded-[var(--radius-control)] border border-border bg-surface px-4 py-3 text-sm focus:border-forest focus:outline-none"
           />
           <Button variant="ghost" className="sm:hidden" onClick={() => setSheetOpen(true)}>
-            Filters{activeFilterCount > 0 && ` (${activeFilterCount})`}
+            {t("search.filters")}{activeFilterCount > 0 && ` (${activeFilterCount})`}
           </Button>
         </div>
 
         {loading ? (
-          <p className="mt-8 text-center text-sm text-ink-faint">Searching...</p>
+          <p className="mt-8 text-center text-sm text-ink-faint">{t("search.searching")}</p>
         ) : results.length === 0 ? (
-          <p className="mt-8 text-center text-sm text-ink-faint">No matches. Try adjusting your filters.</p>
+          <p className="mt-8 text-center text-sm text-ink-faint">{t("search.noResults")}</p>
         ) : (
           <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3">
             {results.map((f) => <FlowerCard key={f.id} flower={f} />)}
@@ -128,7 +127,7 @@ export default function Search() {
         )}
       </div>
 
-      <Sheet open={sheetOpen} onClose={() => setSheetOpen(false)} title="Filters">
+      <Sheet open={sheetOpen} onClose={() => setSheetOpen(false)} title={t("search.filters")}>
         {filterFields}
       </Sheet>
     </div>

@@ -1,0 +1,61 @@
+{
+  "filters": "Զտիչներ",
+  "flowerType": "Ծաղկի տեսակ",
+  "color": "Գույն",
+  "size": "Չափս",
+  "occasion": "Առիթ",
+  "relationship": "Հարաբերություն",
+  "any": "Ցանկացած",
+  "minPrice": "Նվազ. գին ($)",
+  "maxPrice": "Առավ. գին ($)",
+  "searchPlaceholder": "Փնտրեք ծաղիկներ, առիթներ, գույներ...",
+  "searching": "Փնտրվում է...",
+  "noResults": "Արդյունքներ չեն գտնվել։ Փորձեք փոխել զտիչները։",
+  "values": {
+    "flowerTypes": {
+      "roses": "Վարդեր",
+      "tulips": "Թուլիպներ",
+      "peonies": "Փիոններ",
+      "lilies": "Շուշաններ",
+      "mixed": "Խառը",
+      "seasonal": "Սեզոնային",
+      "other": "Այլ"
+    },
+    "colors": {
+      "red": "Կարմիր",
+      "white": "Սպիտակ",
+      "pink": "Վարդագույն",
+      "yellow": "Դեղին",
+      "purple": "Մանուշակագույն",
+      "blue": "Կապույտ",
+      "mixed": "Խառը",
+      "other": "Այլ"
+    },
+    "sizes": {
+      "small": "Փոքր",
+      "medium": "Միջին",
+      "large": "Մեծ"
+    },
+    "occasions": {
+      "birthday": "Ծննդյան օր",
+      "anniversary": "Տարեդարձ",
+      "friendship": "Ընկերություն",
+      "thankYou": "Շնորհակալություն",
+      "congratulations": "Շնորհավորանք",
+      "romantic": "Ռոմանտիկ",
+      "sympathy": "Ցավակցություն",
+      "justBecause": "Առանց առիթի",
+      "other": "Այլ"
+    },
+    "relationships": {
+      "mother": "Մայր",
+      "father": "Հայր",
+      "partner": "Զուգընկեր",
+      "friend": "Ընկեր",
+      "colleague": "Գործընկեր",
+      "grandparent": "Տատիկ/պապիկ",
+      "sibling": "Քույր/եղբայր",
+      "other": "Այլ"
+    }
+  }
+}

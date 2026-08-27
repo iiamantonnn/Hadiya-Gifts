@@ -1,4 +1,5 @@
 import { useEffect, useState, type FormEvent } from "react";
+import { useTranslation } from "react-i18next";
 import Card from "../components/ui/Card";
 import Button from "../components/ui/Button";
 import Sheet from "../components/ui/Sheet";
@@ -12,6 +13,7 @@ const EMPTY_FORM = {
 };
 
 export default function Wishlist() {
+  const { t } = useTranslation();
   const [items, setItems] = useState<WishlistItem[]>([]);
   const [people, setPeople] = useState<Person[]>([]);
   const [open, setOpen] = useState(false);
@@ -52,7 +54,7 @@ export default function Wishlist() {
       setOpen(false);
       load();
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : "Could not add this item.");
+      setError(err instanceof ApiError ? err.message : t("wishlist.addError"));
     }
   }
 
@@ -64,12 +66,12 @@ export default function Wishlist() {
   return (
     <div>
       <div className="flex items-center justify-between">
-        <h1 className="font-display text-2xl font-semibold text-ink">Wishlist</h1>
-        <Button size="sm" onClick={() => setOpen(true)}>Add item</Button>
+        <h1 className="font-display text-2xl font-semibold text-ink">{t("wishlist.title")}</h1>
+        <Button size="sm" onClick={() => setOpen(true)}>{t("wishlist.addItem")}</Button>
       </div>
 
       {items.length === 0 ? (
-        <p className="mt-8 text-center text-sm text-ink-faint">Nothing here yet - add something you'd love to receive.</p>
+        <p className="mt-8 text-center text-sm text-ink-faint">{t("wishlist.emptyState")}</p>
       ) : (
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((item) => (
@@ -84,42 +86,42 @@ export default function Wishlist() {
               <div className="mt-3 flex items-center justify-between">
                 {item.url && (
                   <a href={item.url} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-forest hover:underline">
-                    View product ↗
+                    {t("wishlist.viewProduct")}
                   </a>
                 )}
-                <button onClick={() => remove(item.id)} className="text-sm text-ink-faint hover:text-error">Remove</button>
+                <button onClick={() => remove(item.id)} className="text-sm text-ink-faint hover:text-error">{t("wishlist.remove")}</button>
               </div>
             </Card>
           ))}
         </div>
       )}
 
-      <Sheet open={open} onClose={() => setOpen(false)} title="Add to wishlist">
+      <Sheet open={open} onClose={() => setOpen(false)} title={t("wishlist.addToWishlist")}>
         <form onSubmit={handleAdd} className="flex flex-col gap-4">
           <div className="flex gap-2">
             <div className="flex-1">
-              <Input label="Product URL (optional)" value={form.url} onChange={(e) => setForm({ ...form, url: e.target.value })} />
+              <Input label={t("wishlist.productUrlLabel")} value={form.url} onChange={(e) => setForm({ ...form, url: e.target.value })} />
             </div>
             <Button type="button" variant="ghost" size="md" className="mt-6" onClick={handleExtract} disabled={extracting || !form.url}>
-              {extracting ? "..." : "Fetch details"}
+              {extracting ? "..." : t("wishlist.fetchDetails")}
             </Button>
           </div>
-          <Input label="Product name" required value={form.product_name} onChange={(e) => setForm({ ...form, product_name: e.target.value })} />
-          <Input label="Marketplace" value={form.marketplace} onChange={(e) => setForm({ ...form, marketplace: e.target.value })} placeholder="Amazon, Etsy, brand site..." />
+          <Input label={t("wishlist.productNameLabel")} required value={form.product_name} onChange={(e) => setForm({ ...form, product_name: e.target.value })} />
+          <Input label={t("wishlist.marketplaceLabel")} value={form.marketplace} onChange={(e) => setForm({ ...form, marketplace: e.target.value })} placeholder={t("wishlist.marketplacePlaceholder")} />
           <div className="grid grid-cols-2 gap-3">
-            <Input label="Color" value={form.color} onChange={(e) => setForm({ ...form, color: e.target.value })} />
-            <Input label="Size" value={form.size} onChange={(e) => setForm({ ...form, size: e.target.value })} />
+            <Input label={t("wishlist.colorLabel")} value={form.color} onChange={(e) => setForm({ ...form, color: e.target.value })} />
+            <Input label={t("wishlist.sizeLabel")} value={form.size} onChange={(e) => setForm({ ...form, size: e.target.value })} />
           </div>
           <div className="grid grid-cols-2 gap-3">
-            <Input label="Model" value={form.model} onChange={(e) => setForm({ ...form, model: e.target.value })} />
-            <Input label="Material" value={form.material} onChange={(e) => setForm({ ...form, material: e.target.value })} />
+            <Input label={t("wishlist.modelLabel")} value={form.model} onChange={(e) => setForm({ ...form, model: e.target.value })} />
+            <Input label={t("wishlist.materialLabel")} value={form.material} onChange={(e) => setForm({ ...form, material: e.target.value })} />
           </div>
-          <Select label="For (optional)" value={form.person_id} onChange={(e) => setForm({ ...form, person_id: e.target.value })}>
-            <option value="">Myself</option>
+          <Select label={t("wishlist.forLabel")} value={form.person_id} onChange={(e) => setForm({ ...form, person_id: e.target.value })}>
+            <option value="">{t("wishlist.myself")}</option>
             {people.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
           </Select>
           {error && <p className="text-sm text-error">{error}</p>}
-          <Button type="submit" className="w-full">Add to wishlist</Button>
+          <Button type="submit" className="w-full">{t("wishlist.addToWishlist")}</Button>
         </form>
       </Sheet>
     </div>

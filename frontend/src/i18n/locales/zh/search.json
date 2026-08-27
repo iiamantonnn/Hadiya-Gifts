@@ -1,0 +1,61 @@
+{
+  "filters": "筛选",
+  "flowerType": "花卉类型",
+  "color": "颜色",
+  "size": "尺寸",
+  "occasion": "场合",
+  "relationship": "关系",
+  "any": "不限",
+  "minPrice": "最低价格 ($)",
+  "maxPrice": "最高价格 ($)",
+  "searchPlaceholder": "搜索花卉、场合、颜色...",
+  "searching": "搜索中...",
+  "noResults": "没有找到匹配结果，请尝试调整筛选条件。",
+  "values": {
+    "flowerTypes": {
+      "roses": "玫瑰",
+      "tulips": "郁金香",
+      "peonies": "牡丹",
+      "lilies": "百合",
+      "mixed": "混合花束",
+      "seasonal": "时令花卉",
+      "other": "其他"
+    },
+    "colors": {
+      "red": "红色",
+      "white": "白色",
+      "pink": "粉色",
+      "yellow": "黄色",
+      "purple": "紫色",
+      "blue": "蓝色",
+      "mixed": "混色",
+      "other": "其他"
+    },
+    "sizes": {
+      "small": "小号",
+      "medium": "中号",
+      "large": "大号"
+    },
+    "occasions": {
+      "birthday": "生日",
+      "anniversary": "纪念日",
+      "friendship": "友谊",
+      "thankYou": "感谢",
+      "congratulations": "祝贺",
+      "romantic": "浪漫",
+      "sympathy": "慰问",
+      "justBecause": "无特殊理由",
+      "other": "其他"
+    },
+    "relationships": {
+      "mother": "母亲",
+      "father": "父亲",
+      "partner": "伴侣",
+      "friend": "朋友",
+      "colleague": "同事",
+      "grandparent": "祖父母",
+      "sibling": "兄弟姐妹",
+      "other": "其他"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "nav": { "home": "Գլխավոր", "search": "Փնտրել", "people": "Իմ մտերիմները", "wishlist": "Ցանկությունների ցանկ", "history": "Պատմություն", "notifications": "Ծանուցումներ", "settings": "Կարգավորումներ", "signOut": "Դուրս գալ" },
+  "save": "Պահպանել", "cancel": "Չեղարկել", "delete": "Ջնջել", "edit": "Խմբագրել", "loading": "Բեռնվում է...",
+  "viewProduct": "Դիտել ապրանքը", "applyFilters": "Կիրառել ֆիլտրերը", "resetFilters": "Զրոյացնել ֆիլտրերը",
+  "showPassword": "Ցույց տալ գաղտնաբառը", "hidePassword": "Թաքցնել գաղտնաբառը", "rememberMe": "Հիշել ինձ",
+  "forgotPassword": "Մոռացե՞լ եք գաղտնաբառը", "loginWithWindowsHello": "Մուտք գործել Windows Hello-ով",
+  "useDemoAccount": "Օգտագործել փորձնական հաշիվը", "demoAccount": "Փորձնական հաշիվ", "logIn": "Մուտք",
+  "createAccount": "Ստեղծել հաշիվ", "email": "Էլ. փոստ", "password": "Գաղտնաբառ", "name": "Անուն",
+  "confirmPassword": "Հաստատեք գաղտնաբառը", "somethingWentWrong": "Ինչ-որ բան այնպես չգնաց։ Փորձեք կրկին։",
+  "language": "Լեզու"
+}

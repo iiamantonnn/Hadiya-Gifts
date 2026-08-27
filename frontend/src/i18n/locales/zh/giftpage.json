@@ -1,0 +1,11 @@
+{
+  "notFound": "未找到此礼物页面。",
+  "fromSender": "{{name}} 给你送了一份礼物",
+  "fromUnknown": "有人给你送了一份礼物",
+  "voiceMessage": "一条给你的语音留言",
+  "flowerCare": "鲜花养护",
+  "water": "浇水",
+  "stems": "茎部",
+  "placement": "摆放位置",
+  "avoid": "禁忌"
+}

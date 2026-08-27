@@ -1,4 +1,5 @@
 import { useState, type InputHTMLAttributes } from "react";
+import { useTranslation } from "react-i18next";
 import { fieldBase, FieldWrap } from "./Input";
 
 type PasswordInputProps = Omit<InputHTMLAttributes<HTMLInputElement>, "type"> & {
@@ -8,6 +9,7 @@ type PasswordInputProps = Omit<InputHTMLAttributes<HTMLInputElement>, "type"> & 
 };
 
 export function PasswordInput({ label, error, hint, className = "", ...rest }: PasswordInputProps) {
+  const { t } = useTranslation();
   const [visible, setVisible] = useState(false);
 
   return (
@@ -15,14 +17,14 @@ export function PasswordInput({ label, error, hint, className = "", ...rest }: P
       <div className="relative">
         <input
           type={visible ? "text" : "password"}
-          className={fieldBase + " pr-11 " + (error ? "border-error " : "") + className}
+          className={fieldBase + " pe-11 " + (error ? "border-error " : "") + className}
           {...rest}
         />
         <button
           type="button"
           onClick={() => setVisible((v) => !v)}
-          aria-label={visible ? "Hide password" : "Show password"}
-          className="absolute inset-y-0 right-0 flex items-center px-3 text-ink-faint hover:text-ink"
+          aria-label={visible ? t("common.hidePassword") : t("common.showPassword")}
+          className="absolute inset-y-0 end-0 flex items-center px-3 text-ink-faint hover:text-ink"
         >
           {visible ? (
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5">

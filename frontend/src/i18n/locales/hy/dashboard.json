@@ -1,0 +1,22 @@
+{
+  "goodMorning": "Բարի լույս, {{name}}։",
+  "goodAfternoon": "Բարի կեսօր, {{name}}։",
+  "goodEvening": "Բարի երեկո, {{name}}։",
+  "subtitle": "Ի՞նչ եք ցանկանում անել այսօր։",
+  "searchPlaceholder": "Փնտրեք ծաղիկներ, առիթներ, գույներ...",
+  "quickActions": {
+    "sendFlowers": "Ուղարկել ծաղիկներ",
+    "addPerson": "Ավելացնել մարդու",
+    "createWishlist": "Ստեղծել ցանկությունների ցանկ",
+    "viewGifts": "Դիտել նվերները"
+  },
+  "upcoming": "Առաջիկա իրադարձություններ",
+  "noUpcomingEvents": "Առաջիկա երկու ամիսների ընթացքում կարևոր օրեր չկան։",
+  "personEvent": "{{name}} • {{label}}",
+  "today": "այսօր",
+  "daysUntil": "{{days}} օր",
+  "favoritePeople": "Ընտրյալ մարդիկ",
+  "seeAll": "Տեսնել բոլորը",
+  "noFavorites": "Նշեք որևէ մեկին որպես ընտրյալ, որպեսզի տեսնեք նրան այստեղ։",
+  "browseFullCatalog": "Դիտել ամբողջ կատալոգը"
+}

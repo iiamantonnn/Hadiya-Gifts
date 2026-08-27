@@ -27,6 +27,7 @@ class User(Base):
     profile_photo_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
     email_verified: Mapped[bool] = mapped_column(Boolean, default=False)
     dob_visibility: Mapped[str] = mapped_column(String(20), default="only_me")  # only_me|paired|selected|everyone
+    locale: Mapped[str] = mapped_column(String(5), default="en")
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
     passkeys: Mapped[list["Passkey"]] = relationship(back_populates="user", cascade="all, delete-orphan")

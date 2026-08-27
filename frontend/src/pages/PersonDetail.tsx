@@ -1,5 +1,6 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import Card from "../components/ui/Card";
 import Button from "../components/ui/Button";
 import Sheet from "../components/ui/Sheet";
@@ -10,6 +11,7 @@ import type { Person, ImportantDateItem, WishlistItem } from "../lib/types";
 const DATE_TYPES = ["birthday", "anniversary", "met", "graduation", "mothers_day", "friendship", "custom"];
 
 export default function PersonDetail() {
+  const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
   const [person, setPerson] = useState<Person | null>(null);
@@ -46,7 +48,7 @@ export default function PersonDetail() {
       setDateSheetOpen(false);
       load();
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : "Could not add this date.");
+      setError(err instanceof ApiError ? err.message : t("people.addDateError"));
     }
   }
 
@@ -56,49 +58,49 @@ export default function PersonDetail() {
   }
 
   async function removePerson() {
-    if (!id || !confirm(`Remove ${person?.name} from My People? This can't be undone.`)) return;
+    if (!id || !confirm(t("people.confirmRemovePerson", { name: person?.name }))) return;
     await api.delete(`/people/${id}`);
     navigate("/people");
   }
 
-  if (!person) return <p className="text-center text-ink-faint">Loading...</p>;
+  if (!person) return <p className="text-center text-ink-faint">{t("common.loading")}</p>;
 
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-start justify-between">
         <div>
           <h1 className="font-display text-3xl font-semibold text-ink">{person.name}</h1>
-          <p className="capitalize text-ink-muted">{person.relationship_type}</p>
+          <p className="capitalize text-ink-muted">{t(`people.relationshipTypes.${person.relationship_type}`, person.relationship_type)}</p>
         </div>
         <div className="flex gap-2">
           <Button variant="ghost" size="sm" onClick={toggleFavorite}>
-            {person.is_favorite ? "★ Favorited" : "☆ Favorite"}
+            {person.is_favorite ? t("people.favorited") : t("people.favorite")}
           </Button>
-          <Button size="sm" onClick={() => navigate(`/checkout?person_id=${person.id}`)}>Send a Gift</Button>
+          <Button size="sm" onClick={() => navigate(`/checkout?person_id=${person.id}`)}>{t("people.sendGift")}</Button>
         </div>
       </div>
 
       {(person.favorite_flowers.length > 0 || person.favorite_colors.length > 0 || person.notes) && (
         <Card>
-          {person.favorite_flowers.length > 0 && <p className="text-sm text-ink-muted"><span className="font-medium text-ink">Favorite flowers:</span> {person.favorite_flowers.join(", ")}</p>}
-          {person.favorite_colors.length > 0 && <p className="mt-1 text-sm text-ink-muted"><span className="font-medium text-ink">Favorite colors:</span> {person.favorite_colors.join(", ")}</p>}
-          {person.notes && <p className="mt-1 text-sm text-ink-muted"><span className="font-medium text-ink">Notes:</span> {person.notes}</p>}
+          {person.favorite_flowers.length > 0 && <p className="text-sm text-ink-muted"><span className="font-medium text-ink">{t("people.favoriteFlowersLabel")}</span> {person.favorite_flowers.join(", ")}</p>}
+          {person.favorite_colors.length > 0 && <p className="mt-1 text-sm text-ink-muted"><span className="font-medium text-ink">{t("people.favoriteColorsLabel")}</span> {person.favorite_colors.join(", ")}</p>}
+          {person.notes && <p className="mt-1 text-sm text-ink-muted"><span className="font-medium text-ink">{t("people.notesLabel")}</span> {person.notes}</p>}
         </Card>
       )}
 
       <Card>
         <div className="flex items-center justify-between">
-          <h2 className="font-display text-lg font-semibold text-ink">Important dates</h2>
-          <Button variant="ghost" size="sm" onClick={() => setDateSheetOpen(true)}>+ Add date</Button>
+          <h2 className="font-display text-lg font-semibold text-ink">{t("people.importantDatesTitle")}</h2>
+          <Button variant="ghost" size="sm" onClick={() => setDateSheetOpen(true)}>{t("people.addDateTrigger")}</Button>
         </div>
         {dates.length === 0 ? (
-          <p className="mt-3 text-sm text-ink-faint">No dates added yet.</p>
+          <p className="mt-3 text-sm text-ink-faint">{t("people.noDatesYet")}</p>
         ) : (
           <ul className="mt-3 flex flex-col gap-2">
             {dates.map((d) => (
               <li key={d.id} className="flex items-center justify-between text-sm">
-                <span className="text-ink">{d.date_type === "custom" ? d.custom_label : d.date_type.replace("_", " ")} - {d.occurs_on}</span>
-                <button onClick={() => removeDate(d.id)} className="text-ink-faint hover:text-error">Remove</button>
+                <span className="text-ink">{d.date_type === "custom" ? d.custom_label : t(`people.dateTypes.${d.date_type}`, d.date_type.replace("_", " "))} - {d.occurs_on}</span>
+                <button onClick={() => removeDate(d.id)} className="text-ink-faint hover:text-error">{t("people.remove")}</button>
               </li>
             ))}
           </ul>
@@ -106,9 +108,9 @@ export default function PersonDetail() {
       </Card>
 
       <Card>
-        <h2 className="font-display text-lg font-semibold text-ink">Wishlist</h2>
+        <h2 className="font-display text-lg font-semibold text-ink">{t("people.wishlistTitle")}</h2>
         {wishlist.length === 0 ? (
-          <p className="mt-3 text-sm text-ink-faint">Nothing added to their wishlist yet.</p>
+          <p className="mt-3 text-sm text-ink-faint">{t("people.emptyWishlist")}</p>
         ) : (
           <ul className="mt-3 flex flex-col gap-2">
             {wishlist.map((item) => (
@@ -119,20 +121,20 @@ export default function PersonDetail() {
       </Card>
 
       <button onClick={removePerson} className="self-start text-sm text-ink-faint hover:text-error">
-        Remove from My People
+        {t("people.removeFromMyPeople")}
       </button>
 
-      <Sheet open={dateSheetOpen} onClose={() => setDateSheetOpen(false)} title="Add an important date">
+      <Sheet open={dateSheetOpen} onClose={() => setDateSheetOpen(false)} title={t("people.addDateSheetTitle")}>
         <form onSubmit={addDate} className="flex flex-col gap-4">
-          <Select label="Type" value={dateForm.date_type} onChange={(e) => setDateForm({ ...dateForm, date_type: e.target.value })}>
-            {DATE_TYPES.map((t) => <option key={t} value={t}>{t.replace("_", " ")}</option>)}
+          <Select label={t("people.dateTypeLabel")} value={dateForm.date_type} onChange={(e) => setDateForm({ ...dateForm, date_type: e.target.value })}>
+            {DATE_TYPES.map((dt) => <option key={dt} value={dt}>{t(`people.dateTypes.${dt}`, dt.replace("_", " "))}</option>)}
           </Select>
           {dateForm.date_type === "custom" && (
-            <Input label="Label" required value={dateForm.custom_label} onChange={(e) => setDateForm({ ...dateForm, custom_label: e.target.value })} />
+            <Input label={t("people.customLabelLabel")} required value={dateForm.custom_label} onChange={(e) => setDateForm({ ...dateForm, custom_label: e.target.value })} />
           )}
-          <Input label="Date" type="date" required value={dateForm.occurs_on} onChange={(e) => setDateForm({ ...dateForm, occurs_on: e.target.value })} />
+          <Input label={t("people.dateLabel")} type="date" required value={dateForm.occurs_on} onChange={(e) => setDateForm({ ...dateForm, occurs_on: e.target.value })} />
           {error && <p className="text-sm text-error">{error}</p>}
-          <Button type="submit" className="w-full">Add date</Button>
+          <Button type="submit" className="w-full">{t("people.addDateSubmit")}</Button>
         </form>
       </Sheet>
     </div>

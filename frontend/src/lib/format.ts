@@ -2,10 +2,10 @@ export function formatPrice(cents: number): string {
   return `$${(cents / 100).toFixed(2)}`;
 }
 
-export function greetingForHour(hour: number): "Good morning" | "Good afternoon" | "Good evening" {
-  if (hour < 12) return "Good morning";
-  if (hour < 17) return "Good afternoon";
-  return "Good evening";
+export function greetingForHour(hour: number): "morning" | "afternoon" | "evening" {
+  if (hour < 12) return "morning";
+  if (hour < 17) return "afternoon";
+  return "evening";
 }
 
 // Returns the current hour (0-23) in Armenia time (Asia/Yerevan), regardless

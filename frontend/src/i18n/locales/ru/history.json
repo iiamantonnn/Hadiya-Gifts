@@ -1,0 +1,35 @@
+{
+  "title": "История подарков",
+  "sent": "Отправленные",
+  "received": "Полученные",
+  "emptyState": "Здесь пока пусто.",
+  "giftDetails": "О подарке",
+  "to": "Кому: {{name}}",
+  "from": "От: {{name}}",
+  "toColon": "Кому: {{name}}",
+  "fromColon": "От: {{name}}",
+  "secretAdmirer": "От тайного поклонника",
+  "additionalGift": "Дополнительный подарок: {{name}}",
+  "occasionLabel": "Повод: {{occasion}}",
+  "cardMessage": "Текст открытки",
+  "voiceMessage": "Голосовое сообщение",
+  "statuses": {
+    "placed": "Оформлен",
+    "confirmed": "Подтверждён",
+    "preparing": "Готовится",
+    "out_for_delivery": "В пути",
+    "delivered": "Доставлен",
+    "cancelled": "Отменён"
+  },
+  "occasions": {
+    "birthday": "День рождения",
+    "anniversary": "Годовщина",
+    "friendship": "Дружба",
+    "thank_you": "Благодарность",
+    "congratulations": "Поздравление",
+    "romantic": "Романтика",
+    "sympathy": "Соболезнование",
+    "just_because": "Просто так",
+    "other": "Другое"
+  }
+}

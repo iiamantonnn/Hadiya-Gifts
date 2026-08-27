@@ -1,0 +1,11 @@
+{
+  "nav": { "home": "Home", "search": "Search", "people": "My People", "wishlist": "Wishlist", "history": "History", "notifications": "Notifications", "settings": "Settings", "signOut": "Sign out" },
+  "save": "Save", "cancel": "Cancel", "delete": "Delete", "edit": "Edit", "loading": "Loading...",
+  "viewProduct": "View product", "applyFilters": "Apply filters", "resetFilters": "Reset filters",
+  "showPassword": "Show password", "hidePassword": "Hide password", "rememberMe": "Remember me",
+  "forgotPassword": "Forgot password?", "loginWithWindowsHello": "Login with Windows Hello",
+  "useDemoAccount": "Use Demo Account", "demoAccount": "Demo Account", "logIn": "Log In",
+  "createAccount": "Create account", "email": "Email", "password": "Password", "name": "Name",
+  "confirmPassword": "Confirm password", "somethingWentWrong": "Something went wrong. Please try again.",
+  "language": "Language"
+}

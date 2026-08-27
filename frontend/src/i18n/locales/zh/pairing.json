@@ -1,0 +1,24 @@
+{
+  "title": "配对",
+  "subtitle": "与对方建立联系以共享特定日期。配对不会让对方无限制地访问你的隐私信息。",
+  "sendRequest": {
+    "title": "发送配对请求",
+    "placeholder": "email@example.com",
+    "send": "发送",
+    "sent": "配对请求已发送。",
+    "error": "无法发送该请求。"
+  },
+  "incomingRequest": "收到的请求",
+  "requestSent": "已发送请求",
+  "accept": "接受",
+  "decline": "拒绝",
+  "endPairing": "解除配对",
+  "endConfirm": "确定要解除此配对吗？共享日期将停止同步，但不会删除你自己的送礼记录。",
+  "emptyState": "还没有配对。",
+  "status": {
+    "pending": "待处理",
+    "accepted": "已接受",
+    "declined": "已拒绝",
+    "ended": "已结束"
+  }
+}

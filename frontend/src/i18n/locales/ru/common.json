@@ -1,0 +1,11 @@
+{
+  "nav": { "home": "Главная", "search": "Поиск", "people": "Мои близкие", "wishlist": "Список желаний", "history": "История", "notifications": "Уведомления", "settings": "Настройки", "signOut": "Выйти" },
+  "save": "Сохранить", "cancel": "Отмена", "delete": "Удалить", "edit": "Изменить", "loading": "Загрузка...",
+  "viewProduct": "Посмотреть товар", "applyFilters": "Применить фильтры", "resetFilters": "Сбросить фильтры",
+  "showPassword": "Показать пароль", "hidePassword": "Скрыть пароль", "rememberMe": "Запомнить меня",
+  "forgotPassword": "Забыли пароль?", "loginWithWindowsHello": "Войти через Windows Hello",
+  "useDemoAccount": "Использовать демо-аккаунт", "demoAccount": "Демо-аккаунт", "logIn": "Войти",
+  "createAccount": "Создать аккаунт", "email": "Эл. почта", "password": "Пароль", "name": "Имя",
+  "confirmPassword": "Подтвердите пароль", "somethingWentWrong": "Что-то пошло не так. Попробуйте ещё раз.",
+  "language": "Язык"
+}

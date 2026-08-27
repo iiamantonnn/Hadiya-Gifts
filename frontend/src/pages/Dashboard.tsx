@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import Card from "../components/ui/Card";
 import Button from "../components/ui/Button";
 import AIAssistant from "../components/ai/AIAssistant";
@@ -9,13 +10,14 @@ import { greetingForHour, armeniaHourNow } from "../lib/format";
 import type { Person, UpcomingEvent } from "../lib/types";
 
 const QUICK_ACTIONS = [
-  { label: "Send Flowers", to: "/search", icon: "✿" },
-  { label: "Add Person", to: "/people", icon: "＋" },
-  { label: "Create Wishlist", to: "/wishlist", icon: "☆" },
-  { label: "View Gifts", to: "/gift-history", icon: "✉" },
+  { id: "sendFlowers", labelKey: "dashboard.quickActions.sendFlowers", to: "/search", icon: "✿" },
+  { id: "addPerson", labelKey: "dashboard.quickActions.addPerson", to: "/people", icon: "＋" },
+  { id: "createWishlist", labelKey: "dashboard.quickActions.createWishlist", to: "/wishlist", icon: "☆" },
+  { id: "viewGifts", labelKey: "dashboard.quickActions.viewGifts", to: "/gift-history", icon: "✉" },
 ];
 
 export default function Dashboard() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [events, setEvents] = useState<UpcomingEvent[]>([]);
   const [favorites, setFavorites] = useState<Person[]>([]);
@@ -28,13 +30,14 @@ export default function Dashboard() {
   }, []);
 
   const name = user?.preferred_name || user?.first_name || "";
-  const greeting = `${greetingForHour(armeniaHourNow())}, ${name}.`;
+  const period = greetingForHour(armeniaHourNow());
+  const greeting = t(`dashboard.good${period.charAt(0).toUpperCase()}${period.slice(1)}`, { name });
 
   return (
     <div className="flex flex-col gap-8">
       <div>
         <h1 className="font-display text-3xl font-semibold text-ink">{greeting}</h1>
-        <p className="mt-1 text-ink-muted">What would you like to do today?</p>
+        <p className="mt-1 text-ink-muted">{t("dashboard.subtitle")}</p>
       </div>
 
       <AIAssistant />
@@ -46,17 +49,17 @@ export default function Dashboard() {
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search flowers, occasions, colors..."
+          placeholder={t("dashboard.searchPlaceholder")}
           className="w-full rounded-[var(--radius-control)] border border-border bg-surface px-4 py-3 text-sm focus:border-forest focus:outline-none"
         />
       </form>
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {QUICK_ACTIONS.map((action) => (
-          <Link key={action.label} to={action.to}>
+          <Link key={action.id} to={action.to}>
             <Card className="flex flex-col items-center gap-2 py-6 text-center transition-shadow hover:shadow-[var(--shadow-lift)]">
               <span className="text-2xl">{action.icon}</span>
-              <span className="text-sm font-medium text-ink">{action.label}</span>
+              <span className="text-sm font-medium text-ink">{t(action.labelKey)}</span>
             </Card>
           </Link>
         ))}
@@ -64,16 +67,18 @@ export default function Dashboard() {
 
       <div className="grid gap-6 sm:grid-cols-2">
         <Card>
-          <h2 className="font-display text-lg font-semibold text-ink">Upcoming</h2>
+          <h2 className="font-display text-lg font-semibold text-ink">{t("dashboard.upcoming")}</h2>
           {events.length === 0 ? (
-            <p className="mt-3 text-sm text-ink-faint">No important dates coming up in the next two months.</p>
+            <p className="mt-3 text-sm text-ink-faint">{t("dashboard.noUpcomingEvents")}</p>
           ) : (
             <ul className="mt-3 flex flex-col gap-3">
               {events.slice(0, 6).map((event, i) => (
                 <li key={i} className="flex items-center justify-between text-sm">
-                  <span className="text-ink">{event.person_name}'s {event.label.toLowerCase()}</span>
+                  <span className="text-ink">
+                    {t("dashboard.personEvent", { name: event.person_name, label: event.label.toLowerCase() })}
+                  </span>
                   <span className="font-medium text-rose-dark">
-                    {event.days_until === 0 ? "today" : `${event.days_until}d`}
+                    {event.days_until === 0 ? t("dashboard.today") : t("dashboard.daysUntil", { days: event.days_until })}
                   </span>
                 </li>
               ))}
@@ -83,11 +88,11 @@ export default function Dashboard() {
 
         <Card>
           <div className="flex items-center justify-between">
-            <h2 className="font-display text-lg font-semibold text-ink">Favorite people</h2>
-            <Link to="/people" className="text-sm font-medium text-forest">See all</Link>
+            <h2 className="font-display text-lg font-semibold text-ink">{t("dashboard.favoritePeople")}</h2>
+            <Link to="/people" className="text-sm font-medium text-forest">{t("dashboard.seeAll")}</Link>
           </div>
           {favorites.length === 0 ? (
-            <p className="mt-3 text-sm text-ink-faint">Mark someone as a favorite to see them here.</p>
+            <p className="mt-3 text-sm text-ink-faint">{t("dashboard.noFavorites")}</p>
           ) : (
             <ul className="mt-3 flex flex-col gap-3">
               {favorites.slice(0, 5).map((person) => (
@@ -102,7 +107,7 @@ export default function Dashboard() {
         </Card>
       </div>
 
-      <Button href="/search" variant="secondary" className="self-start">Browse the full catalog</Button>
+      <Button href="/search" variant="secondary" className="self-start">{t("dashboard.browseFullCatalog")}</Button>
     </div>
   );
 }

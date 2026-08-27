@@ -1,0 +1,20 @@
+{
+  "title": "Ցանկությունների ցանկ",
+  "addItem": "Ավելացնել ապրանք",
+  "emptyState": "Այստեղ դեռ դատարկ է․ ավելացրեք մի բան, որ կցանկանայիք ստանալ։",
+  "viewProduct": "Դիտել ապրանքը ↗",
+  "remove": "Հեռացնել",
+  "addToWishlist": "Ավելացնել ցանկությունների ցանկում",
+  "productUrlLabel": "Ապրանքի հղում (ըստ ցանկության)",
+  "fetchDetails": "Բեռնել տվյալները",
+  "productNameLabel": "Ապրանքի անվանում",
+  "marketplaceLabel": "Խանութ",
+  "marketplacePlaceholder": "Amazon, Etsy, բրենդի կայք...",
+  "colorLabel": "Գույն",
+  "sizeLabel": "Չափս",
+  "modelLabel": "Մոդել",
+  "materialLabel": "Նյութ",
+  "forLabel": "Ում համար (ըստ ցանկության)",
+  "myself": "Ինձ համար",
+  "addError": "Չհաջողվեց ավելացնել այս ապրանքը։"
+}

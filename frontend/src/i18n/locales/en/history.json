@@ -1,0 +1,35 @@
+{
+  "title": "Gift History",
+  "sent": "Sent",
+  "received": "Received",
+  "emptyState": "Nothing here yet.",
+  "giftDetails": "Gift details",
+  "to": "To {{name}}",
+  "from": "From {{name}}",
+  "toColon": "To: {{name}}",
+  "fromColon": "From: {{name}}",
+  "secretAdmirer": "From a secret admirer",
+  "additionalGift": "Additional gift: {{name}}",
+  "occasionLabel": "Occasion: {{occasion}}",
+  "cardMessage": "Card message",
+  "voiceMessage": "Voice message",
+  "statuses": {
+    "placed": "Placed",
+    "confirmed": "Confirmed",
+    "preparing": "Preparing",
+    "out_for_delivery": "Out for delivery",
+    "delivered": "Delivered",
+    "cancelled": "Cancelled"
+  },
+  "occasions": {
+    "birthday": "Birthday",
+    "anniversary": "Anniversary",
+    "friendship": "Friendship",
+    "thank_you": "Thank you",
+    "congratulations": "Congratulations",
+    "romantic": "Romantic",
+    "sympathy": "Sympathy",
+    "just_because": "Just because",
+    "other": "Other"
+  }
+}

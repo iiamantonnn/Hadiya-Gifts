@@ -1,0 +1,14 @@
+{
+  "landing": {
+    "headline": "More than a gift.",
+    "description": "Hadiya helps you remember the people who matter, the moments worth celebrating, and the gifts that actually mean something - flowers, wishlists, handwritten words, and a little help from AI when you're not sure where to start.",
+    "createAccountCta": "Create your account",
+    "alreadyHaveAccount": "I already have one",
+    "footerTagline": "Hadiya - privacy-first gifting."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "message": "The page you're looking for doesn't exist.",
+    "goHome": "Go home"
+  }
+}

@@ -1,17 +1,20 @@
 import { type ReactNode } from "react";
 import { NavLink } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "../../lib/auth-context";
 import Logo from "../ui/Logo";
+import LanguageSwitcher from "../ui/LanguageSwitcher";
 
 const NAV_ITEMS = [
-  { to: "/dashboard", label: "Home", icon: "⌂" },
-  { to: "/search", label: "Search", icon: "⌕" },
-  { to: "/people", label: "My People", icon: "♥" },
-  { to: "/wishlist", label: "Wishlist", icon: "☆" },
-  { to: "/gift-history", label: "History", icon: "✉" },
+  { to: "/dashboard", key: "home", icon: "⌂" },
+  { to: "/search", key: "search", icon: "⌕" },
+  { to: "/people", key: "people", icon: "♥" },
+  { to: "/wishlist", key: "wishlist", icon: "☆" },
+  { to: "/gift-history", key: "history", icon: "✉" },
 ];
 
 export default function AppShell({ children }: { children: ReactNode }) {
+  const { t } = useTranslation();
   const { user, logout } = useAuth();
 
   return (
@@ -32,19 +35,20 @@ export default function AppShell({ children }: { children: ReactNode }) {
                   }`
                 }
               >
-                {item.label}
+                {t(`common.nav.${item.key}`)}
               </NavLink>
             ))}
           </nav>
           <div className="flex items-center gap-3">
-            <NavLink to="/notifications" className="text-ink-muted hover:text-ink" aria-label="Notifications">
+            <LanguageSwitcher />
+            <NavLink to="/notifications" className="text-ink-muted hover:text-ink" aria-label={t("common.nav.notifications")}>
               &#9993;
             </NavLink>
             <NavLink to="/settings" className="text-sm font-medium text-ink hover:text-forest">
               {user?.preferred_name || user?.first_name}
             </NavLink>
             <button onClick={() => logout()} className="text-sm text-ink-faint hover:text-ink">
-              Sign out
+              {t("common.nav.signOut")}
             </button>
           </div>
         </div>
@@ -62,7 +66,7 @@ export default function AppShell({ children }: { children: ReactNode }) {
             }
           >
             <span className="text-lg">{item.icon}</span>
-            {item.label}
+            {t(`common.nav.${item.key}`)}
           </NavLink>
         ))}
       </nav>

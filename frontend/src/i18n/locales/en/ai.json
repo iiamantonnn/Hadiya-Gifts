@@ -1,0 +1,12 @@
+{
+  "title": "Hadiya Assistant",
+  "subtitle": "Ask for a recommendation - I'll only suggest what's actually in the catalog.",
+  "inputPlaceholder": "What should I send my sister for her birthday?",
+  "ask": "Ask",
+  "thinking": "Thinking...",
+  "unavailable": "The assistant is unavailable right now.",
+  "suggestion1": "What flowers should I send my mother?",
+  "suggestion2": "Find a bouquet under $50.",
+  "suggestion3": "What would be a good birthday gift?",
+  "suggestion4": "Help me write a birthday message."
+}

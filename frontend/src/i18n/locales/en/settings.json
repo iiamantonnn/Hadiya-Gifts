@@ -1,0 +1,45 @@
+{
+  "title": "Settings",
+  "saved": "Saved.",
+  "profile": {
+    "title": "Profile",
+    "preferredName": "Preferred name",
+    "preferredNameHint": "What Hadiya calls you on the dashboard.",
+    "phone": "Phone"
+  },
+  "privacy": {
+    "title": "Privacy",
+    "dobVisibility": "Who can see my date of birth",
+    "onlyMe": "Only me",
+    "paired": "My paired person",
+    "selected": "Selected people",
+    "everyone": "Everyone"
+  },
+  "addresses": {
+    "title": "Delivery addresses",
+    "hint": "Never shown publicly - only used for delivery.",
+    "entry": "{{label}} - {{line1}}, {{city}}",
+    "default": "(default)",
+    "remove": "Remove",
+    "label": "Label",
+    "labelPlaceholder": "Home",
+    "city": "City",
+    "addressLine": "Address line",
+    "region": "Region",
+    "postalCode": "Postal code",
+    "country": "Country",
+    "setDefault": "Set as default",
+    "add": "Add address",
+    "saveError": "Could not save this address."
+  },
+  "passkeys": {
+    "title": "Passkey / Biometric login",
+    "hint": "Use Face ID, Touch ID, Windows Hello, or your device's secure authentication.",
+    "defaultName": "Passkey",
+    "entry": "{{name}} - added {{date}}",
+    "remove": "Remove",
+    "added": "Passkey added.",
+    "addFailed": "Couldn't add a passkey on this device.",
+    "add": "Add a passkey"
+  }
+}

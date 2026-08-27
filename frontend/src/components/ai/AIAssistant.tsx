@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from "react";
+import { useTranslation } from "react-i18next";
 import Card from "../ui/Card";
 import Button from "../ui/Button";
 import FlowerCard from "../flowers/FlowerCard";
@@ -11,14 +12,10 @@ interface AskResponse {
   flowers: Flower[];
 }
 
-const SUGGESTIONS = [
-  "What flowers should I send my mother?",
-  "Find a bouquet under $50.",
-  "What would be a good birthday gift?",
-  "Help me write a birthday message.",
-];
+const SUGGESTION_KEYS = ["ai.suggestion1", "ai.suggestion2", "ai.suggestion3", "ai.suggestion4"];
 
 export default function AIAssistant() {
+  const { t } = useTranslation();
   const [question, setQuestion] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<AskResponse | null>(null);
@@ -32,7 +29,7 @@ export default function AIAssistant() {
       const response = await api.post<AskResponse>("/ai/ask", { question: q });
       setResult(response);
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : "The assistant is unavailable right now.");
+      setError(err instanceof ApiError ? err.message : t("ai.unavailable"));
     } finally {
       setLoading(false);
     }
@@ -47,32 +44,35 @@ export default function AIAssistant() {
     <Card className="border-forest/20 bg-gradient-to-br from-forest-soft to-surface">
       <div className="flex items-center gap-2">
         <span className="text-xl">✦</span>
-        <h2 className="font-display text-lg font-semibold text-ink">Hadiya Assistant</h2>
+        <h2 className="font-display text-lg font-semibold text-ink">{t("ai.title")}</h2>
       </div>
-      <p className="mt-1 text-sm text-ink-muted">Ask for a recommendation - I'll only suggest what's actually in the catalog.</p>
+      <p className="mt-1 text-sm text-ink-muted">{t("ai.subtitle")}</p>
 
       <form onSubmit={handleSubmit} className="mt-4 flex gap-2">
         <input
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
-          placeholder="What should I send my sister for her birthday?"
+          placeholder={t("ai.inputPlaceholder")}
           className="flex-1 rounded-[var(--radius-control)] border border-border bg-surface px-4 py-2.5 text-sm focus:border-forest focus:outline-none"
         />
-        <Button type="submit" disabled={loading} size="md">{loading ? "Thinking..." : "Ask"}</Button>
+        <Button type="submit" disabled={loading} size="md">{loading ? t("ai.thinking") : t("ai.ask")}</Button>
       </form>
 
       {!result && !loading && (
         <div className="mt-3 flex flex-wrap gap-2">
-          {SUGGESTIONS.map((s) => (
-            <button
-              key={s}
-              onClick={() => { setQuestion(s); ask(s); }}
-              className="rounded-full border border-border bg-surface px-3 py-1.5 text-xs text-ink-muted hover:border-forest hover:text-forest"
-              type="button"
-            >
-              {s}
-            </button>
-          ))}
+          {SUGGESTION_KEYS.map((key) => {
+            const s = t(key);
+            return (
+              <button
+                key={key}
+                onClick={() => { setQuestion(s); ask(s); }}
+                className="rounded-full border border-border bg-surface px-3 py-1.5 text-xs text-ink-muted hover:border-forest hover:text-forest"
+                type="button"
+              >
+                {s}
+              </button>
+            );
+          })}
         </div>
       )}
 

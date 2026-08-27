@@ -1,0 +1,20 @@
+{
+  "title": "قائمة الأمنيات",
+  "addItem": "إضافة عنصر",
+  "emptyState": "لا يوجد شيء هنا بعد - أضف ما تودّ الحصول عليه.",
+  "viewProduct": "عرض المنتج ↗",
+  "remove": "إزالة",
+  "addToWishlist": "إضافة إلى قائمة الأمنيات",
+  "productUrlLabel": "رابط المنتج (اختياري)",
+  "fetchDetails": "جلب التفاصيل",
+  "productNameLabel": "اسم المنتج",
+  "marketplaceLabel": "المتجر",
+  "marketplacePlaceholder": "Amazon، Etsy، موقع العلامة التجارية...",
+  "colorLabel": "اللون",
+  "sizeLabel": "المقاس",
+  "modelLabel": "الموديل",
+  "materialLabel": "الخامة",
+  "forLabel": "لمن (اختياري)",
+  "myself": "لنفسي",
+  "addError": "تعذّرت إضافة هذا العنصر."
+}

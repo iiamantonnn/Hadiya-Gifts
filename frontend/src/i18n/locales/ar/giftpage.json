@@ -1,0 +1,11 @@
+{
+  "notFound": "تعذّر العثور على صفحة الهدية هذه.",
+  "fromSender": "لديك هدية من {{name}}",
+  "fromUnknown": "لديك هدية",
+  "voiceMessage": "رسالة صوتية لك",
+  "flowerCare": "العناية بالزهور",
+  "water": "الري",
+  "stems": "السيقان",
+  "placement": "الموضع",
+  "avoid": "تجنب"
+}

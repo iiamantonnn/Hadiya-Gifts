@@ -1,0 +1,61 @@
+{
+  "filters": "Filters",
+  "flowerType": "Flower type",
+  "color": "Color",
+  "size": "Size",
+  "occasion": "Occasion",
+  "relationship": "Relationship",
+  "any": "Any",
+  "minPrice": "Min price ($)",
+  "maxPrice": "Max price ($)",
+  "searchPlaceholder": "Search flowers, occasions, colors...",
+  "searching": "Searching...",
+  "noResults": "No matches. Try adjusting your filters.",
+  "values": {
+    "flowerTypes": {
+      "roses": "Roses",
+      "tulips": "Tulips",
+      "peonies": "Peonies",
+      "lilies": "Lilies",
+      "mixed": "Mixed",
+      "seasonal": "Seasonal",
+      "other": "Other"
+    },
+    "colors": {
+      "red": "Red",
+      "white": "White",
+      "pink": "Pink",
+      "yellow": "Yellow",
+      "purple": "Purple",
+      "blue": "Blue",
+      "mixed": "Mixed",
+      "other": "Other"
+    },
+    "sizes": {
+      "small": "Small",
+      "medium": "Medium",
+      "large": "Large"
+    },
+    "occasions": {
+      "birthday": "Birthday",
+      "anniversary": "Anniversary",
+      "friendship": "Friendship",
+      "thankYou": "Thank you",
+      "congratulations": "Congratulations",
+      "romantic": "Romantic",
+      "sympathy": "Sympathy",
+      "justBecause": "Just because",
+      "other": "Other"
+    },
+    "relationships": {
+      "mother": "Mother",
+      "father": "Father",
+      "partner": "Partner",
+      "friend": "Friend",
+      "colleague": "Colleague",
+      "grandparent": "Grandparent",
+      "sibling": "Sibling",
+      "other": "Other"
+    }
+  }
+}

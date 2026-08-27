@@ -1,0 +1,11 @@
+{
+  "nav": { "home": "首页", "search": "搜索", "people": "我的亲友", "wishlist": "心愿单", "history": "历史记录", "notifications": "通知", "settings": "设置", "signOut": "退出登录" },
+  "save": "保存", "cancel": "取消", "delete": "删除", "edit": "编辑", "loading": "加载中...",
+  "viewProduct": "查看商品", "applyFilters": "应用筛选", "resetFilters": "重置筛选",
+  "showPassword": "显示密码", "hidePassword": "隐藏密码", "rememberMe": "记住我",
+  "forgotPassword": "忘记密码？", "loginWithWindowsHello": "使用 Windows Hello 登录",
+  "useDemoAccount": "使用演示账户", "demoAccount": "演示账户", "logIn": "登录",
+  "createAccount": "创建账户", "email": "邮箱", "password": "密码", "name": "姓名",
+  "confirmPassword": "确认密码", "somethingWentWrong": "出现问题，请重试。",
+  "language": "语言"
+}

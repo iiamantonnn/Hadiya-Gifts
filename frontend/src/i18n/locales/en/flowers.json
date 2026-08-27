@@ -1,0 +1,11 @@
+{
+  "itemUnavailable": "This item is no longer available.",
+  "addToGift": "Add to Gift",
+  "care": {
+    "title": "Flower care",
+    "water": "Water: ",
+    "stems": "Stems: ",
+    "placement": "Placement: ",
+    "avoid": "Avoid: "
+  }
+}

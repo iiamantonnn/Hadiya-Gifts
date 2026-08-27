@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import type { Flower } from "../../lib/types";
 import { formatPrice } from "../../lib/format";
+import { translateOptionValue } from "../../lib/flowerOptionLabels";
 
 export default function FlowerCard({ flower }: { flower: Flower }) {
+  const { t } = useTranslation();
   return (
     <Link
       to={`/flowers/${flower.id}`}
@@ -15,7 +18,7 @@ export default function FlowerCard({ flower }: { flower: Flower }) {
       </div>
       <div className="flex flex-col gap-1 p-4">
         <p className="font-medium text-ink group-hover:text-forest">{flower.name}</p>
-        <p className="text-xs uppercase tracking-wide text-ink-faint">{flower.flower_type}</p>
+        <p className="text-xs uppercase tracking-wide text-ink-faint">{translateOptionValue(t, "flowerTypes", flower.flower_type)}</p>
         <p className="mt-1 font-display text-lg text-forest">{formatPrice(flower.price_cents)}</p>
       </div>
     </Link>

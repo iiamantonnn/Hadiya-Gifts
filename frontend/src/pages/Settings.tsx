@@ -1,4 +1,5 @@
 import { useEffect, useState, type FormEvent } from "react";
+import { useTranslation } from "react-i18next";
 import { browserSupportsWebAuthn } from "@simplewebauthn/browser";
 import Card from "../components/ui/Card";
 import Button from "../components/ui/Button";
@@ -11,6 +12,7 @@ import type { Address, Passkey } from "../lib/types";
 const EMPTY_ADDRESS = { label: "", line1: "", line2: "", city: "", region: "", postal_code: "", country: "", is_default: false };
 
 export default function Settings() {
+  const { t } = useTranslation();
   const { user, refreshUser } = useAuth();
   const [preferredName, setPreferredName] = useState(user?.preferred_name || "");
   const [phone, setPhone] = useState("");
@@ -37,14 +39,14 @@ export default function Settings() {
   async function saveProfile(e: FormEvent) {
     e.preventDefault();
     await api.patch("/users/me", { preferred_name: preferredName || undefined, phone: phone || undefined });
-    setProfileMessage("Saved.");
+    setProfileMessage(t("settings.saved"));
     refreshUser();
   }
 
   async function savePrivacy(e: FormEvent) {
     e.preventDefault();
     await api.patch("/users/me/privacy", { dob_visibility: dobVisibility });
-    setPrivacyMessage("Saved.");
+    setPrivacyMessage(t("settings.saved"));
   }
 
   async function addAddress(e: FormEvent) {
@@ -55,7 +57,7 @@ export default function Settings() {
       setAddressForm(EMPTY_ADDRESS);
       loadAddresses();
     } catch (err) {
-      setAddressError(err instanceof ApiError ? err.message : "Could not save this address.");
+      setAddressError(err instanceof ApiError ? err.message : t("settings.addresses.saveError"));
     }
   }
 
@@ -68,10 +70,10 @@ export default function Settings() {
     setPasskeyMessage(null);
     try {
       await registerPasskey();
-      setPasskeyMessage("Passkey added.");
+      setPasskeyMessage(t("settings.passkeys.added"));
       loadPasskeys();
     } catch {
-      setPasskeyMessage("Couldn't add a passkey on this device.");
+      setPasskeyMessage(t("settings.passkeys.addFailed"));
     }
   }
 
@@ -82,77 +84,77 @@ export default function Settings() {
 
   return (
     <div className="mx-auto flex max-w-2xl flex-col gap-8">
-      <h1 className="font-display text-2xl font-semibold text-ink">Settings</h1>
+      <h1 className="font-display text-2xl font-semibold text-ink">{t("settings.title")}</h1>
 
       <Card>
-        <h2 className="font-display text-lg font-semibold text-ink">Profile</h2>
+        <h2 className="font-display text-lg font-semibold text-ink">{t("settings.profile.title")}</h2>
         <form onSubmit={saveProfile} className="mt-4 flex flex-col gap-4">
-          <Input label="Preferred name" placeholder={user?.first_name} value={preferredName} onChange={(e) => setPreferredName(e.target.value)} hint="What Hadiya calls you on the dashboard." />
-          <Input label="Phone" value={phone} onChange={(e) => setPhone(e.target.value)} />
+          <Input label={t("settings.profile.preferredName")} placeholder={user?.first_name} value={preferredName} onChange={(e) => setPreferredName(e.target.value)} hint={t("settings.profile.preferredNameHint")} />
+          <Input label={t("settings.profile.phone")} value={phone} onChange={(e) => setPhone(e.target.value)} />
           {profileMessage && <p className="text-sm text-success">{profileMessage}</p>}
-          <Button type="submit" variant="ghost" className="self-start">Save</Button>
+          <Button type="submit" variant="ghost" className="self-start">{t("common.save")}</Button>
         </form>
       </Card>
 
       <Card>
-        <h2 className="font-display text-lg font-semibold text-ink">Privacy</h2>
+        <h2 className="font-display text-lg font-semibold text-ink">{t("settings.privacy.title")}</h2>
         <form onSubmit={savePrivacy} className="mt-4 flex flex-col gap-4">
-          <Select label="Who can see my date of birth" value={dobVisibility} onChange={(e) => setDobVisibility(e.target.value)}>
-            <option value="only_me">Only me</option>
-            <option value="paired">My paired person</option>
-            <option value="selected">Selected people</option>
-            <option value="everyone">Everyone</option>
+          <Select label={t("settings.privacy.dobVisibility")} value={dobVisibility} onChange={(e) => setDobVisibility(e.target.value)}>
+            <option value="only_me">{t("settings.privacy.onlyMe")}</option>
+            <option value="paired">{t("settings.privacy.paired")}</option>
+            <option value="selected">{t("settings.privacy.selected")}</option>
+            <option value="everyone">{t("settings.privacy.everyone")}</option>
           </Select>
           {privacyMessage && <p className="text-sm text-success">{privacyMessage}</p>}
-          <Button type="submit" variant="ghost" className="self-start">Save</Button>
+          <Button type="submit" variant="ghost" className="self-start">{t("common.save")}</Button>
         </form>
       </Card>
 
       <Card>
-        <h2 className="font-display text-lg font-semibold text-ink">Delivery addresses</h2>
-        <p className="mt-1 text-xs text-ink-faint">Never shown publicly - only used for delivery.</p>
+        <h2 className="font-display text-lg font-semibold text-ink">{t("settings.addresses.title")}</h2>
+        <p className="mt-1 text-xs text-ink-faint">{t("settings.addresses.hint")}</p>
         <ul className="mt-4 flex flex-col gap-2">
           {addresses.map((a) => (
             <li key={a.id} className="flex items-center justify-between rounded-[var(--radius-control)] border border-border p-3 text-sm">
-              <span>{a.label} - {a.line1}, {a.city} {a.is_default && <span className="text-forest">(default)</span>}</span>
-              <button onClick={() => removeAddress(a.id)} className="text-ink-faint hover:text-error">Remove</button>
+              <span>{t("settings.addresses.entry", { label: a.label, line1: a.line1, city: a.city })} {a.is_default && <span className="text-forest">{t("settings.addresses.default")}</span>}</span>
+              <button onClick={() => removeAddress(a.id)} className="text-ink-faint hover:text-error">{t("settings.addresses.remove")}</button>
             </li>
           ))}
         </ul>
         <form onSubmit={addAddress} className="mt-4 flex flex-col gap-3">
           <div className="grid grid-cols-2 gap-3">
-            <Input label="Label" required value={addressForm.label} onChange={(e) => setAddressForm({ ...addressForm, label: e.target.value })} placeholder="Home" />
-            <Input label="City" required value={addressForm.city} onChange={(e) => setAddressForm({ ...addressForm, city: e.target.value })} />
+            <Input label={t("settings.addresses.label")} required value={addressForm.label} onChange={(e) => setAddressForm({ ...addressForm, label: e.target.value })} placeholder={t("settings.addresses.labelPlaceholder")} />
+            <Input label={t("settings.addresses.city")} required value={addressForm.city} onChange={(e) => setAddressForm({ ...addressForm, city: e.target.value })} />
           </div>
-          <Input label="Address line" required value={addressForm.line1} onChange={(e) => setAddressForm({ ...addressForm, line1: e.target.value })} />
+          <Input label={t("settings.addresses.addressLine")} required value={addressForm.line1} onChange={(e) => setAddressForm({ ...addressForm, line1: e.target.value })} />
           <div className="grid grid-cols-3 gap-3">
-            <Input label="Region" value={addressForm.region} onChange={(e) => setAddressForm({ ...addressForm, region: e.target.value })} />
-            <Input label="Postal code" value={addressForm.postal_code} onChange={(e) => setAddressForm({ ...addressForm, postal_code: e.target.value })} />
-            <Input label="Country" required value={addressForm.country} onChange={(e) => setAddressForm({ ...addressForm, country: e.target.value })} />
+            <Input label={t("settings.addresses.region")} value={addressForm.region} onChange={(e) => setAddressForm({ ...addressForm, region: e.target.value })} />
+            <Input label={t("settings.addresses.postalCode")} value={addressForm.postal_code} onChange={(e) => setAddressForm({ ...addressForm, postal_code: e.target.value })} />
+            <Input label={t("settings.addresses.country")} required value={addressForm.country} onChange={(e) => setAddressForm({ ...addressForm, country: e.target.value })} />
           </div>
           <label className="flex items-center gap-2 text-sm text-ink-muted">
             <input type="checkbox" checked={addressForm.is_default} onChange={(e) => setAddressForm({ ...addressForm, is_default: e.target.checked })} className="h-4 w-4" />
-            Set as default
+            {t("settings.addresses.setDefault")}
           </label>
           {addressError && <p className="text-sm text-error">{addressError}</p>}
-          <Button type="submit" variant="ghost" className="self-start">Add address</Button>
+          <Button type="submit" variant="ghost" className="self-start">{t("settings.addresses.add")}</Button>
         </form>
       </Card>
 
       {browserSupportsWebAuthn() && (
         <Card>
-          <h2 className="font-display text-lg font-semibold text-ink">Passkey / Biometric login</h2>
-          <p className="mt-1 text-xs text-ink-faint">Use Face ID, Touch ID, Windows Hello, or your device's secure authentication.</p>
+          <h2 className="font-display text-lg font-semibold text-ink">{t("settings.passkeys.title")}</h2>
+          <p className="mt-1 text-xs text-ink-faint">{t("settings.passkeys.hint")}</p>
           <ul className="mt-4 flex flex-col gap-2">
             {passkeys.map((p) => (
               <li key={p.id} className="flex items-center justify-between rounded-[var(--radius-control)] border border-border p-3 text-sm">
-                <span>{p.nickname || "Passkey"} - added {new Date(p.created_at).toLocaleDateString()}</span>
-                <button onClick={() => removePasskey(p.id)} className="text-ink-faint hover:text-error">Remove</button>
+                <span>{t("settings.passkeys.entry", { name: p.nickname || t("settings.passkeys.defaultName"), date: new Date(p.created_at).toLocaleDateString() })}</span>
+                <button onClick={() => removePasskey(p.id)} className="text-ink-faint hover:text-error">{t("settings.passkeys.remove")}</button>
               </li>
             ))}
           </ul>
           {passkeyMessage && <p className="mt-3 text-sm text-ink-muted">{passkeyMessage}</p>}
-          <Button variant="ghost" className="mt-4" onClick={addPasskey}>Add a passkey</Button>
+          <Button variant="ghost" className="mt-4" onClick={addPasskey}>{t("settings.passkeys.add")}</Button>
         </Card>
       )}
     </div>

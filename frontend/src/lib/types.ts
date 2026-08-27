@@ -7,6 +7,7 @@ export interface User {
   username: string | null;
   profile_photo_url: string | null;
   email_verified: boolean;
+  locale: string | null;
 }
 
 export interface Flower {

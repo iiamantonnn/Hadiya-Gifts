@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import AuthLayout from "../components/layout/AuthLayout";
 import Card from "../components/ui/Card";
 import { Input } from "../components/ui/Input";
@@ -14,6 +15,7 @@ const DEMO_EMAIL = "alex.israelyan@hadiya.demo";
 const DEMO_PASSWORD = "HadiyaDemo123!";
 
 export default function Login() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { login, setUser } = useAuth();
   const [email, setEmail] = useState("");
@@ -31,7 +33,7 @@ export default function Login() {
       await login(loginEmail, loginPassword, remember);
       navigate("/dashboard");
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : "Something went wrong. Please try again.");
+      setError(err instanceof ApiError ? err.message : t("common.somethingWentWrong"));
     }
   }
 
@@ -86,57 +88,57 @@ export default function Login() {
       setUser(user);
       navigate("/dashboard");
     } catch {
-      setError("Passkey sign-in didn't work. Try your password instead.");
+      setError(t("auth.passkeyError"));
     }
   }
 
   return (
-    <AuthLayout title="Welcome back">
+    <AuthLayout title={t("auth.loginTitle")}>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <Input label="Email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
-        <PasswordInput label="Password" required value={password} onChange={(e) => setPassword(e.target.value)} />
+        <Input label={t("common.email")} type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
+        <PasswordInput label={t("common.password")} required value={password} onChange={(e) => setPassword(e.target.value)} />
 
         <div className="flex items-center justify-between text-sm">
           <label className="flex items-center gap-2 text-ink-muted">
             <input type="checkbox" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} className="h-4 w-4 rounded border-border" />
-            Remember me
+            {t("common.rememberMe")}
           </label>
-          <Link to="/forgot-password" className="font-medium text-forest">Forgot password?</Link>
+          <Link to="/forgot-password" className="font-medium text-forest">{t("common.forgotPassword")}</Link>
         </div>
 
         {error && <p className="rounded-[var(--radius-control)] bg-error-soft px-4 py-3 text-sm text-error">{error}</p>}
 
         <Button type="submit" disabled={submitting} className="w-full">
-          {submitting ? "Signing in..." : "Log In"}
+          {submitting ? t("auth.signingIn") : t("common.logIn")}
         </Button>
 
         {browserSupportsWebAuthn() && (
           <div className="flex flex-col items-center gap-1.5">
             <Button type="button" variant="ghost" onClick={handlePasskey} className="w-full">
-              Login with Windows Hello
+              {t("common.loginWithWindowsHello")}
             </Button>
-            <p className="text-xs text-ink-faint">Use Windows Hello, PIN, fingerprint, or another supported passkey.</p>
+            <p className="text-xs text-ink-faint">{t("auth.passkeyHint")}</p>
           </div>
         )}
       </form>
       <p className="mt-6 text-center text-sm text-ink-muted">
-        New to Hadiya? <Link to="/register" className="font-medium text-forest">Create an account</Link>
+        {t("auth.newToHadiya")} <Link to="/register" className="font-medium text-forest">{t("common.createAccount")}</Link>
       </p>
 
       <Card className="mt-8">
-        <h2 className="font-display text-base font-semibold text-ink">Demo Account</h2>
-        <p className="mt-1 text-sm text-ink-muted">For presenters - sign in instantly with a preloaded demo account.</p>
+        <h2 className="font-display text-base font-semibold text-ink">{t("common.demoAccount")}</h2>
+        <p className="mt-1 text-sm text-ink-muted">{t("auth.demoAccountHint")}</p>
         <dl className="mt-3 flex flex-col gap-1 text-sm">
           <div className="flex gap-2">
-            <dt className="text-ink-faint">Name</dt>
+            <dt className="text-ink-faint">{t("common.name")}</dt>
             <dd className="font-medium text-ink">Alex Israelyan</dd>
           </div>
           <div className="flex gap-2">
-            <dt className="text-ink-faint">Email</dt>
+            <dt className="text-ink-faint">{t("common.email")}</dt>
             <dd className="font-medium text-ink">{DEMO_EMAIL}</dd>
           </div>
           <div className="flex gap-2">
-            <dt className="text-ink-faint">Password</dt>
+            <dt className="text-ink-faint">{t("common.password")}</dt>
             <dd className="font-medium text-ink">{passwordRevealed ? DEMO_PASSWORD : "••••••••••••"}</dd>
             <button
               type="button"
@@ -144,7 +146,7 @@ export default function Login() {
               disabled={revealing}
               className="text-xs font-medium text-forest hover:underline disabled:opacity-50"
             >
-              {passwordRevealed ? "Hide password" : revealing ? "Verifying..." : "Show password"}
+              {passwordRevealed ? t("common.hidePassword") : revealing ? t("auth.verifying") : t("common.showPassword")}
             </button>
           </div>
         </dl>
@@ -155,7 +157,7 @@ export default function Login() {
           disabled={demoSubmitting}
           className="mt-4 w-full"
         >
-          {demoSubmitting ? "Signing in..." : "Use Demo Account"}
+          {demoSubmitting ? t("auth.signingIn") : t("common.useDemoAccount")}
         </Button>
       </Card>
     </AuthLayout>

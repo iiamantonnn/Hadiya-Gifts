@@ -1,0 +1,35 @@
+{
+  "title": "Նվերների պատմություն",
+  "sent": "Ուղարկված",
+  "received": "Ստացված",
+  "emptyState": "Այստեղ դեռ ոչինչ չկա։",
+  "giftDetails": "Նվերի մանրամասներ",
+  "to": "Ում՝ {{name}}",
+  "from": "Ումից՝ {{name}}",
+  "toColon": "Ում՝ {{name}}",
+  "fromColon": "Ումից՝ {{name}}",
+  "secretAdmirer": "Գաղտնի երկրպագուից",
+  "additionalGift": "Լրացուցիչ նվեր՝ {{name}}",
+  "occasionLabel": "Առիթ՝ {{occasion}}",
+  "cardMessage": "Բացիկի հաղորդագրություն",
+  "voiceMessage": "Ձայնային հաղորդագրություն",
+  "statuses": {
+    "placed": "Ձևակերպված",
+    "confirmed": "Հաստատված",
+    "preparing": "Պատրաստվում է",
+    "out_for_delivery": "Առաքման ճանապարհին",
+    "delivered": "Առաքված",
+    "cancelled": "Չեղարկված"
+  },
+  "occasions": {
+    "birthday": "Ծննդյան օր",
+    "anniversary": "Տարեդարձ",
+    "friendship": "Ընկերություն",
+    "thank_you": "Շնորհակալություն",
+    "congratulations": "Շնորհավորանք",
+    "romantic": "Ռոմանտիկ",
+    "sympathy": "Ցավակցություն",
+    "just_because": "Առանց առիթի",
+    "other": "Այլ"
+  }
+}

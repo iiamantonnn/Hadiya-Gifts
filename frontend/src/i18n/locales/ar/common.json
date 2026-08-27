@@ -1,0 +1,11 @@
+{
+  "nav": { "home": "الرئيسية", "search": "بحث", "people": "أحبائي", "wishlist": "قائمة الأمنيات", "history": "السجل", "notifications": "الإشعارات", "settings": "الإعدادات", "signOut": "تسجيل الخروج" },
+  "save": "حفظ", "cancel": "إلغاء", "delete": "حذف", "edit": "تعديل", "loading": "جارٍ التحميل...",
+  "viewProduct": "عرض المنتج", "applyFilters": "تطبيق الفلاتر", "resetFilters": "إعادة تعيين الفلاتر",
+  "showPassword": "إظهار كلمة المرور", "hidePassword": "إخفاء كلمة المرور", "rememberMe": "تذكرني",
+  "forgotPassword": "هل نسيت كلمة المرور؟", "loginWithWindowsHello": "تسجيل الدخول عبر Windows Hello",
+  "useDemoAccount": "استخدام حساب تجريبي", "demoAccount": "حساب تجريبي", "logIn": "تسجيل الدخول",
+  "createAccount": "إنشاء حساب", "email": "البريد الإلكتروني", "password": "كلمة المرور", "name": "الاسم",
+  "confirmPassword": "تأكيد كلمة المرور", "somethingWentWrong": "حدث خطأ ما. حاول مرة أخرى.",
+  "language": "اللغة"
+}
