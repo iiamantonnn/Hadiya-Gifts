@@ -7,6 +7,7 @@
     "address": "Հասցե",
     "privacy": "Գաղտնիություն",
     "cardVoice": "Բացիկ և ձայն",
+    "payment": "Վճարում",
     "review": "Ստուգում"
   },
   "back": "Հետ",
@@ -35,7 +36,18 @@
   "step4": {
     "heading": "Առաքման հասցե",
     "addAddressFirst": "Նախ ավելացրեք առաքման հասցե Կարգավորումներում։",
-    "choosePlaceholder": "Ընտրեք հասցեն"
+    "choosePlaceholder": "Ընտրեք հասցեն",
+    "useOwnAddress": "Օգտագործել իմ պահված հասցեն",
+    "useRecipientAddress": "Առաքել ստացողի անձնական հասցեին",
+    "recipientAddressHint": "{{name}}-ը Ձեզ հետ կիսվել է անձնական առաքման վայրով. Դուք երբեք չեք տեսնի ճշգրիտ հասցեն։",
+    "chooseLocation": "Ընտրեք վայրը",
+    "locationHome": "Տուն",
+    "locationWork": "Աշխատանք"
+  },
+  "stepPayment": {
+    "heading": "Ինչպե՞ս եք ցանկանում վճարել",
+    "addNew": "Ավելացնել նոր վճարման եղանակ",
+    "chooseOne": "Շարունակելու համար ընտրեք վճարման եղանակ։"
   },
   "step5": {
     "heading": "Ցուցադրե՞լ ինձ որպես ուղարկող",
@@ -64,6 +76,9 @@
     "occasion": "Առիթ՝",
     "delivery": "Առաքում՝",
     "address": "Հասցե՝",
+    "recipientAddress": "{{name}}-ի անձնական հասցեն՝ {{location}}",
+    "payment": "Վճարում՝",
+    "change": "Փոխել",
     "from": "Ումից՝",
     "anonymous": "Անանուն",
     "visibleToRecipient": "Տեսանելի կլինի ստացողին",

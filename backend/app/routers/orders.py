@@ -13,11 +13,13 @@ from app import models
 from app.models import COURIER_WINDOWS
 from app.ai_service import generate_card_message
 from app.schemas import FlowerOut
+from app.routers.people import has_accepted_pairing
 
 router = APIRouter(prefix="/api/orders", tags=["orders"])
 
 MIN_LEAD_HOURS = 2
 CARD_TYPES = {"none", "physical", "digital", "both"}
+RECIPIENT_ADDRESS_TYPES = {"home", "work"}
 
 
 class CardIn(BaseModel):
@@ -35,7 +37,9 @@ class CreateOrderIn(BaseModel):
     delivery_date: str
     delivery_window_start: str
     delivery_window_end: str
-    address_id: str
+    address_id: str | None = None
+    recipient_address_type: str | None = None
+    payment_method_id: str
     is_anonymous: bool = False
     card: CardIn = CardIn()
     wishlist_item_id: str | None = None
@@ -77,9 +81,28 @@ def create_order(payload: CreateOrderIn, user: models.User = Depends(get_current
     if payload.color and payload.color not in (flower.colors or []):
         raise HTTPException(status_code=400, detail="Invalid color for this item")
 
-    address = db.get(models.Address, payload.address_id)
-    if not address or address.user_id != user.id:
-        raise HTTPException(status_code=404, detail="Delivery address not found")
+    if bool(payload.address_id) == bool(payload.recipient_address_type):
+        raise HTTPException(status_code=400, detail="Choose exactly one delivery address")
+
+    if payload.address_id:
+        address = db.get(models.Address, payload.address_id)
+        if not address or address.user_id != user.id:
+            raise HTTPException(status_code=404, detail="Delivery address not found")
+    else:
+        if payload.recipient_address_type not in RECIPIENT_ADDRESS_TYPES:
+            raise HTTPException(status_code=400, detail="Invalid delivery location")
+        if not recipient.linked_user_id or not has_accepted_pairing(db, user.id, recipient.linked_user_id):
+            raise HTTPException(status_code=403, detail="This recipient hasn't shared a private delivery address with you")
+        address = db.query(models.Address).filter(
+            models.Address.user_id == recipient.linked_user_id,
+            models.Address.address_type == payload.recipient_address_type,
+        ).first()
+        if not address:
+            raise HTTPException(status_code=404, detail="That delivery location isn't available")
+
+    payment_method = db.get(models.PaymentMethod, payload.payment_method_id)
+    if not payment_method or payment_method.user_id != user.id:
+        raise HTTPException(status_code=404, detail="Payment method not found")
 
     try:
         delivery_date = date.fromisoformat(payload.delivery_date)
@@ -112,6 +135,7 @@ def create_order(payload: CreateOrderIn, user: models.User = Depends(get_current
         delivery_window_start=payload.delivery_window_start,
         delivery_window_end=payload.delivery_window_end,
         address_id=address.id,
+        payment_method_id=payment_method.id,
         is_anonymous=payload.is_anonymous,
         price_cents=flower.price_cents,  # always looked up server-side, never trusted from the client
         status="placed",
@@ -228,6 +252,11 @@ def get_order(order_id: str, user: models.User = Depends(get_current_user), db: 
             "card_type": order.message.card_type, "text": order.message.text, "ai_generated": order.message.ai_generated,
         } if order.message else None,
         "voice_message_url": order.voice_message.audio_path if order.voice_message else None,
+        "payment_method": {
+            "method_type": order.payment_method.method_type,
+            "brand": order.payment_method.brand,
+            "last4": order.payment_method.last4,
+        } if is_buyer else None,
         "wishlist_gift": {
             "id": order.wishlist_gift.id,
             "product_name": order.wishlist_gift.product_name,

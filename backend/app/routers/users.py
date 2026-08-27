@@ -10,6 +10,7 @@ from app.schemas import AddressOut
 router = APIRouter(prefix="/api/users", tags=["users"])
 
 VALID_DOB_VISIBILITY = {"only_me", "paired", "selected", "everyone"}
+VALID_ADDRESS_TYPES = {"home", "work", "other"}
 
 
 class UpdateProfileIn(BaseModel):
@@ -28,6 +29,7 @@ class UpdatePrivacyIn(BaseModel):
 
 class AddressIn(BaseModel):
     label: str
+    address_type: str = "home"
     line1: str
     line2: str | None = None
     city: str
@@ -62,6 +64,8 @@ def list_addresses(user: models.User = Depends(get_current_user), db: Session = 
 
 @router.post("/me/addresses", status_code=201, response_model=AddressOut)
 def create_address(payload: AddressIn, user: models.User = Depends(get_current_user), db: Session = Depends(get_db)):
+    if payload.address_type not in VALID_ADDRESS_TYPES:
+        raise HTTPException(status_code=400, detail="Invalid address type")
     if payload.is_default:
         db.query(models.Address).filter(models.Address.user_id == user.id).update({"is_default": False})
     row = models.Address(user_id=user.id, **payload.model_dump())
@@ -76,6 +80,8 @@ def update_address(address_id: str, payload: AddressIn, user: models.User = Depe
     row = db.get(models.Address, address_id)
     if not row or row.user_id != user.id:
         raise HTTPException(status_code=404, detail="Address not found")
+    if payload.address_type not in VALID_ADDRESS_TYPES:
+        raise HTTPException(status_code=400, detail="Invalid address type")
     if payload.is_default:
         db.query(models.Address).filter(models.Address.user_id == user.id).update({"is_default": False})
     for field, value in payload.model_dump().items():

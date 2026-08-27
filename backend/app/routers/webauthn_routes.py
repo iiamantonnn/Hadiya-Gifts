@@ -17,6 +17,7 @@ from app.database import get_db
 from app.deps import get_current_user
 from app import models
 from app.routers.auth import _issue_session, UserOut
+from app.security import is_expired
 
 router = APIRouter(prefix="/api/webauthn", tags=["webauthn"])
 
@@ -42,7 +43,7 @@ def _store_challenge(db: Session, challenge_bytes: bytes, purpose: str, user_id:
 
 def _consume_challenge(db: Session, challenge_id: str, purpose: str) -> models.WebAuthnChallenge:
     row = db.get(models.WebAuthnChallenge, challenge_id)
-    if not row or row.purpose != purpose or row.expires_at < datetime.now(timezone.utc):
+    if not row or row.purpose != purpose or is_expired(row.expires_at):
         raise HTTPException(status_code=400, detail="This request has expired. Please try again.")
     db.delete(row)
     db.commit()

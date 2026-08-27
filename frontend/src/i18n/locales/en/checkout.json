@@ -7,6 +7,7 @@
     "address": "Address",
     "privacy": "Privacy",
     "cardVoice": "Card & Voice",
+    "payment": "Payment",
     "review": "Review"
   },
   "back": "Back",
@@ -35,7 +36,18 @@
   "step4": {
     "heading": "Delivery address",
     "addAddressFirst": "Add a delivery address in Settings first.",
-    "choosePlaceholder": "Choose an address"
+    "choosePlaceholder": "Choose an address",
+    "useOwnAddress": "Use my saved address",
+    "useRecipientAddress": "Deliver to their private address",
+    "recipientAddressHint": "{{name}} has shared a private delivery location with you - you'll never see the exact address.",
+    "chooseLocation": "Choose a location",
+    "locationHome": "Home",
+    "locationWork": "Work"
+  },
+  "stepPayment": {
+    "heading": "How would you like to pay?",
+    "addNew": "Add a new payment method",
+    "chooseOne": "Choose a payment method to continue."
   },
   "step5": {
     "heading": "Show my identity?",
@@ -64,6 +76,9 @@
     "occasion": "Occasion:",
     "delivery": "Delivery:",
     "address": "Address:",
+    "recipientAddress": "{{name}}'s {{location}} (private)",
+    "payment": "Payment:",
+    "change": "Change",
     "from": "From:",
     "anonymous": "Anonymous",
     "visibleToRecipient": "Visible to recipient",

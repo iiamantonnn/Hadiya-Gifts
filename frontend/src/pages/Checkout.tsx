@@ -5,13 +5,15 @@ import Card from "../components/ui/Card";
 import Button from "../components/ui/Button";
 import { Input, Select, Textarea } from "../components/ui/Input";
 import VoiceRecorder from "../components/checkout/VoiceRecorder";
+import AddPaymentMethodForm from "../components/payments/AddPaymentMethodForm";
 import { api, ApiError } from "../lib/api";
 import { formatPrice } from "../lib/format";
 import { todayDateStr } from "../lib/date-helpers";
-import type { Person, Flower, Address, DeliveryWindow } from "../lib/types";
+import { paymentMethodLabel } from "../lib/payments";
+import type { Person, Flower, Address, DeliveryWindow, PaymentMethod, DeliveryOptions } from "../lib/types";
 
 const OCCASIONS = ["birthday", "anniversary", "friendship", "thank_you", "congratulations", "romantic", "sympathy", "just_because", "other"];
-const STEP_KEYS = ["recipient", "bouquet", "occasion", "delivery", "address", "privacy", "cardVoice", "review"];
+const STEP_KEYS = ["recipient", "bouquet", "occasion", "delivery", "address", "privacy", "cardVoice", "payment", "review"];
 
 function label(v: string) {
   return v.replace(/_/g, " ").replace(/^\w/, (c) => c.toUpperCase());
@@ -26,6 +28,8 @@ export default function Checkout() {
   const [flowers, setFlowers] = useState<Flower[]>([]);
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [windows, setWindows] = useState<DeliveryWindow[]>([]);
+  const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([]);
+  const [deliveryOptions, setDeliveryOptions] = useState<DeliveryOptions>({ available: false, types: [] });
 
   const [recipientId, setRecipientId] = useState(params.get("person_id") || "");
   const [flowerId, setFlowerId] = useState(params.get("flower_id") || "");
@@ -35,6 +39,10 @@ export default function Checkout() {
   const [deliveryDate, setDeliveryDate] = useState(todayDateStr());
   const [window_, setWindow] = useState<{ start: string; end: string } | null>(null);
   const [addressId, setAddressId] = useState("");
+  const [useRecipientAddress, setUseRecipientAddress] = useState(false);
+  const [recipientAddressType, setRecipientAddressType] = useState<"home" | "work" | "">("");
+  const [paymentMethodId, setPaymentMethodId] = useState("");
+  const [showAddPayment, setShowAddPayment] = useState(false);
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [cardType, setCardType] = useState<"none" | "physical" | "digital" | "both">("digital");
   const [cardText, setCardText] = useState("");
@@ -48,9 +56,29 @@ export default function Checkout() {
   const flower = flowers.find((f) => f.id === flowerId) || null;
   const recipient = people.find((p) => p.id === recipientId) || null;
   const address = addresses.find((a) => a.id === addressId) || null;
+  const selectedPaymentMethod = paymentMethods.find((pm) => pm.id === paymentMethodId) || null;
 
   function occasionLabel(o: string) {
     return t(`checkout.occasions.${o}`, { defaultValue: label(o) });
+  }
+
+  function addressDisplay(): string {
+    if (useRecipientAddress) {
+      if (!recipientAddressType) return t("checkout.notSet");
+      const location = t(`checkout.step4.location${recipientAddressType === "home" ? "Home" : "Work"}`);
+      return t("checkout.review.recipientAddress", { name: recipient?.name, location });
+    }
+    return address ? `${address.line1}, ${address.city}` : t("checkout.notSet");
+  }
+
+  function loadPaymentMethods() {
+    api.get<PaymentMethod[]>("/payment-methods").then((rows) => {
+      setPaymentMethods(rows);
+      if (!paymentMethodId) {
+        const def = rows.find((pm) => pm.is_default) || rows[0];
+        if (def) setPaymentMethodId(def.id);
+      }
+    }).catch(() => {});
   }
 
   useEffect(() => {
@@ -61,6 +89,7 @@ export default function Checkout() {
       const def = rows.find((a) => a.is_default);
       if (def) setAddressId(def.id);
     }).catch(() => {});
+    loadPaymentMethods();
   }, []);
 
   useEffect(() => {
@@ -69,11 +98,22 @@ export default function Checkout() {
     setWindow(null);
   }, [deliveryDate]);
 
+  useEffect(() => {
+    setUseRecipientAddress(false);
+    setRecipientAddressType("");
+    if (!recipientId) {
+      setDeliveryOptions({ available: false, types: [] });
+      return;
+    }
+    api.get<DeliveryOptions>(`/people/${recipientId}/delivery-options`).then(setDeliveryOptions).catch(() => setDeliveryOptions({ available: false, types: [] }));
+  }, [recipientId]);
+
   function next() { setStep((s) => Math.min(s + 1, STEP_KEYS.length - 1)); }
   function back() { setStep((s) => Math.max(s - 1, 0)); }
 
   async function handleConfirm() {
-    if (!recipientId || !flowerId || !window_ || !addressId) {
+    const hasDeliveryTarget = useRecipientAddress ? !!recipientAddressType : !!addressId;
+    if (!recipientId || !flowerId || !window_ || !hasDeliveryTarget || !paymentMethodId) {
       setError(t("checkout.errors.completeAllSteps"));
       return;
     }
@@ -89,7 +129,9 @@ export default function Checkout() {
         delivery_date: deliveryDate,
         delivery_window_start: window_.start,
         delivery_window_end: window_.end,
-        address_id: addressId,
+        address_id: useRecipientAddress ? undefined : addressId,
+        recipient_address_type: useRecipientAddress ? recipientAddressType : undefined,
+        payment_method_id: paymentMethodId,
         is_anonymous: isAnonymous,
         card: { card_type: cardType, text: cardText || undefined, ai_generate: aiGenerate },
       });
@@ -210,7 +252,31 @@ export default function Checkout() {
         {step === 4 && (
           <div className="flex flex-col gap-4">
             <h2 className="font-display text-xl font-semibold text-ink">{t("checkout.step4.heading")}</h2>
-            {addresses.length === 0 ? (
+
+            {deliveryOptions.available && (
+              <div className="flex flex-col gap-2">
+                <label className="flex items-center gap-2 text-sm text-ink">
+                  <input type="radio" checked={!useRecipientAddress} onChange={() => setUseRecipientAddress(false)} className="h-4 w-4" />
+                  {t("checkout.step4.useOwnAddress")}
+                </label>
+                <label className="flex items-center gap-2 text-sm text-ink">
+                  <input type="radio" checked={useRecipientAddress} onChange={() => setUseRecipientAddress(true)} className="h-4 w-4" />
+                  {t("checkout.step4.useRecipientAddress")}
+                </label>
+                {useRecipientAddress && (
+                  <p className="text-xs text-ink-faint">{t("checkout.step4.recipientAddressHint", { name: recipient?.name })}</p>
+                )}
+              </div>
+            )}
+
+            {useRecipientAddress ? (
+              <Select value={recipientAddressType} onChange={(e) => setRecipientAddressType(e.target.value as typeof recipientAddressType)}>
+                <option value="">{t("checkout.step4.chooseLocation")}</option>
+                {deliveryOptions.types.map((type) => (
+                  <option key={type} value={type}>{t(`checkout.step4.location${type === "home" ? "Home" : "Work"}`)}</option>
+                ))}
+              </Select>
+            ) : addresses.length === 0 ? (
               <p className="text-sm text-ink-muted">{t("checkout.step4.addAddressFirst")}</p>
             ) : (
               <Select value={addressId} onChange={(e) => setAddressId(e.target.value)}>
@@ -255,13 +321,43 @@ export default function Checkout() {
         )}
 
         {step === 7 && (
+          <div className="flex flex-col gap-4">
+            <h2 className="font-display text-xl font-semibold text-ink">{t("checkout.stepPayment.heading")}</h2>
+            {paymentMethods.length > 0 && (
+              <ul className="flex flex-col gap-2">
+                {paymentMethods.map((pm) => (
+                  <li key={pm.id}>
+                    <label className="flex items-center gap-2 text-sm text-ink">
+                      <input type="radio" checked={paymentMethodId === pm.id} onChange={() => setPaymentMethodId(pm.id)} className="h-4 w-4" />
+                      {paymentMethodLabel(pm)}
+                    </label>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {!showAddPayment ? (
+              <Button type="button" variant="ghost" className="self-start" onClick={() => setShowAddPayment(true)}>
+                {t("checkout.stepPayment.addNew")}
+              </Button>
+            ) : (
+              <AddPaymentMethodForm onAdded={(pm) => { setPaymentMethodId(pm.id); setShowAddPayment(false); loadPaymentMethods(); }} />
+            )}
+          </div>
+        )}
+
+        {step === 8 && (
           <div className="flex flex-col gap-3 text-sm">
             <h2 className="font-display text-xl font-semibold text-ink">{t("checkout.review.heading")}</h2>
             <p><span className="text-ink-muted">{t("checkout.review.to")}</span> {recipient?.name}</p>
             <p><span className="text-ink-muted">{t("checkout.review.bouquet")}</span> {flower?.name} {flower && `(${formatPrice(flower.price_cents)})`}</p>
             <p><span className="text-ink-muted">{t("checkout.review.occasion")}</span> {occasion ? occasionLabel(occasion) : t("checkout.notSet")}</p>
             <p><span className="text-ink-muted">{t("checkout.review.delivery")}</span> {deliveryDate} {window_ && `${window_.start}-${window_.end}`}</p>
-            <p><span className="text-ink-muted">{t("checkout.review.address")}</span> {address ? `${address.line1}, ${address.city}` : t("checkout.notSet")}</p>
+            <p><span className="text-ink-muted">{t("checkout.review.address")}</span> {addressDisplay()}</p>
+            <p>
+              <span className="text-ink-muted">{t("checkout.review.payment")}</span>{" "}
+              {selectedPaymentMethod ? paymentMethodLabel(selectedPaymentMethod) : t("checkout.notSet")}{" "}
+              <button type="button" onClick={() => setStep(7)} className="text-forest underline">{t("checkout.review.change")}</button>
+            </p>
             <p><span className="text-ink-muted">{t("checkout.review.from")}</span> {isAnonymous ? t("checkout.review.anonymous") : t("checkout.review.visibleToRecipient")}</p>
             {error && <p className="text-error">{error}</p>}
             <Button onClick={handleConfirm} disabled={submitting} className="mt-2 w-full">

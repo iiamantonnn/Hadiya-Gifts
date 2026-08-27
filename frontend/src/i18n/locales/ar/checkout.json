@@ -7,6 +7,7 @@
     "address": "العنوان",
     "privacy": "الخصوصية",
     "cardVoice": "البطاقة والصوت",
+    "payment": "الدفع",
     "review": "المراجعة"
   },
   "back": "رجوع",
@@ -35,7 +36,18 @@
   "step4": {
     "heading": "عنوان التوصيل",
     "addAddressFirst": "أضف عنوان توصيل في الإعدادات أولًا.",
-    "choosePlaceholder": "اختر عنوانًا"
+    "choosePlaceholder": "اختر عنوانًا",
+    "useOwnAddress": "استخدام عنواني المحفوظ",
+    "useRecipientAddress": "التوصيل إلى العنوان الخاص بالمستلِم",
+    "recipientAddressHint": "شارك {{name}} موقع توصيل خاصًا معك - لن ترى العنوان الدقيق أبدًا.",
+    "chooseLocation": "اختر الموقع",
+    "locationHome": "المنزل",
+    "locationWork": "العمل"
+  },
+  "stepPayment": {
+    "heading": "كيف تريد الدفع؟",
+    "addNew": "إضافة طريقة دفع جديدة",
+    "chooseOne": "اختر طريقة دفع للمتابعة."
   },
   "step5": {
     "heading": "هل تريد إظهار هويتك؟",
@@ -64,6 +76,9 @@
     "occasion": "المناسبة:",
     "delivery": "التوصيل:",
     "address": "العنوان:",
+    "recipientAddress": "عنوان {{name}} الخاص - {{location}}",
+    "payment": "الدفع:",
+    "change": "تغيير",
     "from": "من:",
     "anonymous": "مجهول الهوية",
     "visibleToRecipient": "ظاهر للمستلِم",

@@ -8,7 +8,7 @@ from fastapi.staticfiles import StaticFiles
 from app.config import settings
 from app.database import Base, engine
 from app import models  # noqa: F401 - registers models on Base before create_all
-from app.routers import auth, webauthn_routes, users, people, wishlist, catalog, ai, orders, gift_page, pairing, notifications
+from app.routers import auth, webauthn_routes, users, people, wishlist, catalog, ai, orders, gift_page, pairing, notifications, payments
 
 Base.metadata.create_all(bind=engine)
 
@@ -45,6 +45,7 @@ app.include_router(orders.router)
 app.include_router(gift_page.router)
 app.include_router(pairing.router)
 app.include_router(notifications.router)
+app.include_router(payments.router)
 
 
 @app.get("/api/health")

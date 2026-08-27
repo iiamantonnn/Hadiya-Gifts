@@ -1,3 +1,4 @@
+import secrets
 import uuid
 from datetime import datetime, date
 
@@ -105,6 +106,7 @@ class Address(Base):
     id: Mapped[str] = mapped_column(String, primary_key=True, default=gen_id)
     user_id: Mapped[str] = mapped_column(String, ForeignKey("users.id"))
     label: Mapped[str] = mapped_column(String(100))
+    address_type: Mapped[str] = mapped_column(String(20), default="home")  # home|work|other - the only part ever exposed to another user
     line1: Mapped[str] = mapped_column(String(255))
     line2: Mapped[str | None] = mapped_column(String(255), nullable=True)
     city: Mapped[str] = mapped_column(String(100))
@@ -115,6 +117,24 @@ class Address(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
     user: Mapped["User"] = relationship(back_populates="addresses")
+
+
+class PaymentMethod(Base):
+    # Mock payment methods only - demo-mode tokenization, never a full PAN/CVV.
+    __tablename__ = "payment_methods"
+
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=gen_id)
+    user_id: Mapped[str] = mapped_column(String, ForeignKey("users.id"))
+    method_type: Mapped[str] = mapped_column(String(20))  # card|google_pay|apple_pay
+    brand: Mapped[str | None] = mapped_column(String(20), nullable=True)  # visa|mastercard|amex|other
+    last4: Mapped[str | None] = mapped_column(String(4), nullable=True)
+    exp_month: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    exp_year: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    token: Mapped[str] = mapped_column(String(64), default=lambda: f"demo_tok_{uuid.uuid4().hex}")
+    is_default: Mapped[bool] = mapped_column(Boolean, default=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+    user: Mapped["User"] = relationship()
 
 
 class Person(Base):
@@ -221,6 +241,7 @@ class Order(Base):
     delivery_window_start: Mapped[str] = mapped_column(String(5))
     delivery_window_end: Mapped[str] = mapped_column(String(5))
     address_id: Mapped[str] = mapped_column(String, ForeignKey("addresses.id"))
+    payment_method_id: Mapped[str] = mapped_column(String, ForeignKey("payment_methods.id"))
     is_anonymous: Mapped[bool] = mapped_column(Boolean, default=False)
     price_cents: Mapped[int] = mapped_column(Integer)
     status: Mapped[str] = mapped_column(String(30), default="placed")
@@ -234,6 +255,7 @@ class Order(Base):
     recipient: Mapped["Person"] = relationship(foreign_keys=[recipient_person_id])
     buyer: Mapped["User"] = relationship(foreign_keys=[buyer_id])
     wishlist_gift: Mapped["WishlistItem | None"] = relationship()
+    payment_method: Mapped["PaymentMethod"] = relationship()
 
 
 class GiftMessage(Base):
@@ -282,6 +304,26 @@ class Pairing(Base):
     status: Mapped[str] = mapped_column(String(20), default="pending")  # pending|accepted|declined|ended
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     responded_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+
+    requester: Mapped["User"] = relationship(foreign_keys=[requester_id])
+    recipient: Mapped["User"] = relationship(foreign_keys=[recipient_id])
+
+
+class PairingInvitation(Base):
+    # A shareable QR/link invitation to pair. The token (not the db id) is
+    # what appears in the URL - random and unguessable, and single-use.
+    __tablename__ = "pairing_invitations"
+
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=gen_id)
+    token: Mapped[str] = mapped_column(String(64), unique=True, index=True, default=lambda: secrets.token_urlsafe(24))
+    creator_id: Mapped[str] = mapped_column(String, ForeignKey("users.id"))
+    theme: Mapped[str] = mapped_column(String(30), default="minimal")
+    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    used: Mapped[bool] = mapped_column(Boolean, default=False)
+    used_by_id: Mapped[str | None] = mapped_column(String, ForeignKey("users.id"), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+    creator: Mapped["User"] = relationship(foreign_keys=[creator_id])
 
 
 class Notification(Base):

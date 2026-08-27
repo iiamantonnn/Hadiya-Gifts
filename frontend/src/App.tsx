@@ -20,6 +20,7 @@ import GiftHistory from "./pages/GiftHistory";
 import GiftPage from "./pages/GiftPage";
 import Settings from "./pages/Settings";
 import Pairing from "./pages/Pairing";
+import PairingAccept from "./pages/PairingAccept";
 import Notifications from "./pages/Notifications";
 import NotFound from "./pages/NotFound";
 
@@ -37,6 +38,7 @@ export default function App() {
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/gift/:token" element={<GiftPage />} />
+      <Route path="/pair/:token" element={<PairingAccept />} />
 
       <Route element={<RequireAuth />}>
         <Route path="/dashboard" element={<Protected><Dashboard /></Protected>} />

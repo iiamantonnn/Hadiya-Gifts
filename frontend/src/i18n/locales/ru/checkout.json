@@ -7,6 +7,7 @@
     "address": "Адрес",
     "privacy": "Анонимность",
     "cardVoice": "Открытка и голос",
+    "payment": "Оплата",
     "review": "Проверка"
   },
   "back": "Назад",
@@ -35,7 +36,18 @@
   "step4": {
     "heading": "Адрес доставки",
     "addAddressFirst": "Сначала добавьте адрес доставки в настройках.",
-    "choosePlaceholder": "Выберите адрес"
+    "choosePlaceholder": "Выберите адрес",
+    "useOwnAddress": "Использовать мой сохранённый адрес",
+    "useRecipientAddress": "Доставить на приватный адрес получателя",
+    "recipientAddressHint": "{{name}} поделился(-ась) с вами приватным местом доставки - вы никогда не увидите точный адрес.",
+    "chooseLocation": "Выберите место",
+    "locationHome": "Дом",
+    "locationWork": "Работа"
+  },
+  "stepPayment": {
+    "heading": "Как вы хотите оплатить?",
+    "addNew": "Добавить новый способ оплаты",
+    "chooseOne": "Выберите способ оплаты, чтобы продолжить."
   },
   "step5": {
     "heading": "Указать, что подарок от вас?",
@@ -64,6 +76,9 @@
     "occasion": "Повод:",
     "delivery": "Доставка:",
     "address": "Адрес:",
+    "recipientAddress": "Личный адрес {{name}} - {{location}}",
+    "payment": "Оплата:",
+    "change": "Изменить",
     "from": "От кого:",
     "anonymous": "Анонимно",
     "visibleToRecipient": "Получатель увидит ваше имя",

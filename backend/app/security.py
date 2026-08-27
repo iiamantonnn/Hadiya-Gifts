@@ -41,3 +41,11 @@ def generate_raw_token(length: int = 48) -> str:
 
 def generate_verification_code() -> str:
     return "".join(secrets.choice(string.digits) for _ in range(6))
+
+
+def is_expired(expires_at: datetime) -> bool:
+    # SQLite drops tzinfo on round-trip even for a DateTime(timezone=True)
+    # column, so a naive value read back here still means UTC - comparing
+    # it directly against an aware "now" raises TypeError.
+    aware = expires_at if expires_at.tzinfo else expires_at.replace(tzinfo=timezone.utc)
+    return aware < datetime.now(timezone.utc)

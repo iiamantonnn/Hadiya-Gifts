@@ -7,6 +7,7 @@
     "address": "地址",
     "privacy": "身份设置",
     "cardVoice": "贺卡与语音",
+    "payment": "支付",
     "review": "确认订单"
   },
   "back": "上一步",
@@ -35,7 +36,18 @@
   "step4": {
     "heading": "配送地址",
     "addAddressFirst": "请先在“设置”中添加配送地址。",
-    "choosePlaceholder": "选择地址"
+    "choosePlaceholder": "选择地址",
+    "useOwnAddress": "使用我保存的地址",
+    "useRecipientAddress": "配送至对方的私密地址",
+    "recipientAddressHint": "{{name}} 已与您共享一个私密配送地点 - 您将永远看不到具体地址。",
+    "chooseLocation": "选择地点",
+    "locationHome": "家",
+    "locationWork": "公司"
+  },
+  "stepPayment": {
+    "heading": "您希望如何支付？",
+    "addNew": "添加新的支付方式",
+    "chooseOne": "请选择一种支付方式以继续。"
   },
   "step5": {
     "heading": "要显示您的身份吗？",
@@ -64,6 +76,9 @@
     "occasion": "场合：",
     "delivery": "配送时间：",
     "address": "地址：",
+    "recipientAddress": "{{name}} 的{{location}}（私密）",
+    "payment": "支付方式：",
+    "change": "更改",
     "from": "寄件人：",
     "anonymous": "匿名",
     "visibleToRecipient": "对收礼人可见",

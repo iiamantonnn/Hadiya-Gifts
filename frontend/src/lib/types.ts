@@ -39,6 +39,7 @@ export interface Person {
   favorite_colors: string[];
   notes: string | null;
   is_favorite: boolean;
+  linked_user_id: string | null;
 }
 
 export interface ImportantDateItem {
@@ -75,6 +76,7 @@ export interface WishlistItem {
 export interface Address {
   id: string;
   label: string;
+  address_type: "home" | "work" | "other";
   line1: string;
   line2: string | null;
   city: string;
@@ -82,6 +84,21 @@ export interface Address {
   postal_code: string | null;
   country: string;
   is_default: boolean;
+}
+
+export interface PaymentMethod {
+  id: string;
+  method_type: "card" | "google_pay" | "apple_pay";
+  brand: string | null;
+  last4: string | null;
+  exp_month: number | null;
+  exp_year: number | null;
+  is_default: boolean;
+}
+
+export interface DeliveryOptions {
+  available: boolean;
+  types: ("home" | "work")[];
 }
 
 export interface DeliveryWindow {
@@ -121,6 +138,7 @@ export interface OrderDetail {
   price_cents: number;
   card: { card_type: string; text: string | null; ai_generated: boolean } | null;
   voice_message_url: string | null;
+  payment_method: { method_type: string; brand: string | null; last4: string | null } | null;
   wishlist_gift: {
     id: string;
     product_name: string;
@@ -151,5 +169,20 @@ export interface Pairing {
   status: string;
   direction: "incoming" | "outgoing";
   other_user_id: string;
+  other_user_name: string;
   created_at: string;
+}
+
+export interface PairingInvitation {
+  token: string;
+  theme: string;
+  expires_at: string;
+  share_url: string;
+}
+
+export interface InvitationPreview {
+  valid: boolean;
+  reason?: "expired" | "used";
+  creator_name?: string;
+  theme?: string;
 }

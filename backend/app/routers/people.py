@@ -12,8 +12,9 @@ from app.schemas import PersonOut, ImportantDateOut
 router = APIRouter(prefix="/api/people", tags=["people"])
 
 RELATIONSHIP_TYPES = [
-    "mother", "father", "sister", "brother", "friend", "partner", "spouse",
-    "colleague", "grandmother", "grandfather", "other",
+    "mother", "father", "sister", "brother", "friend", "best_friend", "partner",
+    "boyfriend", "girlfriend", "husband", "wife", "spouse", "daughter", "son",
+    "grandmother", "grandfather", "colleague", "other",
 ]
 DATE_TYPES = ["birthday", "anniversary", "met", "graduation", "mothers_day", "friendship", "custom"]
 
@@ -82,6 +83,32 @@ def _get_owned_person(db: Session, person_id: str, user: models.User) -> models.
     if not row or row.owner_id != user.id:
         raise HTTPException(status_code=404, detail="Person not found")
     return row
+
+
+def has_accepted_pairing(db: Session, user_id_a: str, user_id_b: str) -> bool:
+    return db.query(models.Pairing).filter(
+        models.Pairing.status == "accepted",
+        ((models.Pairing.requester_id == user_id_a) & (models.Pairing.recipient_id == user_id_b))
+        | ((models.Pairing.requester_id == user_id_b) & (models.Pairing.recipient_id == user_id_a)),
+    ).first() is not None
+
+
+@router.get("/{person_id}/delivery-options")
+def delivery_options(person_id: str, user: models.User = Depends(get_current_user), db: Session = Depends(get_db)):
+    """Never returns address content - only which private delivery
+    locations (home/work) the recipient has made available, and only if
+    they're a currently-paired Hadiya account."""
+    person = _get_owned_person(db, person_id, user)
+
+    if not person.linked_user_id or not has_accepted_pairing(db, user.id, person.linked_user_id):
+        return {"available": False, "types": []}
+
+    rows = db.query(models.Address.address_type).filter(
+        models.Address.user_id == person.linked_user_id,
+        models.Address.address_type.in_(["home", "work"]),
+    ).distinct().all()
+    types = [r[0] for r in rows]
+    return {"available": len(types) > 0, "types": types}
 
 
 @router.patch("/{person_id}", response_model=PersonOut)

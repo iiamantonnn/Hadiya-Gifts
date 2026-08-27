@@ -2,7 +2,7 @@
 flower catalog, plus a demo account (pre-verified) with sample people,
 important dates, and a wishlist item, so a first-time reviewer can log in
 and see a populated dashboard immediately instead of an empty shell."""
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta, timezone
 
 from app.database import Base, engine, SessionLocal
 from app import models
@@ -166,10 +166,21 @@ def seed_demo_persona(db):
     ))
 
     alex_address = models.Address(
-        user_id=alex.id, label="Home", line1="14 Northern Avenue, Apt 5B", city="Yerevan",
+        user_id=alex.id, label="Home", address_type="home", line1="14 Northern Avenue, Apt 5B", city="Yerevan",
         region="Yerevan", postal_code="0001", country="Armenia", is_default=True,
     )
-    db.add(alex_address)
+    alex_work_address = models.Address(
+        user_id=alex.id, label="Work", address_type="work", line1="2 Amiryan Street, 4th Floor", city="Yerevan",
+        region="Yerevan", postal_code="0010", country="Armenia", is_default=False,
+    )
+    db.add_all([alex_address, alex_work_address])
+    db.flush()
+
+    alex_card = models.PaymentMethod(
+        user_id=alex.id, method_type="card", brand="visa", last4="2244",
+        exp_month=11, exp_year=date.today().year + 3, is_default=True,
+    )
+    db.add(alex_card)
     db.flush()
 
     vase = models.WishlistItem(
@@ -207,13 +218,13 @@ def seed_demo_persona(db):
     db.flush()
 
     def _order_with_extras(*, buyer_id, recipient, flower_name, size, color, occasion,
-                            delivery_date, status, window, address_id, message_text, wishlist_item_id=None):
+                            delivery_date, status, window, address_id, payment_method_id, message_text, wishlist_item_id=None):
         flower = flowers_by_name[flower_name]
         order = models.Order(
             buyer_id=buyer_id, recipient_person_id=recipient.id, flower_id=flower.id,
             size=size, color=color, occasion=occasion, delivery_date=delivery_date,
             delivery_window_start=window[0], delivery_window_end=window[1],
-            address_id=address_id, is_anonymous=False, price_cents=flower.price_cents,
+            address_id=address_id, payment_method_id=payment_method_id, is_anonymous=False, price_cents=flower.price_cents,
             status=status, wishlist_item_id=wishlist_item_id,
         )
         db.add(order)
@@ -225,13 +236,13 @@ def seed_demo_persona(db):
     _order_with_extras(
         buyer_id=alex.id, recipient=anna, flower_name="Pink Peony Bunch", size="medium", color="pink",
         occasion="birthday", delivery_date=today - timedelta(days=30), status="delivered",
-        window=("09:00", "12:00"), address_id=alex_address.id,
+        window=("09:00", "12:00"), address_id=alex_address.id, payment_method_id=alex_card.id,
         message_text="Happy birthday, Mama! Sending you all my love and these peonies you adore.",
     )
     _order_with_extras(
         buyer_id=alex.id, recipient=maria, flower_name="White Lily Arrangement", size="medium", color="white",
         occasion="congratulations", delivery_date=today - timedelta(days=10), status="delivered",
-        window=("12:00", "15:00"), address_id=alex_address.id,
+        window=("12:00", "15:00"), address_id=alex_address.id, payment_method_id=alex_card.id,
         message_text="Congratulations, Maria! So proud of you - hope these lilies brighten your day.",
     )
     # This one includes the wishlist vase Alex had saved for Anna - a real
@@ -239,14 +250,14 @@ def seed_demo_persona(db):
     _order_with_extras(
         buyer_id=alex.id, recipient=anna, flower_name="Grand Mixed Celebration Bouquet", size="large", color="mixed",
         occasion="anniversary", delivery_date=today - timedelta(days=45), status="delivered",
-        window=("15:00", "18:00"), address_id=alex_address.id,
+        window=("15:00", "18:00"), address_id=alex_address.id, payment_method_id=alex_card.id,
         message_text="Happy anniversary, Mom! Wishing you and Dad many more happy years together.",
         wishlist_item_id=vase.id,
     )
     _order_with_extras(
         buyer_id=alex.id, recipient=anahit, flower_name="Sunshine Tulip Mix", size="small", color="yellow",
         occasion="birthday", delivery_date=today + timedelta(days=3), status="placed",
-        window=("09:00", "12:00"), address_id=alex_address.id,
+        window=("09:00", "12:00"), address_id=alex_address.id, payment_method_id=alex_card.id,
         message_text="Happy early birthday, Anahit! Can't wait to celebrate with you soon.",
     )
 
@@ -260,17 +271,41 @@ def seed_demo_persona(db):
     db.flush()
 
     davit_address = models.Address(
-        user_id=davit.id, label="Home", line1="7 Mashtots Avenue", city="Yerevan",
+        user_id=davit.id, label="Home", address_type="home", line1="7 Mashtots Avenue", city="Yerevan",
         region="Yerevan", postal_code="0009", country="Armenia", is_default=True,
     )
-    db.add(davit_address)
+    davit_work_address = models.Address(
+        user_id=davit.id, label="Work", address_type="work", line1="18 Tumanyan Street, Suite 3", city="Yerevan",
+        region="Yerevan", postal_code="0002", country="Armenia", is_default=False,
+    )
+    db.add_all([davit_address, davit_work_address])
     db.flush()
+
+    davit_card = models.PaymentMethod(
+        user_id=davit.id, method_type="card", brand="mastercard", last4="8871",
+        exp_month=6, exp_year=date.today().year + 2, is_default=True,
+    )
+    db.add(davit_card)
+    db.flush()
+
+    # An accepted pairing between Alex and Davit - mutual consent is what
+    # authorizes each of them to see the other's private Home/Work delivery
+    # options at checkout (never the address itself).
+    db.add(models.Pairing(
+        requester_id=alex.id, recipient_id=davit.id, status="accepted", responded_at=datetime.now(timezone.utc),
+    ))
 
     # linked_user_id ties this Person record back to Alex's own account, which
     # is what makes the order below surface under Alex's "received" tab.
     alex_as_seen_by_davit = models.Person(
         owner_id=davit.id, name="Alex", relationship_type="friend", linked_user_id=alex.id,
     )
+    # The reverse link - lets Alex send a gift to Davit using Davit's own
+    # private Home/Work address without ever seeing it.
+    davit_as_seen_by_alex = models.Person(
+        owner_id=alex.id, name="Davit", relationship_type="friend", linked_user_id=davit.id,
+    )
+    db.add(davit_as_seen_by_alex)
     db.add(alex_as_seen_by_davit)
     db.flush()
 
@@ -287,10 +322,19 @@ def seed_demo_persona(db):
     _order_with_extras(
         buyer_id=davit.id, recipient=alex_as_seen_by_davit, flower_name="Blue Hydrangea Bunch",
         size="medium", color="blue", occasion="just_because", delivery_date=today - timedelta(days=15),
-        status="delivered", window=("18:00", "21:00"), address_id=davit_address.id,
+        status="delivered", window=("18:00", "21:00"), address_id=davit_address.id, payment_method_id=davit_card.id,
         message_text="Thinking of you, Alex - hope this brightens your day!",
         wishlist_item_id=perfume.id,
     )
+
+    # A ready-to-test pairing invitation for Alex, so the QR/link flow can be
+    # exercised immediately without first clicking "Pair with someone".
+    demo_invitation = models.PairingInvitation(
+        creator_id=alex.id, theme="heart",
+        expires_at=datetime.now(timezone.utc) + timedelta(hours=72),
+    )
+    db.add(demo_invitation)
+    db.flush()
 
     db.commit()
     print(
@@ -298,6 +342,7 @@ def seed_demo_persona(db):
         "(3 people, 4 sent orders, 1 received order, 5 wishlist items) "
         "plus sender davit.petrosyan@hadiya.demo / HadiyaDemo123!"
     )
+    print(f"Demo pairing invitation: /pair/{demo_invitation.token}")
 
 
 if __name__ == "__main__":

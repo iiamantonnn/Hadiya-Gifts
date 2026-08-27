@@ -4,12 +4,14 @@ import { browserSupportsWebAuthn } from "@simplewebauthn/browser";
 import Card from "../components/ui/Card";
 import Button from "../components/ui/Button";
 import { Input, Select } from "../components/ui/Input";
+import AddPaymentMethodForm from "../components/payments/AddPaymentMethodForm";
 import { api, ApiError } from "../lib/api";
 import { useAuth } from "../lib/auth-context";
 import { registerPasskey } from "../lib/webauthn";
-import type { Address, Passkey } from "../lib/types";
+import { paymentMethodLabel } from "../lib/payments";
+import type { Address, Passkey, PaymentMethod } from "../lib/types";
 
-const EMPTY_ADDRESS = { label: "", line1: "", line2: "", city: "", region: "", postal_code: "", country: "", is_default: false };
+const EMPTY_ADDRESS = { label: "", address_type: "home", line1: "", line2: "", city: "", region: "", postal_code: "", country: "", is_default: false };
 
 export default function Settings() {
   const { t } = useTranslation();
@@ -24,6 +26,9 @@ export default function Settings() {
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [addressForm, setAddressForm] = useState(EMPTY_ADDRESS);
   const [addressError, setAddressError] = useState<string | null>(null);
+  const [revealedAddresses, setRevealedAddresses] = useState<Set<string>>(new Set());
+
+  const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([]);
 
   const [passkeys, setPasskeys] = useState<Passkey[]>([]);
   const [passkeyMessage, setPasskeyMessage] = useState<string | null>(null);
@@ -31,10 +36,21 @@ export default function Settings() {
   function loadAddresses() {
     api.get<Address[]>("/users/me/addresses").then(setAddresses).catch(() => {});
   }
+  function loadPaymentMethods() {
+    api.get<PaymentMethod[]>("/payment-methods").then(setPaymentMethods).catch(() => {});
+  }
   function loadPasskeys() {
     api.get<Passkey[]>("/webauthn/passkeys").then(setPasskeys).catch(() => {});
   }
-  useEffect(() => { loadAddresses(); loadPasskeys(); }, []);
+  useEffect(() => { loadAddresses(); loadPaymentMethods(); loadPasskeys(); }, []);
+
+  function toggleReveal(id: string) {
+    setRevealedAddresses((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      return next;
+    });
+  }
 
   async function saveProfile(e: FormEvent) {
     e.preventDefault();
@@ -64,6 +80,11 @@ export default function Settings() {
   async function removeAddress(id: string) {
     await api.delete(`/users/me/addresses/${id}`);
     loadAddresses();
+  }
+
+  async function removePaymentMethod(id: string) {
+    await api.delete(`/payment-methods/${id}`);
+    loadPaymentMethods();
   }
 
   async function addPasskey() {
@@ -114,18 +135,37 @@ export default function Settings() {
         <h2 className="font-display text-lg font-semibold text-ink">{t("settings.addresses.title")}</h2>
         <p className="mt-1 text-xs text-ink-faint">{t("settings.addresses.hint")}</p>
         <ul className="mt-4 flex flex-col gap-2">
-          {addresses.map((a) => (
-            <li key={a.id} className="flex items-center justify-between rounded-[var(--radius-control)] border border-border p-3 text-sm">
-              <span>{t("settings.addresses.entry", { label: a.label, line1: a.line1, city: a.city })} {a.is_default && <span className="text-forest">{t("settings.addresses.default")}</span>}</span>
-              <button onClick={() => removeAddress(a.id)} className="text-ink-faint hover:text-error">{t("settings.addresses.remove")}</button>
-            </li>
-          ))}
+          {addresses.map((a) => {
+            const revealed = revealedAddresses.has(a.id);
+            return (
+              <li key={a.id} className="flex items-center justify-between rounded-[var(--radius-control)] border border-border p-3 text-sm">
+                <span>
+                  {revealed
+                    ? t("settings.addresses.entry", { label: a.label, line1: a.line1, city: a.city })
+                    : `${a.label} - ${t("settings.addresses.masked")}`}{" "}
+                  {a.is_default && <span className="text-forest">{t("settings.addresses.default")}</span>}
+                </span>
+                <span className="flex gap-3">
+                  <button onClick={() => toggleReveal(a.id)} className="text-ink-faint hover:text-forest">
+                    {revealed ? t("settings.addresses.hide") : t("settings.addresses.show")}
+                  </button>
+                  <button onClick={() => removeAddress(a.id)} className="text-ink-faint hover:text-error">{t("settings.addresses.remove")}</button>
+                </span>
+              </li>
+            );
+          })}
         </ul>
+        <p className="mt-3 text-xs text-ink-faint">{t("settings.addresses.privacyNote")}</p>
         <form onSubmit={addAddress} className="mt-4 flex flex-col gap-3">
           <div className="grid grid-cols-2 gap-3">
             <Input label={t("settings.addresses.label")} required value={addressForm.label} onChange={(e) => setAddressForm({ ...addressForm, label: e.target.value })} placeholder={t("settings.addresses.labelPlaceholder")} />
-            <Input label={t("settings.addresses.city")} required value={addressForm.city} onChange={(e) => setAddressForm({ ...addressForm, city: e.target.value })} />
+            <Select label={t("settings.addresses.type")} value={addressForm.address_type} onChange={(e) => setAddressForm({ ...addressForm, address_type: e.target.value })}>
+              <option value="home">{t("settings.addresses.typeHome")}</option>
+              <option value="work">{t("settings.addresses.typeWork")}</option>
+              <option value="other">{t("settings.addresses.typeOther")}</option>
+            </Select>
           </div>
+          <Input label={t("settings.addresses.city")} required value={addressForm.city} onChange={(e) => setAddressForm({ ...addressForm, city: e.target.value })} />
           <Input label={t("settings.addresses.addressLine")} required value={addressForm.line1} onChange={(e) => setAddressForm({ ...addressForm, line1: e.target.value })} />
           <div className="grid grid-cols-3 gap-3">
             <Input label={t("settings.addresses.region")} value={addressForm.region} onChange={(e) => setAddressForm({ ...addressForm, region: e.target.value })} />
@@ -139,6 +179,23 @@ export default function Settings() {
           {addressError && <p className="text-sm text-error">{addressError}</p>}
           <Button type="submit" variant="ghost" className="self-start">{t("settings.addresses.add")}</Button>
         </form>
+      </Card>
+
+      <Card>
+        <h2 className="font-display text-lg font-semibold text-ink">{t("settings.paymentMethods.title")}</h2>
+        <p className="mt-1 text-xs text-ink-faint">{t("settings.paymentMethods.hint")}</p>
+        <ul className="mt-4 flex flex-col gap-2">
+          {paymentMethods.map((pm) => (
+            <li key={pm.id} className="flex items-center justify-between rounded-[var(--radius-control)] border border-border p-3 text-sm">
+              <span>{paymentMethodLabel(pm)} {pm.is_default && <span className="text-forest">{t("settings.paymentMethods.default")}</span>}</span>
+              <button onClick={() => removePaymentMethod(pm.id)} className="text-ink-faint hover:text-error">{t("settings.paymentMethods.remove")}</button>
+            </li>
+          ))}
+          {paymentMethods.length === 0 && <p className="text-sm text-ink-faint">{t("settings.paymentMethods.empty")}</p>}
+        </ul>
+        <div className="mt-4">
+          <AddPaymentMethodForm onAdded={() => loadPaymentMethods()} />
+        </div>
       </Card>
 
       {browserSupportsWebAuthn() && (

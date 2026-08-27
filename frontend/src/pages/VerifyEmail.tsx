@@ -6,6 +6,7 @@ import { Input } from "../components/ui/Input";
 import Button from "../components/ui/Button";
 import { api, ApiError } from "../lib/api";
 import { useAuth } from "../lib/auth-context";
+import { consumePendingInvite } from "../lib/pending-invite";
 import type { User } from "../lib/types";
 
 export default function VerifyEmail() {
@@ -28,7 +29,8 @@ export default function VerifyEmail() {
     try {
       const user = await api.post<User>("/auth/verify-email", { email, code });
       setUser(user);
-      navigate("/dashboard");
+      const pendingInvite = consumePendingInvite();
+      navigate(pendingInvite ? `/pair/${pendingInvite}` : "/dashboard");
     } catch (err) {
       setError(err instanceof ApiError ? err.message : t("common.somethingWentWrong"));
     } finally {

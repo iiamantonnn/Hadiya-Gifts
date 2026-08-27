@@ -14,6 +14,7 @@ from app.security import (
     create_access_token,
     generate_raw_token,
     generate_verification_code,
+    is_expired,
 )
 from app.config import settings
 
@@ -208,7 +209,7 @@ def verify_email(payload: VerifyEmailIn, response: Response, db: Session = Depen
         .order_by(models.EmailVerificationCode.created_at.desc())
         .first()
     )
-    if not code_row or code_row.expires_at < datetime.now(timezone.utc):
+    if not code_row or is_expired(code_row.expires_at):
         raise HTTPException(status_code=400, detail="This code has expired. Request a new one.")
     if code_row.attempts >= MAX_CODE_ATTEMPTS:
         raise HTTPException(status_code=429, detail="Too many attempts. Request a new code.")

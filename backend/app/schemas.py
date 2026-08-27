@@ -54,6 +54,7 @@ class PersonOut(BaseModel):
     favorite_colors: list[str]
     notes: str | None
     is_favorite: bool
+    linked_user_id: str | None
     important_dates: list[ImportantDateOut] = []
 
     model_config = {"from_attributes": True}
@@ -82,12 +83,25 @@ class WishlistItemOut(BaseModel):
 class AddressOut(BaseModel):
     id: str
     label: str
+    address_type: str
     line1: str
     line2: str | None
     city: str
     region: str | None
     postal_code: str | None
     country: str
+    is_default: bool
+
+    model_config = {"from_attributes": True}
+
+
+class PaymentMethodOut(BaseModel):
+    id: str
+    method_type: str
+    brand: str | None
+    last4: str | None
+    exp_month: int | None
+    exp_year: int | None
     is_default: bool
 
     model_config = {"from_attributes": True}

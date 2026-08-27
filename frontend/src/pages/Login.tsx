@@ -9,6 +9,7 @@ import Button from "../components/ui/Button";
 import { useAuth } from "../lib/auth-context";
 import { ApiError } from "../lib/api";
 import { loginWithPasskey } from "../lib/webauthn";
+import { consumePendingInvite } from "../lib/pending-invite";
 import { browserSupportsWebAuthn } from "@simplewebauthn/browser";
 
 const DEMO_EMAIL = "alex.israelyan@hadiya.demo";
@@ -31,7 +32,8 @@ export default function Login() {
     setError(null);
     try {
       await login(loginEmail, loginPassword, remember);
-      navigate("/dashboard");
+      const pendingInvite = consumePendingInvite();
+      navigate(pendingInvite ? `/pair/${pendingInvite}` : "/dashboard");
     } catch (err) {
       setError(err instanceof ApiError ? err.message : t("common.somethingWentWrong"));
     }
@@ -86,7 +88,8 @@ export default function Login() {
     try {
       const user = await loginWithPasskey(email || undefined);
       setUser(user);
-      navigate("/dashboard");
+      const pendingInvite = consumePendingInvite();
+      navigate(pendingInvite ? `/pair/${pendingInvite}` : "/dashboard");
     } catch {
       setError(t("auth.passkeyError"));
     }
