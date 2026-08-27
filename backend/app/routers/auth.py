@@ -117,12 +117,17 @@ def _issue_session(response: Response, db: Session, user: models.User, remember_
     db.commit()
 
     is_prod = settings.frontend_url.startswith("https")
+    # "none" is required for the cookie to survive a cross-site fetch (e.g.
+    # frontend and backend on different Render domains) - browsers only
+    # accept SameSite=None paired with Secure, so this only applies once
+    # we're actually on https. Local http dev keeps "lax" (same-site anyway).
+    cookie_samesite = "none" if is_prod else "lax"
     response.set_cookie(
-        "access_token", access_token, httponly=True, samesite="lax",
+        "access_token", access_token, httponly=True, samesite=cookie_samesite,
         secure=is_prod, max_age=settings.access_token_minutes * 60, path="/",
     )
     response.set_cookie(
-        "refresh_token", raw_refresh, httponly=True, samesite="lax", secure=is_prod,
+        "refresh_token", raw_refresh, httponly=True, samesite=cookie_samesite, secure=is_prod,
         max_age=days * 24 * 3600 if remember_me else None, path="/api/auth",
     )
 

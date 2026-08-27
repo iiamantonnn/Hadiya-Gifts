@@ -18,7 +18,10 @@ app = FastAPI(title="Hadiya API")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.cors_origin_list,
+    # Wildcarded for this test project - Starlette reflects the actual
+    # request Origin (rather than a literal "*") whenever a cookie is
+    # present, so this stays compatible with allow_credentials.
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
